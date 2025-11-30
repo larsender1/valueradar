@@ -1,0 +1,6 @@
+__pycache__/
+ARCHIV/
+instance/
+users.db
+global_watchlist.csv
+*.pyc
