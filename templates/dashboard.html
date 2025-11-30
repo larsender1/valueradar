@@ -157,12 +157,12 @@
                 <a href="#"
                     class="flex items-center gap-2 bg-slate-900/70 border border-slate-700/70 rounded-xl px-2.5 py-1 shadow-lg shadow-emerald-500/5">
                     <div class="sm:hidden flex items-center justify-center">
-                        <div class="flex items-center bg-emerald-500/20 rounded-xl px-3 py-1 gap-2">
+                        <div class="flex flex-col items-center gap-0.5 bg-emerald-500/10 rounded-xl px-2.5 py-1">
                             <div
-                                class="w-6 h-6 flex items-center justify-center bg-emerald-500 text-white font-bold text-xs rounded">
+                                class="w-7 h-7 flex items-center justify-center bg-emerald-500 text-white font-bold text-xs rounded">
                                 VR
                             </div>
-                            <span class="text-[10px] font-bold text-emerald-400 tracking-widest">PRO</span>
+                            <span class="text-[9px] font-semibold text-emerald-400 tracking-widest">PRO</span>
                         </div>
                     </div>
 
@@ -236,7 +236,7 @@
                     </button>
                 </div>
 
-                <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
+                <div class="hidden md:flex bg-slate-900 rounded-lg p-1 border border-slate-800">
                     <button id="btn-lang-de" onclick="setLang('de')"
                         class="px-2 py-1 text-xs font-semibold rounded-md text-emerald-400 bg-slate-800"
                         aria-label="Deutsch">
@@ -262,7 +262,7 @@
                 </div>
 
                 <button onclick="toggleTheme()"
-                    class="relative flex items-center justify-center w-9 h-9 rounded-full bg-slate-900 border border-slate-700 text-slate-400 hover:border-emerald-500 hover:text-emerald-400 transition-all shadow-inner shadow-slate-950">
+                    class="hidden md:flex relative items-center justify-center w-9 h-9 rounded-full bg-slate-900 border border-slate-700 text-slate-400 hover:border-emerald-500 hover:text-emerald-400 transition-all shadow-inner shadow-slate-950">
                     <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
                 </button>
 
@@ -285,8 +285,8 @@
     <main class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 space-y-6">
         <section id="view-dashboard" class="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <aside
-                class="lg:col-span-1 overflow-hidden rounded-2xl glass shadow-glow flex flex-col max-h-[650px] md:max-h-[650px] max-h-[420px]">
-                <div class="px-4 py-3 border-b border-slate-800/80 flex items-center justify-between">
+                class="lg:col-span-1 order-2 lg:order-1 overflow-hidden rounded-2xl glass shadow-glow flex flex-col max-h-[380px] lg:max-h-[650px]">
+                <div class="px-3 py-2 md:px-4 md:py-3 border-b border-slate-800/80 flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <span class="ticker-dot"></span>
                         <div>
@@ -401,18 +401,18 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div
-                        class="lg:col-span-2 bg-dark-card border border-dark-border rounded-2xl p-1 flex flex-col shadow-xl min-h-[500px] relative">
+                        class="lg:col-span-2 bg-dark-card border border-dark-border rounded-2xl p-1 flex flex-col shadow-xl min-h-[360px] md:min-h-[500px] relative">
                         <div class="absolute top-4 right-4 z-10 hidden md:flex gap-2">
                             <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
-                                <button onclick="updateTimeframe('1W')"
+                                <button onclick="updateTimeframe('1W')" data-tf="1W"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1W</button>
-                                <button onclick="updateTimeframe('1M')"
+                                <button onclick="updateTimeframe('1M')" data-tf="1M"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1M</button>
-                                <button onclick="updateTimeframe('6M')"
+                                <button onclick="updateTimeframe('6M')" data-tf="6M"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">6M</button>
-                                <button onclick="updateTimeframe('1Y')"
+                                <button onclick="updateTimeframe('1Y')" data-tf="1Y"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded bg-slate-800 text-slate-100 transition">1Y</button>
-                                <button onclick="updateTimeframe('MAX')"
+                                <button onclick="updateTimeframe('MAX')" data-tf="MAX"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">MAX</button>
                             </div>
                             <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
@@ -437,15 +437,15 @@
                         <div class="mt-16 px-3 md:hidden flex flex-col gap-2 z-10">
                             <div
                                 class="flex bg-slate-900 rounded-lg p-1 border border-slate-800 w-full justify-between">
-                                <button onclick="updateTimeframe('1W')"
+                                <button onclick="updateTimeframe('1W')" data-tf="1W"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1W</button>
-                                <button onclick="updateTimeframe('1M')"
+                                <button onclick="updateTimeframe('1M')" data-tf="1M"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1M</button>
-                                <button onclick="updateTimeframe('6M')"
+                                <button onclick="updateTimeframe('6M')" data-tf="6M"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">6M</button>
-                                <button onclick="updateTimeframe('1Y')"
+                                <button onclick="updateTimeframe('1Y')" data-tf="1Y"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded bg-slate-800 text-slate-100 transition">1Y</button>
-                                <button onclick="updateTimeframe('MAX')"
+                                <button onclick="updateTimeframe('MAX')" data-tf="MAX"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">MAX</button>
                             </div>
                             <div
@@ -1251,11 +1251,26 @@
             renderMainChart(lastHistoryData);
         }
 
+        function setActiveTimeframe(tf) {
+            const buttons = document.querySelectorAll('.tf-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active-tf');
+            });
+            const active = document.querySelectorAll('.tf-btn[data-tf="' + tf + '"]');
+            active.forEach(btn => btn.classList.add('active-tf'));
+        }
+
         function updateTimeframe(tf) {
+            setActiveTimeframe(tf);
             updateChart(tf);
         }
 
+        document.addEventListener('DOMContentLoaded', () => {
+            setActiveTimeframe('1Y');
+        });
+
         function renderMainChart(d) {
+
             if (!d || !d.candle) return;
 
             const priceSeries = d.candle.map(x => ({ x: x[0], y: x[4] }));
