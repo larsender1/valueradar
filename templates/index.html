@@ -42,6 +42,8 @@
         }
     </script>
 
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body {
@@ -161,8 +163,9 @@
                             </svg>
                         </div>
                     </div>
-                    <h3 class="font-bold text-xl mb-2 text-slate-900 dark:text-white">Qualität</h3>
-                    <p class="text-slate-500 dark:text-slate-400">
+                    <h3 class="font-bold text-xl mb-2 text-slate-900 dark:text-white" data-lang="box_qual_title">
+                        Qualität</h3>
+                    <p class="text-slate-500 dark:text-slate-400" data-lang="box_qual_text">
                         Nur Unternehmen mit bewiesenem Geschäftsmodell, soliden Bilanzen und verlässlicher Ertragskraft
                         schaffen es auf unseren Radar.
                     </p>
@@ -178,8 +181,9 @@
                             </svg>
                         </div>
                     </div>
-                    <h3 class="font-bold text-xl mb-2 text-slate-900 dark:text-white">Wachstum</h3>
-                    <p class="text-slate-500 dark:text-slate-400">
+                    <h3 class="font-bold text-xl mb-2 text-slate-900 dark:text-white" data-lang="box_growth_title">
+                        Wachstum</h3>
+                    <p class="text-slate-500 dark:text-slate-400" data-lang="box_growth_text">
                         Wir identifizieren Firmen, die über skalierbare Geschäftsmodelle verfügen und nachhaltig
                         wachsende Umsätze und Gewinne vorweisen.
                     </p>
@@ -196,8 +200,9 @@
                             </svg>
                         </div>
                     </div>
-                    <h3 class="font-bold text-xl mb-2 text-slate-900 dark:text-white">Sicherheit</h3>
-                    <p class="text-slate-500 dark:text-slate-400">
+                    <h3 class="font-bold text-xl mb-2 text-slate-900 dark:text-white" data-lang="box_safe_title">
+                        Sicherheit</h3>
+                    <p class="text-slate-500 dark:text-slate-400" data-lang="box_safe_text">
                         Automatische Risiko-Checks erkennen hohe Verschuldung, schwache Cashflows und instabile
                         Ertragslagen frühzeitig und filtern solche Unternehmen aus.
                     </p>
@@ -220,49 +225,44 @@
             <button onclick="document.getElementById('login-modal').classList.add('hidden')"
                 class="absolute top-4 right-4 text-slate-400 hover:text-red-500 transition text-xl">✕</button>
 
-            <div class="text-center mb-6">
-                <h2 id="modal-title" class="text-2xl font-bold text-slate-900 dark:text-white">Login</h2>
-                <p class="text-slate-500 text-sm mt-2">Willkommen zurück!</p>
-            </div>
-
-            <form onsubmit="handleAuth(event)" class="space-y-4">
-                <div id="field-username" class="hidden">
-                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Username</label>
-                    <input id="reg-username" type="text" placeholder="Dein Benutzername"
-                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
-                </div>
-
-                <div>
-                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Email</label>
-                    <input id="reg-email" type="email" placeholder="mail@example.com"
-                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
-                </div>
-
-                <div>
-                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Passwort</label>
-                    <input id="reg-pass" type="password" placeholder="••••••••"
-                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
-                </div>
-
-                <button type="submit" id="btn-submit"
-                    class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-lg transition shadow-lg shadow-emerald-500/20">
-                    Einloggen
-                </button>
-            </form>
-
-            <div class="text-center mt-6">
-                <p class="text-sm text-slate-500">
-                    <span id="toggle-text">Noch keinen Account?</span>
-                    <button onclick="toggleAuthMode()" class="text-emerald-500 font-bold hover:underline ml-1"
-                        id="toggle-btn">
-                        Jetzt registrieren
-                    </button>
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white" data-lang="modal_title">Registrieren /
+                    Login</h2>
+                <p class="text-slate-500 text-sm mt-2">Username, Mail & Passwort – Demo, keine echte Authentifizierung.
                 </p>
             </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Username</label>
+                    <input id="reg-username" type="text" value="Lars"
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Email</label>
+                    <input id="reg-email" type="email" value="demo@valueradar.com"
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Passwort</label>
+                    <input id="reg-pass" type="password" value="password"
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
+                </div>
+                <button type="submit"
+                    class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-lg transition shadow-lg shadow-emerald-500/20"
+                    data-lang="modal_btn">
+                    Dashboard Öffnen
+                </button>
+            </form>
         </div>
     </div>
 
     <script>
+        // ---------- SUPABASE CLIENT ----------
+        const supabaseUrl = "https://qmvqjjwinktukgpkrmk.supabase.co";
+        const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtdnFqanZ3aW5rdHVncGtxcm1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0ODYwMTQsImV4cCI6MjA4MDA2MjAxNH0.EkZLMHR8SF1NO-rmrFG26iv2hyaLvAUWw_eKjKCUb-E";
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
         // ---------- THEME ----------
         function toggleTheme() {
             document.documentElement.classList.toggle('dark');
@@ -271,6 +271,7 @@
         // ---------- I18N ----------
         let lang = 'DE';
 
+        // HIER sind die neuen Übersetzungen für die Boxen hinzugefügt:
         const translations = {
             DE: {
                 nav_about: "Über uns",
@@ -282,7 +283,16 @@
                 about_label: "Unsere Vision",
                 about_title: "Über ValueRadar",
                 about_text: "ValueRadar wurde entwickelt, um Anlegern klare und fundierte Unternehmensanalysen zu bieten. Statt sich auf Trends oder Stimmungen zu verlassen, untersucht unser System Geschäftsmodelle, Profitabilität, finanzielle Stabilität und langfristige Entwicklungspotenziale. Das Ziel: Transparente, verständliche und datenbasierte Einblicke in die Substanz eines Unternehmens.",
-                created_by: "Created by"
+                created_by: "Created by",
+                modal_title: "Registrieren / Login",
+                modal_btn: "Dashboard Öffnen",
+                // NEU: Die 3 Boxen
+                box_qual_title: "Qualität",
+                box_qual_text: "Nur Unternehmen mit bewiesenem Geschäftsmodell, soliden Bilanzen und verlässlicher Ertragskraft schaffen es auf unseren Radar.",
+                box_growth_title: "Wachstum",
+                box_growth_text: "Wir identifizieren Firmen, die über skalierbare Geschäftsmodelle verfügen und nachhaltig wachsende Umsätze und Gewinne vorweisen.",
+                box_safe_title: "Sicherheit",
+                box_safe_text: "Automatische Risiko-Checks erkennen hohe Verschuldung, schwache Cashflows und instabile Ertragslagen frühzeitig und filtern solche Unternehmen aus."
             },
             EN: {
                 nav_about: "About us",
@@ -294,7 +304,16 @@
                 about_label: "Our Vision",
                 about_title: "About ValueRadar",
                 about_text: "ValueRadar was created to provide investors with clear and well-founded company insights. Instead of relying on trends or market sentiment, our system evaluates business models, profitability, financial stability, and long-term growth potential. The goal: transparent, understandable, and data-driven insights into the true substance of a business.",
-                created_by: "Created by"
+                created_by: "Created by",
+                modal_title: "Register / Login",
+                modal_btn: "Open Dashboard",
+                // NEU: Die 3 Boxen Englisch
+                box_qual_title: "Quality",
+                box_qual_text: "Only companies with proven business models, solid balance sheets, and reliable earnings power make it onto our radar.",
+                box_growth_title: "Growth",
+                box_growth_text: "We identify companies with scalable business models and sustainable revenue and profit growth.",
+                box_safe_title: "Safety",
+                box_safe_text: "Automated risk checks detect high debt, weak cash flows, and unstable earnings early on and filter such companies out."
             }
         };
 
@@ -319,83 +338,62 @@
             });
         }
 
-        // ---------- AUTH LOGIK (NEU & REPARIERT) ----------
-
-        let isRegisterMode = false; // Standard ist Login
-
-        function toggleAuthMode() {
-            isRegisterMode = !isRegisterMode;
-
-            const title = document.getElementById('modal-title');
-            const userField = document.getElementById('field-username');
-            const submitBtn = document.getElementById('btn-submit');
-            const toggleText = document.getElementById('toggle-text');
-            const toggleBtn = document.getElementById('toggle-btn');
-
-            if (isRegisterMode) {
-                // Modus: REGISTRIEREN
-                title.innerText = "Registrieren";
-                userField.classList.remove('hidden'); // Zeige Username Feld
-                submitBtn.innerText = "Kostenlos Account erstellen";
-                toggleText.innerText = "Bereits einen Account?";
-                toggleBtn.innerText = "Zum Login";
-            } else {
-                // Modus: LOGIN
-                title.innerText = "Login";
-                userField.classList.add('hidden'); // Verstecke Username Feld
-                submitBtn.innerText = "Einloggen";
-                toggleText.innerText = "Noch keinen Account?";
-                toggleBtn.innerText = "Jetzt registrieren";
+        // Wenn bereits eingeloggt → direkt ins Dashboard
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                window.location.href = "/dashboard";
             }
-        }
+        });
 
-        async function handleAuth(e) {
+        // ---------- REGISTRIEREN / LOGIN MIT SUPABASE ----------
+        async function handleLogin(e) {
             e.preventDefault();
 
+            const username = document.getElementById('reg-username').value.trim();
             const email = document.getElementById('reg-email').value.trim();
             const password = document.getElementById('reg-pass').value;
-            // Username nur auslesen, wenn wir im Register-Modus sind
-            const username = isRegisterMode ? document.getElementById('reg-username').value.trim() : null;
 
             if (!email || !password) {
                 alert('Bitte Email und Passwort eingeben.');
                 return;
             }
 
-            if (isRegisterMode && !username) {
-                alert('Bitte einen Benutzernamen wählen.');
-                return;
-            }
-
-            // Endpunkt wählen basierend auf dem Modus
-            const endpoint = isRegisterMode ? '/auth/register' : '/auth/login';
-
-            const payload = { email, password };
-            if (isRegisterMode) payload.username = username;
+            // lokal speichern, damit das Dashboard einen Fallback hat
+            if (username) localStorage.setItem('vrUsername', username);
+            if (email) localStorage.setItem('vrUserEmail', email);
 
             try {
-                const res = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                // 1) Versuch: registrieren
+                let { data, error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: { username }
+                    }
                 });
 
-                // Zuerst prüfen, ob die Antwort überhaupt JSON ist
-                const contentType = res.headers.get("content-type");
-                if (!contentType || !contentType.includes("application/json")) {
-                    throw new Error("Server Fehler: Keine JSON Antwort erhalten.");
+                // Wenn User schon existiert → einloggen
+                if (error && error.code === 'user_already_exists') {
+                    const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+
+                    if (loginError) {
+                        alert('Login fehlgeschlagen: ' + loginError.message);
+                        return;
+                    }
+                } else if (error) {
+                    alert('Fehler bei Registrierung: ' + error.message);
+                    return;
                 }
 
-                const data = await res.json();
-
-                if (data.success) {
-                    window.location.href = data.redirect;
-                } else {
-                    alert('Fehler: ' + data.message);
-                }
+                // Erfolgreich: ab ins Dashboard
+                window.location.href = "/dashboard";
             } catch (err) {
                 console.error(err);
-                alert('Verbindungsfehler oder Server-Problem.\n' + err.message);
+                alert('Unerwarteter Fehler: ' + err.message);
             }
         }
     </script>

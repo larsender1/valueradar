@@ -30,7 +30,6 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
@@ -196,9 +195,15 @@
                 <div class="hidden md:flex items-center gap-2">
                     <div class="h-4 w-px bg-slate-800 mx-1"></div>
                     <button onclick="toggleTheme()"
-                        class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition">
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition"
+                        title="Design wechseln">
                         <i id="theme-icon-desktop" data-lucide="moon" class="w-4 h-4"></i>
                     </button>
+                    <a href="/logout"
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-slate-700 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition"
+                        title="Logout">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                    </a>
                 </div>
 
                 <div class="relative md:hidden">
@@ -218,9 +223,9 @@
                         </button>
 
                         <div class="flex gap-1 p-1 bg-slate-950 rounded-lg border border-slate-800 mb-2">
-                            <button onclick="setLang('de')"
+                            <button id="btn-lang-de" onclick="setLang('de')"
                                 class="flex-1 py-1 text-xs text-center rounded text-emerald-400 bg-slate-800">DE</button>
-                            <button onclick="setLang('en')"
+                            <button id="btn-lang-en" onclick="setLang('en')"
                                 class="flex-1 py-1 text-xs text-center rounded text-slate-400">EN</button>
                         </div>
 
@@ -377,12 +382,13 @@
                             </div>
                             <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
                                 <button onclick="toggleMA('20')" data-ma="20"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded active-tf">MA 20</button>
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
+                                    20</button>
                                 <button onclick="toggleMA('50')" data-ma="50"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded text-slate-400 hover:bg-slate-800">MA
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
                                     50</button>
                                 <button onclick="toggleMA('200')" data-ma="200"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded text-slate-400 hover:bg-slate-800">MA
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
                                     200</button>
                             </div>
                         </div>
@@ -411,12 +417,13 @@
                             <div
                                 class="flex bg-slate-900 rounded-lg p-1 border border-slate-800 w-full justify-between">
                                 <button onclick="toggleMA('20')" data-ma="20"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded active-tf">MA 20</button>
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
+                                    20</button>
                                 <button onclick="toggleMA('50')" data-ma="50"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded text-slate-400 hover:bg-slate-800">MA
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
                                     50</button>
                                 <button onclick="toggleMA('200')" data-ma="200"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded text-slate-400 hover:bg-slate-800">MA
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
                                     200</button>
                             </div>
                         </div>
@@ -592,7 +599,7 @@
     <script>
         lucide.createIcons();
 
-        /* ---------- MOBILE SETTINGS MENU (FEHLT NOCH) ---------- */
+        /* ---------- MOBILE SETTINGS MENU ---------- */
         function toggleMobileSettings() {
             const menu = document.getElementById('mobile-settings-menu');
             if (menu) menu.classList.toggle('hidden');
@@ -621,7 +628,7 @@
             const iconDesk = document.getElementById('theme-icon-desktop');
             if (iconDesk) iconDesk.setAttribute('data-lucide', nowDark ? 'moon' : 'sun');
 
-            // Update Mobile Icon (das ist neu dazu gekommen)
+            // Update Mobile Icon
             const iconMob = document.getElementById('theme-icon-mobile');
             if (iconMob) iconMob.setAttribute('data-lucide', nowDark ? 'moon' : 'sun');
 
@@ -736,6 +743,7 @@
             }
         }
 
+        /* FIX: Neue setLang Funktion mit IDs */
         function setLang(lang) {
             if (!translations[lang]) return;
             currentLang = lang;
@@ -744,10 +752,21 @@
             const deBtn = document.getElementById('btn-lang-de');
             const enBtn = document.getElementById('btn-lang-en');
 
-            deBtn.classList.toggle('bg-slate-800', lang === 'de');
-            deBtn.classList.toggle('text-emerald-400', lang === 'de');
-            enBtn.classList.toggle('bg-slate-800', lang === 'en');
-            enBtn.classList.toggle('text-emerald-400', lang === 'en');
+            if (deBtn && enBtn) {
+                deBtn.classList.remove('bg-slate-800', 'text-emerald-400');
+                deBtn.classList.add('text-slate-400');
+
+                enBtn.classList.remove('bg-slate-800', 'text-emerald-400');
+                enBtn.classList.add('text-slate-400');
+
+                if (lang === 'de') {
+                    deBtn.classList.add('bg-slate-800', 'text-emerald-400');
+                    deBtn.classList.remove('text-slate-400');
+                } else {
+                    enBtn.classList.add('bg-slate-800', 'text-emerald-400');
+                    enBtn.classList.remove('text-slate-400');
+                }
+            }
 
             applyTranslations();
         }
@@ -1248,10 +1267,6 @@
             updateChart(tf);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            setActiveTimeframe('1Y');
-        });
-
         function renderMainChart(d) {
 
             if (!d || !d.candle) return;
@@ -1323,17 +1338,31 @@
             chart.render();
         }
 
+        /* FIX: Neue Funktion für die MA Buttons */
+        function updateMAButtons() {
+            document.querySelectorAll('.ma-btn').forEach(btn => {
+                const ma = btn.dataset.ma;
+                let isActive = false;
+                if (ma === '20') isActive = showMA20;
+                if (ma === '50') isActive = showMA50;
+                if (ma === '200') isActive = showMA200;
+
+                if (isActive) {
+                    btn.classList.add('active-tf');
+                    btn.classList.remove('text-slate-400', 'hover:bg-slate-800');
+                } else {
+                    btn.classList.remove('active-tf');
+                    btn.classList.add('text-slate-400', 'hover:bg-slate-800');
+                }
+            });
+        }
+
         function toggleMA(len) {
             if (len === '20') showMA20 = !showMA20;
             if (len === '50') showMA50 = !showMA50;
             if (len === '200') showMA200 = !showMA200;
 
-            document.querySelectorAll('.ma-btn').forEach(btn => {
-                if (btn.dataset.ma === len) {
-                    btn.classList.toggle('active-tf');
-                    btn.classList.toggle('text-slate-400');
-                }
-            });
+            updateMAButtons();
 
             if (lastHistoryData) {
                 renderMainChart(lastHistoryData);
@@ -1467,12 +1496,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Sprache anwenden
             setLang(currentLang);
+            setActiveTimeframe('1Y');
+            updateMAButtons(); // FIX: MA Buttons beim Laden initialisieren
 
-            // Account-Name aus localStorage anzeigen (Username > Email)
-            // HIER: Das ist nicht mehr nötig, da FLASK das macht. 
-            // Aber ich lasse es drin, falls du localStorage noch nutzt.
+            // Account-Name aus localStorage anzeigen
             const nameSpan = document.getElementById('account-name');
-            // Der Name steht jetzt schon im HTML dank Flask.
         });
     </script>
 </body>
