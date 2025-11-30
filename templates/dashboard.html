@@ -144,57 +144,32 @@
 </head>
 
 <body class="text-slate-100">
-    <header class="border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-lg sticky top-0 z-40">
-        <div
-            class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3 md:gap-6">
-            <div class="flex items-center gap-6 min-w-0">
+    <header class="border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-lg sticky top-0 z-50">
+        <div class="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between gap-2">
+
+            <div class="flex items-center gap-3">
                 <button onclick="window.location.href='/'"
                     class="hidden sm:inline-flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-emerald-400 px-2 py-1 rounded-lg border border-slate-700 hover:border-emerald-500 bg-slate-950/60 transition">
                     <i data-lucide="arrow-left" class="w-3 h-3"></i>
-                    <span data-i18n="header.back">Zurück</span>
                 </button>
 
-                <a href="#"
-                    class="flex items-center gap-2 bg-slate-900/70 border border-slate-700/70 rounded-xl px-2.5 py-1 shadow-lg shadow-emerald-500/5">
-                    <div class="sm:hidden flex items-center justify-center">
-                        <div class="flex flex-col items-center gap-0.5 bg-emerald-500/10 rounded-xl px-2.5 py-1">
-                            <div
-                                class="w-7 h-7 flex items-center justify-center bg-emerald-500 text-white font-bold text-xs rounded">
-                                VR
-                            </div>
-                            <span class="text-[9px] font-semibold text-emerald-400 tracking-widest">PRO</span>
-                        </div>
+                <a href="#" class="flex items-center gap-2 group">
+                    <div
+                        class="bg-emerald-500 text-white font-bold text-xs p-1 rounded group-hover:bg-emerald-400 transition">
+                        VR
                     </div>
-
-                    <div class="hidden sm:flex items-center gap-2">
-                        <div
-                            class="bg-emerald-500 text-white font-bold text-xs p-1 rounded group-hover:bg-emerald-400 transition">
-                            VR
-                        </div>
-                        <div class="flex flex-col leading-none">
-                            <span class="text-lg font-bold text-white tracking-tight">ValueRadar</span>
-                            <span class="text-[10px] text-emerald-500 font-bold tracking-wider">PRO TERMINAL</span>
-                        </div>
+                    <div class="flex flex-col leading-none">
+                        <span class="text-lg font-bold text-white tracking-tight">ValueRadar</span>
+                        <span class="text-[10px] text-emerald-500 font-bold tracking-wider">PRO</span>
                     </div>
                 </a>
-
-                <div
-                    class="hidden md:flex items-center bg-slate-900/80 border border-slate-800 rounded-xl px-3 py-1.5 text-sm text-slate-400 shadow-inner shadow-slate-900 focus-within:ring-1 focus-within:ring-emerald-500 transition-all">
-                    <i data-lucide="search" class="w-4 h-4 text-slate-500 mr-2"></i>
-                    <input type="text" id="global-search" placeholder="Suche Aktie..."
-                        class="bg-transparent border-none outline-none text-sm w-full text-white placeholder-slate-600"
-                        onkeyup="filterDropdown(this.value)">
-                    <span class="text-xs text-slate-600 border border-slate-700 rounded px-1.5 py-0.5 ml-2">⌘K</span>
-                </div>
             </div>
 
-            <div
-                class="flex flex-nowrap items-center gap-2 md:gap-4 justify-between w-full md:w-auto mt-2 md:mt-0 overflow-x-auto scrollbar-none">
+            <div class="flex items-center gap-2">
 
-                <!-- Mobile: Dropdown -->
-                <div class="md:hidden mb-2">
+                <div class="md:hidden">
                     <select
-                        class="bg-slate-900 border border-slate-800 text-xs text-slate-300 rounded-lg px-2 py-1 w-full"
+                        class="bg-slate-900 border border-slate-800 text-xs text-slate-300 rounded-lg px-2 py-1 focus:outline-none focus:border-emerald-500"
                         onchange="filterStocks(this.value)">
                         <option value="ALL">Alle</option>
                         <option value="US">US</option>
@@ -203,80 +178,64 @@
                     </select>
                 </div>
 
-                <!-- Desktop/Tablet: Buttons -->
                 <div class="hidden md:flex bg-slate-900 rounded-lg p-1 border border-slate-800">
                     <button onclick="filterStocks('ALL')"
                         class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
                         data-reg="ALL" data-i18n="region.all">Alle</button>
-
                     <button onclick="filterStocks('US')"
                         class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
                         data-reg="US" data-i18n="region.us">US</button>
-
                     <button onclick="filterStocks('DE')"
                         class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
                         data-reg="DE" data-i18n="region.de">DE</button>
-
                     <button onclick="filterStocks('FAV')"
                         class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
                         data-reg="FAV" data-i18n="region.fav">Watchlist</button>
                 </div>
 
-
-                <div class="hidden md:flex items-center bg-slate-900 rounded-lg p-1 border border-slate-800">
-                    <button onclick="switchView('dashboard')" id="tab-dashboard"
-                        class="px-3 py-1 text-xs font-semibold rounded-md text-emerald-400 bg-slate-800 shadow-inner"
-                        data-i18n="tab.dashboard">
-                        Dashboard
-                    </button>
-                    <button onclick="switchView('glossary')" id="tab-glossary"
-                        class="px-3 py-1 text-xs font-semibold rounded-md text-slate-400 hover:bg-slate-800"
-                        data-i18n="tab.glossary">
-                        Erklärungen
+                <div class="hidden md:flex items-center gap-2">
+                    <div class="h-4 w-px bg-slate-800 mx-1"></div>
+                    <button onclick="toggleTheme()"
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition">
+                        <i id="theme-icon-desktop" data-lucide="moon" class="w-4 h-4"></i>
                     </button>
                 </div>
 
-                <div class="hidden md:flex bg-slate-900 rounded-lg p-1 border border-slate-800">
-                    <button id="btn-lang-de" onclick="setLang('de')"
-                        class="px-2 py-1 text-xs font-semibold rounded-md text-emerald-400 bg-slate-800"
-                        aria-label="Deutsch">
-                        🇩🇪
+                <div class="relative md:hidden">
+                    <button onclick="toggleMobileSettings()"
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-emerald-400 transition">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
                     </button>
-                    <button id="btn-lang-en" onclick="setLang('en')"
-                        class="px-2 py-1 text-xs font-semibold rounded-md text-slate-400 hover:bg-slate-800"
-                        aria-label="English">
-                        🇺🇸
-                    </button>
-                </div>
 
-                <div class="h-6 w-px bg-slate-800"></div>
+                    <div id="mobile-settings-menu"
+                        class="hidden absolute right-0 top-full mt-2 w-48 bg-slate-900 border border-slate-800 rounded-xl shadow-xl z-50 p-2">
+                        <div class="text-[10px] text-slate-500 font-bold uppercase px-2 py-1 mb-1">Einstellungen</div>
 
-                <div class="hidden sm:flex items-center gap-1">
-                    <span
-                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 text-[11px] font-medium text-emerald-300 shadow-sm shadow-emerald-500/30">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span data-i18n="header.live">Live</span>
-                    </span>
-                    <span class="text-xs text-slate-400" data-i18n="header.scan">Scan: Global Undervalued
-                        Watchlist</span>
-                </div>
+                        <button onclick="toggleTheme()"
+                            class="w-full flex items-center justify-between px-2 py-2 text-xs text-slate-300 hover:bg-slate-800 rounded-lg mb-1">
+                            <span>Design wechseln</span>
+                            <i id="theme-icon-mobile" data-lucide="moon" class="w-3 h-3"></i>
+                        </button>
 
-                <button onclick="toggleTheme()"
-                    class="hidden md:flex relative items-center justify-center w-9 h-9 rounded-full bg-slate-900 border border-slate-700 text-slate-400 hover:border-emerald-500 hover:text-emerald-400 transition-all shadow-inner shadow-slate-950">
-                    <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
-                </button>
+                        <div class="flex gap-1 p-1 bg-slate-950 rounded-lg border border-slate-800 mb-2">
+                            <button onclick="setLang('de')"
+                                class="flex-1 py-1 text-xs text-center rounded text-emerald-400 bg-slate-800">DE</button>
+                            <button onclick="setLang('en')"
+                                class="flex-1 py-1 text-xs text-center rounded text-slate-400">EN</button>
+                        </div>
 
-                <div class="flex items-center gap-2 pl-3 border-l border-slate-800">
-                    <div class="hidden sm:flex flex-col text-right">
-                        <span class="text-xs text-slate-500" data-i18n="header.account">Account</span>
-                        <span id="account-name" class="text-sm font-semibold text-slate-100 truncate max-w-[140px]">{{
-                            username }}</span>
+                        <div class="h-px bg-slate-800 my-1"></div>
+                        <a href="/logout"
+                            class="flex items-center gap-2 px-2 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-lg">
+                            <i data-lucide="log-out" class="w-3 h-3"></i>
+                            <span>Logout</span>
+                        </a>
                     </div>
-                    <div
-                        class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-sky-500 flex items-center justify-center text-xs font-bold">
-                        VR
-                    </div>
-                    <a href="/logout" class="ml-2 text-xs text-red-400 hover:underline">Logout</a>
+                </div>
+
+                <div
+                    class="hidden sm:flex w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-sky-500 items-center justify-center text-xs font-bold shadow-lg shadow-emerald-500/20">
+                    VR
                 </div>
             </div>
         </div>
@@ -284,8 +243,9 @@
 
     <main class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 space-y-6">
         <section id="view-dashboard" class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
             <aside
-                class="lg:col-span-1 order-2 lg:order-1 overflow-hidden rounded-2xl glass shadow-glow flex flex-col max-h-[380px] lg:max-h-[650px]">
+                class="lg:col-span-1 order-1 overflow-hidden rounded-2xl glass shadow-glow flex flex-col max-h-[380px] lg:max-h-[650px]">
                 <div class="px-3 py-2 md:px-4 md:py-3 border-b border-slate-800/80 flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <span class="ticker-dot"></span>
@@ -331,7 +291,7 @@
                 </div>
             </aside>
 
-            <section class="lg:col-span-3 flex flex-col gap-6">
+            <section class="lg:col-span-3 order-2 flex flex-col gap-6">
                 <div class="flex flex-col md:flex-row justify-between items-end gap-4">
                     <div>
                         <div class="flex items-center gap-3 mb-1">
@@ -411,7 +371,7 @@
                                 <button onclick="updateTimeframe('6M')" data-tf="6M"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">6M</button>
                                 <button onclick="updateTimeframe('1Y')" data-tf="1Y"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded bg-slate-800 text-slate-100 transition">1Y</button>
+                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1Y</button>
                                 <button onclick="updateTimeframe('MAX')" data-tf="MAX"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">MAX</button>
                             </div>
@@ -434,7 +394,7 @@
                             </h3>
                         </div>
 
-                        <div class="mt-16 px-3 md:hidden flex flex-col gap-2 z-10">
+                        <div class="mt-12 px-3 md:hidden flex flex-col gap-2 z-10">
                             <div
                                 class="flex bg-slate-900 rounded-lg p-1 border border-slate-800 w-full justify-between">
                                 <button onclick="updateTimeframe('1W')" data-tf="1W"
@@ -444,7 +404,7 @@
                                 <button onclick="updateTimeframe('6M')" data-tf="6M"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">6M</button>
                                 <button onclick="updateTimeframe('1Y')" data-tf="1Y"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded bg-slate-800 text-slate-100 transition">1Y</button>
+                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1Y</button>
                                 <button onclick="updateTimeframe('MAX')" data-tf="MAX"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">MAX</button>
                             </div>
@@ -461,7 +421,7 @@
                             </div>
                         </div>
 
-                        <div id="chart" class="w-full h-full pt-28 md:pt-12"></div>
+                        <div id="chart" class="w-full h-full pt-4 md:pt-12"></div>
                     </div>
 
                     <div class="bg-dark-card border border-dark-border rounded-2xl p-4 flex flex-col min-h-[400px]">
@@ -632,7 +592,24 @@
     <script>
         lucide.createIcons();
 
-        /* ---------- THEME ---------- */
+        /* ---------- MOBILE SETTINGS MENU (FEHLT NOCH) ---------- */
+        function toggleMobileSettings() {
+            const menu = document.getElementById('mobile-settings-menu');
+            if (menu) menu.classList.toggle('hidden');
+        }
+
+        // Klick außerhalb schließt das Menü
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('mobile-settings-menu');
+            const btn = document.querySelector('button[onclick="toggleMobileSettings()"]');
+
+            // Wenn das Menü offen ist UND man NICHT auf das Menü oder den Button klickt -> schließen
+            if (menu && !menu.classList.contains('hidden')) {
+                if (btn && !btn.contains(event.target) && !menu.contains(event.target)) {
+                    menu.classList.add('hidden');
+                }
+            }
+        });
 
         function toggleTheme() {
             const html = document.documentElement;
@@ -640,8 +617,14 @@
             const nowDark = html.classList.toggle('dark');
             body.classList.toggle('light', !nowDark);
 
-            const icon = document.getElementById('theme-icon');
-            icon.setAttribute('data-lucide', nowDark ? 'moon' : 'sun');
+            // Update Desktop Icon
+            const iconDesk = document.getElementById('theme-icon-desktop');
+            if (iconDesk) iconDesk.setAttribute('data-lucide', nowDark ? 'moon' : 'sun');
+
+            // Update Mobile Icon (das ist neu dazu gekommen)
+            const iconMob = document.getElementById('theme-icon-mobile');
+            if (iconMob) iconMob.setAttribute('data-lucide', nowDark ? 'moon' : 'sun');
+
             lucide.createIcons();
         }
 
