@@ -1,0 +1,9 @@
+flask
+flask_sqlalchemy
+flask_login
+werkzeug
+yfinance
+pandas
+numpy
+requests
+gunicorn

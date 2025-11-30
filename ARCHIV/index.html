@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ValueRadar – Finde Substanz in Aktien</title>
+
+    <!-- SEO -->
+    <meta name="description"
+        content="ValueRadar analysiert Unternehmenskennzahlen und filtert Qualitätsaktien nach Substanz, Wachstum und Sicherheit – transparent, datenbasiert und verständlich.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://valueradar.net/">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://valueradar.net/">
+    <meta property="og:title" content="ValueRadar – Automatisierte Fundamentalanalyse">
+    <meta property="og:description"
+        content="Finde Substanz in Aktien: ValueRadar filtert den Markt nach Qualität, Wachstum und Risiko.">
+    <meta property="og:site_name" content="ValueRadar">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ValueRadar – Automatisierte Fundamentalanalyse">
+    <meta name="twitter:description" content="Datenbasierte Aktienanalyse für langfristige Investoren.">
+
+    <!-- Favicon (falls vorhanden) -->
+    <link rel="icon" href="/favicon.ico">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: { bg: '#0f172a', card: '#1e293b' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Supabase JS -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: move 10s infinite alternate;
+        }
+
+        @keyframes move {
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(20px, -20px);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-gray-900 dark:bg-slate-900 dark:text-white transition-colors duration-300">
+
+    <!-- NAVBAR -->
+    <nav
+        class="absolute top-0 left-0 w-full z-50 p-6 flex justify-between items-center max-w-7xl mx-auto left-0 right-0">
+        <div class="flex flex-col leading-tight">
+            <span class="text-2xl font-extrabold tracking-tight text-emerald-600 dark:text-emerald-400">
+                ValueRadar
+            </span>
+            <span class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 -mt-1">
+                by Lars Ender
+            </span>
+        </div>
+
+        <div class="flex gap-4 items-center">
+            <a href="#about" class="text-sm font-bold hover:text-emerald-500 transition cursor-pointer"
+                data-lang="nav_about">Über uns</a>
+
+            <button onclick="toggleLang()" id="lang-btn"
+                class="flex items-center gap-2 text-sm font-bold border border-slate-300 dark:border-slate-700 px-3 py-1 rounded-full bg-white dark:bg-slate-800 transition hover:border-emerald-500 shadow-sm">
+                <svg id="flag-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 3"
+                    class="w-6 h-4 rounded-sm shadow-sm">
+                    <rect width="5" height="3" y="0" x="0" fill="#000" />
+                    <rect width="5" height="2" y="1" x="0" fill="#DD0000" />
+                    <rect width="5" height="1" y="2" x="0" fill="#FFCE00" />
+                </svg>
+                <span id="lang-text">DE</span>
+            </button>
+
+            <button onclick="toggleTheme()"
+                class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-800 text-xl transition shadow-sm bg-white dark:bg-transparent border border-gray-200 dark:border-transparent">
+                <span class="hidden dark:inline">☀️</span>
+                <span class="inline dark:hidden">🌑</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <main
+        class="relative z-10 flex flex-col justify-center items-center text-center px-4 min-h-screen w-full overflow-hidden">
+        <div class="blob bg-emerald-500 w-96 h-96 rounded-full top-0 left-0 -z-10"></div>
+        <div class="blob bg-blue-600 w-96 h-96 rounded-full bottom-0 right-0 animation-delay-2000 -z-10"></div>
+
+        <span
+            class="bg-emerald-100 dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold mb-6 border border-emerald-200 dark:border-emerald-900 shadow-sm"
+            data-lang="sys_online">SYSTEM ONLINE</span>
+
+        <h1 class="text-5xl md:text-8xl font-extrabold mb-6 tracking-tight">
+            <span data-lang="hero_prefix">Finde</span>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-blue-500"
+                data-lang="hero_highlight">Substanz.</span>
+        </h1>
+
+        <p class="text-slate-500 dark:text-slate-400 text-xl max-w-2xl mb-10 leading-relaxed" data-lang="hero_sub">
+            Automatisierte Fundamentalanalyse für intelligente Investoren.
+        </p>
+
+        <button onclick="document.getElementById('login-modal').classList.remove('hidden')"
+            class="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl hover:scale-105 transition transform duration-200"
+            data-lang="btn_start">
+            Login / Starten
+        </button>
+
+        <div class="absolute bottom-8 animate-bounce text-slate-400 dark:text-slate-600 cursor-pointer"
+            onclick="document.getElementById('about').scrollIntoView()">
+            ↓
+        </div>
+    </main>
+
+    <!-- ABOUT -->
+    <section id="about"
+        class="py-32 px-4 bg-white dark:bg-slate-800/50 border-t border-gray-100 dark:border-slate-800 backdrop-blur-sm relative z-20">
+        <div class="max-w-6xl mx-auto text-center">
+            <span class="text-emerald-500 font-bold tracking-wider uppercase text-xs mb-2 block"
+                data-lang="about_label">Unsere Vision</span>
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-slate-900 dark:text-white" data-lang="about_title">Über
+                ValueRadar</h2>
+            <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-16 max-w-2xl mx-auto"
+                data-lang="about_text">
+                ValueRadar wurde entwickelt, um Anlegern klare und fundierte Unternehmensanalysen zu bieten.
+                Statt sich auf Trends oder Stimmungen zu verlassen, untersucht unser System Geschäftsmodelle,
+                Profitabilität, finanzielle Stabilität und langfristige Entwicklungspotenziale.
+                Das Ziel: Transparente, verständliche und datenbasierte Einblicke in die Substanz eines Unternehmens.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-16 text-left">
+                <!-- QUALITÄT -->
+                <div
+                    class="p-8 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:-translate-y-1 transition duration-300">
+                    <div class="mb-5">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/40">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 text-white">
+                                <path fill="currentColor"
+                                    d="M9.5 3h5l4 5.5-9 12-9-12L4.5 3h5zm0 2L6 8.5 11.5 16 17 8.5 14.5 5h-5z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2 text-slate-900 dark:text-white">Qualität</h3>
+                    <p class="text-slate-500 dark:text-slate-400">
+                        Nur Unternehmen mit bewiesenem Geschäftsmodell, soliden Bilanzen und verlässlicher Ertragskraft
+                        schaffen es auf unseren Radar.
+                    </p>
+                </div>
+
+                <!-- WACHSTUM -->
+                <div
+                    class="p-8 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:-translate-y-1 transition duration-300">
+                    <div class="mb-5">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-sky-500/40">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 text-white">
+                                <path fill="currentColor" d="M5 19v-6l4-4 3 3 7-7v6h-2V7.41l-5 5-3-3-2 2V19z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2 text-slate-900 dark:text-white">Wachstum</h3>
+                    <p class="text-slate-500 dark:text-slate-400">
+                        Wir identifizieren Firmen, die über skalierbare Geschäftsmodelle verfügen und nachhaltig
+                        wachsende Umsätze und Gewinne vorweisen.
+                    </p>
+                </div>
+
+                <!-- SICHERHEIT -->
+                <div
+                    class="p-8 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:-translate-y-1 transition duration-300">
+                    <div class="mb-5">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-500 to-slate-700 flex items-center justify-center shadow-lg shadow-slate-700/40">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 text-white">
+                                <path fill="currentColor"
+                                    d="M12 3l7 4v5c0 3.87-2.69 7.19-6.39 8.13L12 20.9l-.61-.17C7.69 19.19 5 15.87 5 12V7l7-4z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2 text-slate-900 dark:text-white">Sicherheit</h3>
+                    <p class="text-slate-500 dark:text-slate-400">
+                        Automatische Risiko-Checks erkennen hohe Verschuldung, schwache Cashflows und instabile
+                        Ertragslagen frühzeitig und filtern solche Unternehmen aus.
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-10 border-t border-gray-100 dark:border-slate-700">
+                <p class="text-xs uppercase font-bold text-slate-400 mb-2" data-lang="created_by">Created by</p>
+                <p
+                    class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-blue-500">
+                    Lars Ender</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOGIN / REGISTRIEREN MODAL -->
+    <div id="login-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black/80 backdrop-blur-sm transition-opacity">
+        <div
+            class="bg-white dark:bg-slate-800 p-8 rounded-2xl w-full max-w-md shadow-2xl relative border border-slate-100 dark:border-slate-700 transform transition-all scale-100">
+            <button onclick="document.getElementById('login-modal').classList.add('hidden')"
+                class="absolute top-4 right-4 text-slate-400 hover:text-red-500 transition text-xl">✕</button>
+
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white" data-lang="modal_title">Registrieren /
+                    Login</h2>
+                <p class="text-slate-500 text-sm mt-2">Username, Mail & Passwort – Demo, keine echte Authentifizierung.
+                </p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Username</label>
+                    <input id="reg-username" type="text" value="Lars"
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Email</label>
+                    <input id="reg-email" type="email" value="demo@valueradar.com"
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Passwort</label>
+                    <input id="reg-pass" type="password" value="password"
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
+                </div>
+                <button type="submit"
+                    class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-lg transition shadow-lg shadow-emerald-500/20"
+                    data-lang="modal_btn">
+                    Dashboard Öffnen
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // ---------- SUPABASE CLIENT ----------
+        const supabaseUrl = "https://qmvqjjwinktukgpkrmk.supabase.co";
+        const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtdnFqanZ3aW5rdHVncGtxcm1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0ODYwMTQsImV4cCI6MjA4MDA2MjAxNH0.EkZLMHR8SF1NO-rmrFG26iv2hyaLvAUWw_eKjKCUb-E";
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+        // ---------- THEME ----------
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // ---------- I18N ----------
+        let lang = 'DE';
+
+        const translations = {
+            DE: {
+                nav_about: "Über uns",
+                sys_online: "SYSTEM ONLINE",
+                hero_prefix: "Finde",
+                hero_highlight: "Substanz.",
+                hero_sub: "Automatisierte Fundamentalanalyse für intelligente Investoren.",
+                btn_start: "Login / Starten",
+                about_label: "Unsere Vision",
+                about_title: "Über ValueRadar",
+                about_text: "ValueRadar wurde entwickelt, um Anlegern klare und fundierte Unternehmensanalysen zu bieten. Statt sich auf Trends oder Stimmungen zu verlassen, untersucht unser System Geschäftsmodelle, Profitabilität, finanzielle Stabilität und langfristige Entwicklungspotenziale. Das Ziel: Transparente, verständliche und datenbasierte Einblicke in die Substanz eines Unternehmens.",
+                created_by: "Created by",
+                modal_title: "Registrieren / Login",
+                modal_btn: "Dashboard Öffnen"
+            },
+            EN: {
+                nav_about: "About us",
+                sys_online: "SYSTEM ONLINE",
+                hero_prefix: "Find",
+                hero_highlight: "Substance.",
+                hero_sub: "Automated fundamental analysis for intelligent investors.",
+                btn_start: "Login / Start",
+                about_label: "Our Vision",
+                about_title: "About ValueRadar",
+                about_text: "ValueRadar was created to provide investors with clear and well-founded company insights. Instead of relying on trends or market sentiment, our system evaluates business models, profitability, financial stability, and long-term growth potential. The goal: transparent, understandable, and data-driven insights into the true substance of a business.",
+                created_by: "Created by",
+                modal_title: "Register / Login",
+                modal_btn: "Open Dashboard"
+            }
+        };
+
+        function toggleLang() {
+            lang = lang === 'DE' ? 'EN' : 'DE';
+            const btnText = document.getElementById('lang-text');
+            const icon = document.getElementById('flag-icon');
+
+            if (lang === 'EN') {
+                btnText.innerText = "EN";
+                icon.innerHTML = '<rect width="5" height="3" fill="#B22234"/><rect width="5" height="0.3" y="0.35" fill="white"/><rect width="5" height="0.3" y="1.05" fill="white"/><rect width="5" height="0.3" y="1.75" fill="white"/><rect width="5" height="0.3" y="2.45" fill="white"/><rect width="2.5" height="1.5" fill="#3C3B6E"/>';
+            } else {
+                btnText.innerText = "DE";
+                icon.innerHTML = '<rect width="5" height="3" y="0" x="0" fill="#000"/><rect width="5" height="2" y="1" x="0" fill="#DD0000"/><rect width="5" height="1" y="2" x="0" fill="#FFCE00"/>';
+            }
+
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const key = el.dataset.lang;
+                if (translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+        }
+
+        // Wenn bereits eingeloggt → direkt ins Dashboard
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                window.location.href = "/dashboard";
+            }
+        });
+
+        // ---------- REGISTRIEREN / LOGIN MIT SUPABASE ----------
+        async function handleLogin(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('reg-username').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-pass').value;
+
+            if (!email || !password) {
+                alert('Bitte Email und Passwort eingeben.');
+                return;
+            }
+
+            // lokal speichern, damit das Dashboard einen Fallback hat
+            if (username) localStorage.setItem('vrUsername', username);
+            if (email) localStorage.setItem('vrUserEmail', email);
+
+            try {
+                // 1) Versuch: registrieren
+                let { data, error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: { username }
+                    }
+                });
+
+                // Wenn User schon existiert → einloggen
+                if (error && error.code === 'user_already_exists') {
+                    const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+
+                    if (loginError) {
+                        alert('Login fehlgeschlagen: ' + loginError.message);
+                        return;
+                    }
+                } else if (error) {
+                    alert('Fehler bei Registrierung: ' + error.message);
+                    return;
+                }
+
+                // Erfolgreich: ab ins Dashboard
+                window.location.href = "/dashboard";
+            } catch (err) {
+                console.error(err);
+                alert('Unerwarteter Fehler: ' + err.message);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
