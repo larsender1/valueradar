@@ -42,8 +42,6 @@
         }
     </script>
 
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body {
@@ -258,11 +256,6 @@
     </div>
 
     <script>
-        // ---------- SUPABASE CLIENT ----------
-        const supabaseUrl = "https://qmvqjjwinktukgpkrmk.supabase.co";
-        const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtdnFqanZ3aW5rdHVncGtxcm1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0ODYwMTQsImV4cCI6MjA4MDA2MjAxNH0.EkZLMHR8SF1NO-rmrFG26iv2hyaLvAUWw_eKjKCUb-E";
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-
         // ---------- THEME ----------
         function toggleTheme() {
             document.documentElement.classList.toggle('dark');
@@ -271,7 +264,6 @@
         // ---------- I18N ----------
         let lang = 'DE';
 
-        // HIER sind die neuen Übersetzungen für die Boxen hinzugefügt:
         const translations = {
             DE: {
                 nav_about: "Über uns",
@@ -338,16 +330,8 @@
             });
         }
 
-        // Wenn bereits eingeloggt → direkt ins Dashboard
-        document.addEventListener('DOMContentLoaded', async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                window.location.href = "/dashboard";
-            }
-        });
-
-        // ---------- REGISTRIEREN / LOGIN MIT SUPABASE ----------
-        async function handleLogin(e) {
+        // ---------- LOGIN OHNE SUPABASE (FÜR RAILWAY/DEMO) ----------
+        function handleLogin(e) {
             e.preventDefault();
 
             const username = document.getElementById('reg-username').value.trim();
@@ -359,42 +343,12 @@
                 return;
             }
 
-            // lokal speichern, damit das Dashboard einen Fallback hat
-            if (username) localStorage.setItem('vrUsername', username);
-            if (email) localStorage.setItem('vrUserEmail', email);
+            // Wir simulieren den Login nur lokal
+            localStorage.setItem('vrUsername', username);
+            localStorage.setItem('vrUserEmail', email);
 
-            try {
-                // 1) Versuch: registrieren
-                let { data, error } = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        data: { username }
-                    }
-                });
-
-                // Wenn User schon existiert → einloggen
-                if (error && error.code === 'user_already_exists') {
-                    const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
-                        email,
-                        password
-                    });
-
-                    if (loginError) {
-                        alert('Login fehlgeschlagen: ' + loginError.message);
-                        return;
-                    }
-                } else if (error) {
-                    alert('Fehler bei Registrierung: ' + error.message);
-                    return;
-                }
-
-                // Erfolgreich: ab ins Dashboard
-                window.location.href = "/dashboard";
-            } catch (err) {
-                console.error(err);
-                alert('Unerwarteter Fehler: ' + err.message);
-            }
+            // Weiterleitung zum Dashboard
+            window.location.href = "/dashboard";
         }
     </script>
 
