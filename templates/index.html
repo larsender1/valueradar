@@ -224,40 +224,44 @@
                 class="absolute top-4 right-4 text-slate-400 hover:text-red-500 transition text-xl">✕</button>
 
             <div class="text-center mb-6">
-                <h2 id="modal-title" class="text-2xl font-bold text-slate-900 dark:text-white">Login</h2>
-                <p class="text-slate-500 text-sm mt-2">Willkommen zurück!</p>
+                <h2 id="modal-title" class="text-2xl font-bold text-slate-900 dark:text-white"
+                    data-lang="modal_login_title">Login</h2>
+                <p class="text-slate-500 text-sm mt-2" data-lang="modal_subtitle">Willkommen zurück!</p>
             </div>
 
             <form onsubmit="handleAuth(event)" class="space-y-4">
+
                 <div id="field-username" class="hidden">
-                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Username</label>
+                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block"
+                        data-lang="label_user">Username</label>
                     <input id="reg-username" type="text" placeholder="Dein Benutzername"
                         class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
                 </div>
 
                 <div>
-                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Email</label>
+                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block"
+                        data-lang="label_email">Email</label>
                     <input id="reg-email" type="email" placeholder="mail@example.com"
                         class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
                 </div>
-
                 <div>
-                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Passwort</label>
+                    <label class="text-xs font-bold text-slate-500 uppercase mb-1 block"
+                        data-lang="label_pass">Passwort</label>
                     <input id="reg-pass" type="password" placeholder="••••••••"
                         class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition">
                 </div>
-
                 <button type="submit" id="btn-submit"
-                    class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-lg transition shadow-lg shadow-emerald-500/20">
+                    class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-lg transition shadow-lg shadow-emerald-500/20"
+                    data-lang="modal_login_btn">
                     Einloggen
                 </button>
             </form>
 
             <div class="text-center mt-6">
                 <p class="text-sm text-slate-500">
-                    <span id="toggle-text">Noch keinen Account?</span>
+                    <span id="toggle-text" data-lang="modal_login_toggle_text">Noch keinen Account?</span>
                     <button onclick="toggleAuthMode()" class="text-emerald-500 font-bold hover:underline ml-1"
-                        id="toggle-btn">
+                        id="toggle-btn" data-lang="modal_login_toggle_btn">
                         Jetzt registrieren
                     </button>
                 </p>
@@ -295,7 +299,15 @@
                 box_safe_title: "Sicherheit",
                 box_safe_text: "Automatische Risiko-Checks erkennen hohe Verschuldung, schwache Cashflows und instabile Ertragslagen frühzeitig und filtern solche Unternehmen aus.",
 
-                // Login / Register Modal
+                // Login / Register Modal (KOMPLETT)
+                modal_subtitle: "Willkommen zurück!",
+                label_user: "Benutzername",
+                label_email: "Email",
+                label_pass: "Passwort",
+                placeholder_user: "Dein Benutzername",
+                placeholder_email: "mail@example.com",
+
+                // Dynamic
                 modal_login_title: "Login",
                 modal_login_btn: "Einloggen",
                 modal_login_toggle_text: "Noch keinen Account?",
@@ -326,7 +338,15 @@
                 box_safe_title: "Safety",
                 box_safe_text: "Automated risk checks detect high debt, weak cash flows, and unstable earnings early on and filter such companies out.",
 
-                // Login / Register Modal
+                // Login / Register Modal (COMPLETE)
+                modal_subtitle: "Welcome back!",
+                label_user: "Username",
+                label_email: "Email",
+                label_pass: "Password",
+                placeholder_user: "Your username",
+                placeholder_email: "mail@example.com",
+
+                // Dynamic
                 modal_login_title: "Login",
                 modal_login_btn: "Login",
                 modal_login_toggle_text: "No account yet?",
@@ -352,6 +372,7 @@
                 icon.innerHTML = '<rect width="5" height="3" y="0" x="0" fill="#000"/><rect width="5" height="2" y="1" x="0" fill="#DD0000"/><rect width="5" height="1" y="2" x="0" fill="#FFCE00"/>';
             }
 
+            // 1. Textinhalte übersetzen
             document.querySelectorAll('[data-lang]').forEach(el => {
                 const key = el.dataset.lang;
                 if (translations[lang][key]) {
@@ -359,7 +380,12 @@
                 }
             });
 
-            // WICHTIG: Das hier aktualisiert jetzt das Login-Fenster
+            // 2. Platzhalter übersetzen (Inputs)
+            const t = translations[lang];
+            document.getElementById('reg-username').placeholder = t.placeholder_user;
+            document.getElementById('reg-email').placeholder = t.placeholder_email;
+
+            // 3. Modal-State aktualisieren
             updateModalTexts();
         }
 
@@ -420,7 +446,6 @@
                 return;
             }
 
-            // Endpunkt wählen
             const endpoint = isRegisterMode ? '/auth/register' : '/auth/login';
             const payload = { email, password };
             if (isRegisterMode) payload.username = username;
