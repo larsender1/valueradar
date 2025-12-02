@@ -377,9 +377,14 @@
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">6M</button>
                                 <button onclick="updateTimeframe('1Y')" data-tf="1Y"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1Y</button>
+                                <!-- NEU -->
+                                <button onclick="updateTimeframe('5Y')" data-tf="5Y"
+                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">5Y</button>
+                                <!-- /NEU -->
                                 <button onclick="updateTimeframe('MAX')" data-tf="MAX"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">MAX</button>
                             </div>
+
                             <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
                                 <button onclick="toggleMA('20')" data-ma="20"
                                     class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
@@ -391,6 +396,18 @@
                                     class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
                                     200</button>
                             </div>
+
+                            <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
+                                <button onclick="setChartType('line')" data-ctype="line"
+                                    class="charttype-btn px-3 py-1 text-xs font-bold rounded text-slate-400 hover:bg-slate-800 transition">
+                                    Line
+                                </button>
+                                <button onclick="setChartType('candles')" data-ctype="candles"
+                                    class="charttype-btn px-3 py-1 text-xs font-bold rounded text-slate-400 hover:bg-slate-800 transition">
+                                    Candles
+                                </button>
+                            </div>
+
                         </div>
 
                         <div class="absolute top-4 left-4 z-10">
@@ -403,17 +420,17 @@
                         <div class="mt-12 px-3 md:hidden flex flex-col gap-2 z-10">
                             <div
                                 class="flex bg-slate-900 rounded-lg p-1 border border-slate-800 w-full justify-between">
-                                <button onclick="updateTimeframe('1W')" data-tf="1W"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1W</button>
-                                <button onclick="updateTimeframe('1M')" data-tf="1M"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1M</button>
-                                <button onclick="updateTimeframe('6M')" data-tf="6M"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">6M</button>
-                                <button onclick="updateTimeframe('1Y')" data-tf="1Y"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1Y</button>
-                                <button onclick="updateTimeframe('MAX')" data-tf="MAX"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">MAX</button>
+                                <button onclick="updateTimeframe('1W')" data-tf="1W" class="tf-btn ...">1W</button>
+                                <button onclick="updateTimeframe('1M')" data-tf="1M" class="tf-btn ...">1M</button>
+                                <button onclick="updateTimeframe('6M')" data-tf="6M" class="tf-btn ...">6M</button>
+                                <button onclick="updateTimeframe('1Y')" data-tf="1Y" class="tf-btn ...">1Y</button>
+                                <!-- NEU -->
+                                <button onclick="updateTimeframe('5Y')" data-tf="5Y"
+                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">5Y</button>
+                                <!-- /NEU -->
+                                <button onclick="updateTimeframe('MAX')" data-tf="MAX" class="tf-btn ...">MAX</button>
                             </div>
+
                             <div
                                 class="flex bg-slate-900 rounded-lg p-1 border border-slate-800 w-full justify-between">
                                 <button onclick="toggleMA('20')" data-ma="20"
@@ -610,7 +627,6 @@
             const menu = document.getElementById('mobile-settings-menu');
             const btn = document.querySelector('button[onclick="toggleMobileSettings()"]');
 
-            // Wenn das Menü offen ist UND man NICHT auf das Menü oder den Button klickt -> schließen
             if (menu && !menu.classList.contains('hidden')) {
                 if (btn && !btn.contains(event.target) && !menu.contains(event.target)) {
                     menu.classList.add('hidden');
@@ -624,11 +640,9 @@
             const nowDark = html.classList.toggle('dark');
             body.classList.toggle('light', !nowDark);
 
-            // Update Desktop Icon
             const iconDesk = document.getElementById('theme-icon-desktop');
             if (iconDesk) iconDesk.setAttribute('data-lucide', nowDark ? 'moon' : 'sun');
 
-            // Update Mobile Icon
             const iconMob = document.getElementById('theme-icon-mobile');
             if (iconMob) iconMob.setAttribute('data-lucide', nowDark ? 'moon' : 'sun');
 
@@ -667,29 +681,20 @@
                 'sentiment.title': 'Sentiment',
                 'sentiment.label': 'Strong Buy',
                 'sentiment.subtitle': 'Based on technical & valuation factors',
-                'sentiment.keydrivers': 'Key Drivers',
-                'news.title': 'Aktuelle News',
-                'news.loading': 'Lade Nachrichten...',
-                'strengths.title': 'Stärken',
-                'strengths.subtitle': 'Warum die Aktie interessant ist',
-                'strengths.loading': 'Lade Stärken...',
-                'risks.title': 'Risiken',
-                'risks.subtitle': 'Worauf du achten solltest',
-                'risks.loading': 'Lade Risiken...',
-                'glossary.heading': 'Erklärungen der Kennzahlen',
-                'glossary.pe': 'Das Kurs-Gewinn-Verhältnis vergleicht den Aktienkurs mit dem Gewinn pro Aktie. Niedriger ist grundsätzlich günstiger, hängt aber stark vom Sektor ab.',
-                'glossary.peg': 'Bewertet das KGV im Verhältnis zum Gewinnwachstum. Werte um 1 gelten oft als fair, unter 1 als attraktiv.',
-                'glossary.mcap': 'Marktkapitalisierung = Aktienkurs × Anzahl Aktien. Zeigt, wie groß ein Unternehmen an der Börse bewertet ist.',
-                'glossary.revgrowth': 'Prozentuales Umsatzwachstum im Vergleich zum Vorjahr. Positives Wachstum ist meist ein gutes Zeichen.',
-                'glossary.netmargin': 'Netto-Marge = Gewinn nach allen Kosten im Verhältnis zum Umsatz. Höhere Margen bedeuten meist höhere Profitabilität.',
-                'glossary.eps': 'Gewinn je Aktie. Basisgröße für viele Bewertungskennzahlen.'
+                'glossary.title': 'Kennzahlen erklärt',
+                'glossary.pe': 'Kurs-Gewinn-Verhältnis – zeigt, wie viele Jahre der aktuelle Gewinn gebraucht würde, um den Aktienkurs zu „bezahlen“.',
+                'glossary.peg': 'PEG Ratio – PE im Verhältnis zum Gewinnwachstum. Werte unter 1 gelten oft als attraktiv.',
+                'glossary.mcap': 'Marktkapitalisierung = Kurs × Anzahl Aktien. Zeigt die Größe eines Unternehmens an der Börse.',
+                'glossary.revgrowth': 'Revenue Growth – prozentuales Umsatzwachstum zum Vorjahr.',
+                'glossary.netmargin': 'Net Margin – Nettogewinn im Verhältnis zum Umsatz.',
+                'glossary.eps': 'Earnings per Share – Gewinn je Aktie.',
             },
             en: {
                 'header.back': 'Back',
                 'header.live': 'Live',
-                'header.scan': 'Scan: Global undervalued watchlist',
+                'header.scan': 'Scan: Global Undervalued Watchlist',
                 'header.account': 'Account',
-                'header.liveprice': 'Live price',
+                'header.liveprice': 'Live Price',
                 'region.all': 'All',
                 'region.us': 'US',
                 'region.de': 'DE',
@@ -697,53 +702,43 @@
                 'tab.dashboard': 'Dashboard',
                 'tab.glossary': 'Glossary',
                 'watchlist.title': 'Watchlist',
-                'watchlist.subtitle': 'Global undervalued stocks',
+                'watchlist.subtitle': 'Global Undervalued Stocks',
                 'kpi.pe': 'P/E Ratio',
                 'kpi.peg': 'PEG Ratio',
-                'kpi.mcap': 'Market cap',
+                'kpi.mcap': 'Market Cap',
                 'kpi.margin': 'Margins',
-                'kpi.analyst': 'Analyst rating',
-                'kpi.vrscore': 'VR score',
-                'chart.title': 'Price action',
-                'fin.title': 'Financials (est.)',
-                'fin.revgrowth': 'Revenue growth',
-                'fin.netmargin': 'Net margin',
+                'kpi.analyst': 'Analyst Rating',
+                'kpi.vrscore': 'VR Score',
+                'chart.title': 'Price Action',
+                'fin.title': 'Financials (Est.)',
+                'fin.revgrowth': 'Revenue Growth',
+                'fin.netmargin': 'Net Margin',
                 'sentiment.title': 'Sentiment',
-                'sentiment.label': 'Strong buy',
+                'sentiment.label': 'Strong Buy',
                 'sentiment.subtitle': 'Based on technical & valuation factors',
-                'sentiment.keydrivers': 'Key drivers',
-                'news.title': 'Latest news',
-                'news.loading': 'Loading news...',
-                'strengths.title': 'Strengths',
-                'strengths.subtitle': 'Why this stock is interesting',
-                'strengths.loading': 'Loading strengths...',
-                'risks.title': 'Risks',
-                'risks.subtitle': 'What to watch out for',
-                'risks.loading': 'Loading risks...',
-                'glossary.heading': 'Explanation of metrics',
-                'glossary.pe': 'Price/earnings compares the stock price to earnings per share.',
-                'glossary.peg': 'PEG relates the P/E to growth. Around 1 is often considered fair.',
-                'glossary.mcap': 'Market cap = share price × shares outstanding.',
-                'glossary.revgrowth': 'Year-over-year growth in revenue.',
-                'glossary.netmargin': 'Net income divided by revenue.',
-                'glossary.eps': 'Earnings per share – profit per share.'
+                'glossary.title': 'Key Metrics Explained',
+                'glossary.pe': 'Price-Earnings ratio – how many years of earnings are “priced in”.',
+                'glossary.peg': 'PEG Ratio – PE relative to earnings growth. Values below 1 are often attractive.',
+                'glossary.mcap': 'Market capitalisation = price × shares outstanding.',
+                'glossary.revgrowth': 'Revenue growth compared to previous year.',
+                'glossary.netmargin': 'Net margin = net income / revenue.',
+                'glossary.eps': 'Earnings per Share – net income per share.',
             }
         };
 
         function applyTranslations() {
+            const t = translations[currentLang] || {};
             document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.dataset.i18n;
-                const t = translations[currentLang] && translations[currentLang][key];
-                if (t) el.innerText = t;
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.textContent = t[key];
             });
 
-            const search = document.getElementById('global-search');
-            if (search) {
-                search.placeholder = currentLang === 'de' ? 'Suche Aktie...' : 'Search stock...';
+            const input = document.getElementById('search-input');
+            if (input) {
+                input.placeholder = currentLang === 'de' ? 'Suche Aktie.' : 'Search stock.';
             }
         }
 
-        /* FIX: Neue setLang Funktion mit IDs */
         function setLang(lang) {
             if (!translations[lang]) return;
             currentLang = lang;
@@ -815,6 +810,7 @@
         let showMA20 = true;
         let showMA50 = false;
         let showMA200 = false;
+        let currentChartType = 'line';  // 'line' oder 'candles'
 
         /* ---------- WATCHLIST (localStorage) ---------- */
 
@@ -1023,25 +1019,28 @@
                 title.className = "flex items-center gap-2";
 
                 title.innerHTML = `
-                <button class="p-0.5 mr-1 text-slate-500 hover:text-amber-400" onclick="toggleFavorite(event, '${symbol}')">
-                    <i data-lucide="star" class="w-3 h-3 ${isFav ? 'text-amber-400 fill-amber-400' : ''}" data-symbol="${symbol}"></i>
+                <button class="p-0.5 rounded-full border border-slate-700 hover:border-emerald-400 transition" onclick="toggleFavorite(event, '${symbol}')">
+                    <i data-lucide="${isFav ? 'star' : 'star'}" class="w-3 h-3 ${isFav ? 'fill-emerald-400 text-emerald-400' : 'text-slate-500'}"></i>
                 </button>
-                <span class="font-semibold text-slate-100 truncate max-w-[140px]">${s.Name || s.name || symbol}</span>
-                <span class="text-[10px] font-mono text-slate-500">${symbol}</span>
-                <span class="text-[9px] text-slate-500 bg-slate-900 px-1.5 py-0.5 rounded-full border border-slate-800">${s.Region || s.region || "US"}</span>
-            `;
+                <span class="font-semibold text-slate-100 truncate max-w-[150px]">${s.Name || s.name}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-slate-400">${symbol}</span>
+                `;
 
-                const reason = document.createElement('div');
-                reason.className = "text-[10px] text-slate-500 truncate max-w-[220px]";
-                reason.textContent = s.Reason || s.reason || "No description";
+                const subtitle = document.createElement('div');
+                subtitle.className = "flex items-center gap-2 mt-0.5 text-[10px] text-slate-500";
+                subtitle.innerHTML = `
+                <span class="uppercase tracking-wide">${s.Region || s.region || "US"}</span>
+                <span class="w-1 h-1 rounded-full bg-slate-600"></span>
+                <span>${s.Reason || 'Underpriced'}</span>
+                `;
 
                 left.appendChild(title);
-                left.appendChild(reason);
+                left.appendChild(subtitle);
 
                 const right = document.createElement('div');
                 right.className = "text-right flex flex-col items-end gap-0.5";
+
                 const price = parseFloat(s.Price || s.price || 0).toFixed(2);
-                currentPrice = parseFloat(price);
                 right.innerHTML = `
                 <div class="text-sm font-semibold text-slate-100">$${price}</div>
                 <div class="text-[10px] text-emerald-400 flex items-center gap-1">
@@ -1130,37 +1129,18 @@
                     else pegEl.className = "text-xl font-bold text-yellow-400";
                 }
 
-                const mcEl = document.getElementById('kpi-mcap');
-                if (mcEl) mcEl.innerText = d.market_cap ? formatNumber(d.market_cap) : 'N/A';
-
-                const marginEl = document.getElementById('kpi-margin');
-                if (marginEl) {
-                    marginEl.innerText = d.profit_margin != null
-                        ? (d.profit_margin * 100).toFixed(1) + '%'
-                        : 'N/A';
+                if (d.mcap != null) {
+                    document.getElementById('kpi-mcap').innerText = formatNumber(d.mcap);
                 }
 
-                const rgEl = document.getElementById('kpi-revgrowth');
-                if (rgEl) {
-                    rgEl.innerText = d.revenue_growth != null
-                        ? (d.revenue_growth * 100).toFixed(1) + '%'
-                        : 'N/A';
+                if (d.margin != null) {
+                    document.getElementById('kpi-margin').innerText = d.margin.toFixed(1) + "%";
                 }
 
-                const nmEl = document.getElementById('kpi-netmargin');
-                if (nmEl) {
-                    nmEl.innerText = d.profit_margin != null
-                        ? (d.profit_margin * 100).toFixed(1) + '%'
-                        : 'N/A';
-                }
-
-                const nContainer = document.getElementById('news-container');
-                const validNews = (d.news || []).filter(
-                    n => n.title && n.publisher && n.link
-                );
-
-                if (validNews.length) {
-                    nContainer.innerHTML = validNews.map(n => `
+                const newsEl = document.getElementById('news-list');
+                if (newsEl) {
+                    if (d.news && d.news.length) {
+                        newsEl.innerHTML = d.news.map(n => `
                     <a href="${n.link}" target="_blank"
                        class="flex flex-col border-b border-slate-800 pb-3 last:border-0
                               hover:bg-slate-800/50 p-2 rounded transition group">
@@ -1178,9 +1158,10 @@
                         </h4>
                     </a>
                 `).join('');
-                } else {
-                    nContainer.innerHTML =
-                        `<div class="text-slate-500 text-sm italic p-2">${currentLang === 'de' ? 'Keine aktuellen Nachrichten.' : 'No current news.'}</div>`;
+                    } else {
+                        newsEl.innerHTML =
+                            `<div class="text-slate-500 text-sm italic p-2">${currentLang === 'de' ? 'Keine aktuellen Nachrichten.' : 'No current news.'}</div>`;
+                    }
                 }
 
                 const miniPros = document.getElementById('mini-pros-list');
@@ -1268,28 +1249,47 @@
         }
 
         function renderMainChart(d) {
-
             if (!d || !d.candle) return;
 
-            const priceSeries = d.candle.map(x => ({ x: x[0], y: x[4] }));
+            const candleSeries = d.candle.map(x => ({
+                x: x[0],
+                y: [x[1], x[2], x[3], x[4]]  // O, H, L, C
+            }));
 
-            const series = [
-                { name: 'Price', data: priceSeries }
-            ];
+            const lineSeries = d.candle.map(x => ({
+                x: x[0],
+                y: x[4]  // Close
+            }));
+
+            const series = [];
+
+            if (currentChartType === 'candles') {
+                series.push({
+                    name: 'Price',
+                    type: 'candlestick',
+                    data: candleSeries
+                });
+            } else {
+                series.push({
+                    name: 'Price',
+                    type: 'line',
+                    data: lineSeries
+                });
+            }
 
             if (showMA20 && d.ma20 && d.ma20.length) {
-                series.push({ name: 'MA 20', data: d.ma20 });
+                series.push({ name: 'MA 20', type: 'line', data: d.ma20 });
             }
             if (showMA50 && d.ma50 && d.ma50.length) {
-                series.push({ name: 'MA 50', data: d.ma50 });
+                series.push({ name: 'MA 50', type: 'line', data: d.ma50 });
             }
             if (showMA200 && d.ma200 && d.ma200.length) {
-                series.push({ name: 'MA 200', data: d.ma200 });
+                series.push({ name: 'MA 200', type: 'line', data: d.ma200 });
             }
 
             const options = {
                 chart: {
-                    type: 'line',
+                    type: currentChartType === 'candles' ? 'candlestick' : 'line',
                     height: '100%',
                     fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont',
                     toolbar: { show: false },
@@ -1338,7 +1338,6 @@
             chart.render();
         }
 
-        /* FIX: Neue Funktion für die MA Buttons */
         function updateMAButtons() {
             document.querySelectorAll('.ma-btn').forEach(btn => {
                 const ma = btn.dataset.ma;
@@ -1364,6 +1363,28 @@
 
             updateMAButtons();
 
+            if (lastHistoryData) {
+                renderMainChart(lastHistoryData);
+            }
+        }
+
+        // NEW: Chart-Type Buttons (Line / Candles)
+        function updateChartTypeButtons() {
+            document.querySelectorAll('.charttype-btn').forEach(btn => {
+                const t = btn.dataset.ctype;
+                if (t === currentChartType) {
+                    btn.classList.add('active-tf');
+                    btn.classList.remove('text-slate-400', 'hover:bg-slate-800');
+                } else {
+                    btn.classList.remove('active-tf');
+                    btn.classList.add('text-slate-400', 'hover:bg-slate-800');
+                }
+            });
+        }
+
+        function setChartType(type) {
+            currentChartType = type;
+            updateChartTypeButtons();
             if (lastHistoryData) {
                 renderMainChart(lastHistoryData);
             }
@@ -1494,12 +1515,11 @@
         /* ---------- DOM READY ---------- */
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Sprache anwenden
             setLang(currentLang);
             setActiveTimeframe('1Y');
-            updateMAButtons(); // FIX: MA Buttons beim Laden initialisieren
+            updateMAButtons();
+            updateChartTypeButtons();
 
-            // Account-Name aus localStorage anzeigen
             const nameSpan = document.getElementById('account-name');
         });
     </script>
