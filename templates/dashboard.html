@@ -1287,9 +1287,11 @@
                 series.push({ name: 'MA 200', type: 'line', data: d.ma200 });
             }
 
+            const isCandles = (currentChartType === 'candles');
+
             const options = {
                 chart: {
-                    type: currentChartType === 'candles' ? 'candlestick' : 'line',
+                    type: isCandles ? 'candlestick' : 'line',
                     height: '100%',
                     fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont',
                     toolbar: { show: false },
@@ -1299,7 +1301,21 @@
                 theme: { mode: 'dark' },
                 series: series,
                 colors: ['#10b981', '#3b82f6', '#f97316', '#e11d48'],
-                stroke: { curve: 'smooth', width: 2 },
+                stroke: {
+                    curve: isCandles ? 'straight' : 'smooth',
+                    width: isCandles ? 1 : 2
+                },
+                plotOptions: isCandles ? {
+                    candlestick: {
+                        colors: {
+                            upward: '#10b981',
+                            downward: '#ef4444'
+                        },
+                        wick: {
+                            useFillColor: true
+                        }
+                    }
+                } : {},
                 dataLabels: { enabled: false },
                 xaxis: {
                     type: 'datetime',
@@ -1315,7 +1331,7 @@
                 },
                 yaxis: {
                     labels: {
-                        formatter: (v) => v.toFixed(0),
+                        formatter: (v) => v.toFixed(2),
                         style: {
                             colors: '#475569',
                             fontSize: '10px',
@@ -1332,6 +1348,7 @@
                 tooltip: { theme: 'dark' },
                 legend: { show: false }
             };
+
 
             if (chart) chart.destroy();
             chart = new ApexCharts(document.querySelector("#chart"), options);
