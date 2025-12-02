@@ -32,10 +32,24 @@
             theme: {
                 extend: {
                     colors: {
-                        dark: { bg: '#0f172a', card: '#1e293b' }
+                        dark: { bg: '#0b1120', card: '#1e293b' } // Etwas satteres Dunkelblau für mehr Kontrast
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float-slow': 'float 8s ease-in-out infinite',
+                        'float-reverse-slow': 'float-reverse 7s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'float-reverse': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(20px)' },
+                        }
                     }
                 }
             }
@@ -46,6 +60,20 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+        }
+
+        /* NEU: Das Grid Pattern für den modernen Tech-Look */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(100, 116, 139, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(100, 116, 139, 0.04) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        .dark .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
         }
 
         .blob {
@@ -64,10 +92,39 @@
                 transform: translate(20px, -20px);
             }
         }
+
+        /* Styles für die FAQ Animation */
+        details>summary {
+            list-style: none;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details[open] summary~* {
+            animation: sweep .3s ease-in-out;
+        }
+
+        @keyframes sweep {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px)
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
     </style>
 </head>
 
-<body class="bg-slate-50 text-gray-900 dark:bg-slate-900 dark:text-white transition-colors duration-300">
+<body
+    class="bg-slate-50 text-gray-900 dark:bg-[#0b1120] dark:text-white transition-colors duration-300 overflow-x-hidden flex flex-col min-h-screen">
+
+    <!-- NEU: Fixierter Hintergrund-Layer -->
+    <div class="fixed inset-0 z-0 pointer-events-none bg-grid-pattern h-screen w-full"></div>
 
     <nav
         class="absolute top-0 left-0 w-full z-50 p-6 flex justify-between items-center max-w-7xl mx-auto left-0 right-0">
@@ -103,13 +160,18 @@
         </div>
     </nav>
 
-    <main
-        class="relative z-10 flex flex-col justify-center items-center text-center px-4 min-h-screen w-full overflow-hidden">
-        <div class="blob bg-emerald-500 w-96 h-96 rounded-full top-0 left-0 -z-10"></div>
-        <div class="blob bg-blue-600 w-96 h-96 rounded-full bottom-0 right-0 animation-delay-2000 -z-10"></div>
+    <!-- HERO SECTION -->
+    <main class="relative z-10 flex flex-col justify-center items-center text-center px-4 min-h-screen w-full">
+        <!-- Blobs leicht angepasst für besseres Blending -->
+        <div
+            class="blob bg-emerald-500/30 w-96 h-96 rounded-full top-0 left-0 -z-10 mix-blend-multiply dark:mix-blend-screen">
+        </div>
+        <div
+            class="blob bg-blue-600/30 w-96 h-96 rounded-full bottom-0 right-0 animation-delay-2000 -z-10 mix-blend-multiply dark:mix-blend-screen">
+        </div>
 
         <span
-            class="bg-emerald-100 dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold mb-6 border border-emerald-200 dark:border-emerald-900 shadow-sm"
+            class="bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold mb-6 border border-emerald-200 dark:border-emerald-800 shadow-sm backdrop-blur-sm"
             data-lang="sys_online">SYSTEM ONLINE</span>
 
         <h1 class="text-5xl md:text-8xl font-extrabold mb-6 tracking-tight">
@@ -128,15 +190,27 @@
             Login / Starten
         </button>
 
-        <div class="absolute bottom-8 animate-bounce text-slate-400 dark:text-slate-600 cursor-pointer"
-            onclick="document.getElementById('about').scrollIntoView()">
+        <!-- NEU: Weicher Fade-Out nach unten -->
+        <div
+            class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-slate-50 dark:from-[#0b1120] to-transparent pointer-events-none">
+        </div>
+
+        <div class="absolute bottom-8 animate-bounce text-slate-400 dark:text-slate-600 cursor-pointer z-20"
+            onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
             ↓
         </div>
     </main>
 
+    <!-- SECTION ABOUT: Mit Glassmorphismus und subtilem Hintergrund -->
     <section id="about"
-        class="py-32 px-4 bg-white dark:bg-slate-800/50 border-t border-gray-100 dark:border-slate-800 backdrop-blur-sm relative z-20">
-        <div class="max-w-6xl mx-auto text-center">
+        class="py-32 px-4 relative z-20 bg-gradient-to-b from-slate-50 via-slate-100 to-white dark:from-[#0b1120] dark:via-[#0f172a] dark:to-slate-900 overflow-hidden">
+
+        <!-- Hintergrund-Effekt -->
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-emerald-500/5 blur-[120px] -z-10 rounded-full pointer-events-none">
+        </div>
+
+        <div class="max-w-6xl mx-auto text-center relative z-10">
             <span class="text-emerald-500 font-bold tracking-wider uppercase text-xs mb-2 block"
                 data-lang="about_label">Unsere Vision</span>
             <h2 class="text-3xl md:text-4xl font-bold mb-8 text-slate-900 dark:text-white" data-lang="about_title">Über
@@ -150,11 +224,12 @@
             </p>
 
             <div class="grid md:grid-cols-3 gap-8 mb-16 text-left">
+                <!-- Quality Box: Mit Backdrop Blur -->
                 <div
-                    class="p-8 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:-translate-y-1 transition duration-300">
+                    class="p-8 bg-white/50 dark:bg-slate-800/40 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-slate-700/50 hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-md">
                     <div class="mb-5">
                         <div
-                            class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/40">
+                            class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 text-white">
                                 <path fill="currentColor"
                                     d="M9.5 3h5l4 5.5-9 12-9-12L4.5 3h5zm0 2L6 8.5 11.5 16 17 8.5 14.5 5h-5z" />
@@ -169,11 +244,12 @@
                     </p>
                 </div>
 
+                <!-- Growth Box -->
                 <div
-                    class="p-8 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:-translate-y-1 transition duration-300">
+                    class="p-8 bg-white/50 dark:bg-slate-800/40 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-slate-700/50 hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-md">
                     <div class="mb-5">
                         <div
-                            class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-sky-500/40">
+                            class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-sky-500/20">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 text-white">
                                 <path fill="currentColor" d="M5 19v-6l4-4 3 3 7-7v6h-2V7.41l-5 5-3-3-2 2V19z" />
                             </svg>
@@ -187,11 +263,12 @@
                     </p>
                 </div>
 
+                <!-- Safety Box -->
                 <div
-                    class="p-8 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:-translate-y-1 transition duration-300">
+                    class="p-8 bg-white/50 dark:bg-slate-800/40 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-slate-700/50 hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-md">
                     <div class="mb-5">
                         <div
-                            class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-500 to-slate-700 flex items-center justify-center shadow-lg shadow-slate-700/40">
+                            class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-500 to-slate-700 flex items-center justify-center shadow-lg shadow-slate-700/20">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 text-white">
                                 <path fill="currentColor"
                                     d="M12 3l7 4v5c0 3.87-2.69 7.19-6.39 8.13L12 20.9l-.61-.17C7.69 19.19 5 15.87 5 12V7l7-4z" />
@@ -206,16 +283,196 @@
                     </p>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="pt-10 border-t border-gray-100 dark:border-slate-700">
-                <p class="text-xs uppercase font-bold text-slate-400 mb-2" data-lang="created_by">Created by</p>
-                <p
-                    class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-blue-500">
-                    Lars Ender</p>
+    <!-- PREVIEW SECTION (Neu hinzugefügt) -->
+    <section
+        class="py-20 px-4 relative z-10 overflow-hidden bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-900 dark:via-[#0f172a] dark:to-slate-900">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <span class="text-emerald-500 font-bold tracking-wider uppercase text-xs mb-2 block"
+                data-lang="preview_label">Das Dashboard</span>
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-slate-900 dark:text-white" data-lang="preview_title">
+                Einblicke, die zählen</h2>
+            <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-16 max-w-2xl mx-auto"
+                data-lang="preview_text">
+                Sieh die Substanz hinter den Zahlen. Unsere visuelle Aufbereitung macht komplexe Finanzdaten auf einen
+                Blick verständlich – vom Gesamtscore bis zum detaillierten Chart.
+            </p>
+
+            <div class="relative max-w-4xl mx-auto my-20">
+                <!-- Glühender Hintergrund -->
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-emerald-500/20 to-blue-600/20 rounded-full blur-[100px] -z-10">
+                </div>
+
+                <!-- Hauptbild -->
+                <div
+                    class="relative z-20 rounded-xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-900">
+                    <img src="https://placehold.co/1200x750/0f172a/10b981?text=ValueRadar+Pro+Dashboard&font=roboto"
+                        alt="ValueRadar Dashboard Preview"
+                        class="w-full h-auto object-cover opacity-90 hover:opacity-100 transition duration-500"
+                        loading="lazy">
+                    <div
+                        class="absolute top-0 left-0 w-full h-full pointer-events-none bg-gradient-to-t from-slate-900/80 via-transparent to-transparent">
+                    </div>
+                </div>
+
+                <!-- Schwebende Elemente -->
+                <div
+                    class="absolute -bottom-12 -left-12 z-30 w-[35%] rounded-lg shadow-2xl overflow-hidden border border-slate-700 hidden md:block animate-float-slow bg-slate-800">
+                    <img src="https://placehold.co/600x400/1e293b/3b82f6?text=Chart+Analyse&font=roboto"
+                        alt="Finanz Charts Preview" class="w-full h-auto opacity-90" loading="lazy">
+                </div>
+
+                <div
+                    class="absolute -top-12 -right-12 z-10 w-[30%] rounded-lg shadow-2xl overflow-hidden border border-slate-700 hidden md:block animate-float-reverse-slow bg-slate-800">
+                    <img src="https://placehold.co/500x350/1e293b/a855f7?text=Risk+Check&font=roboto"
+                        alt="Echtzeit Daten Preview" class="w-full h-auto opacity-90" loading="lazy">
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- FAQ SECTION (Neu hinzugefügt) -->
+    <section
+        class="py-24 px-4 bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-900 dark:via-[#0f172a] dark:to-slate-900 relative z-20 overflow-hidden">
+        <div class="max-w-3xl mx-auto relative z-10">
+            <h2 class="text-3xl font-bold mb-12 text-center text-slate-900 dark:text-white" data-lang="faq_title">
+                Häufige Fragen</h2>
+
+            <div class="space-y-4">
+                <details
+                    class="group bg-white/50 dark:bg-slate-800/40 backdrop-blur-xl rounded-xl p-6 cursor-pointer border border-slate-200/50 dark:border-slate-700/50 hover:border-emerald-500/30 transition-all duration-300 shadow-sm">
+                    <summary class="flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
+                        <span data-lang="faq_q1">Welche Märkte werden abgedeckt?</span>
+                        <span
+                            class="transform group-open:rotate-180 transition-transform duration-300 text-emerald-500">▼</span>
+                    </summary>
+                    <p class="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed" data-lang="faq_a1">
+                        Aktuell unterstützen wir den gesamten US-Markt (NYSE, NASDAQ) sowie den deutschen Markt (XETRA).
+                        Wir arbeiten stetig daran, weitere europäische Börsenplätze hinzuzufügen.
+                    </p>
+                </details>
+
+                <details
+                    class="group bg-white/50 dark:bg-slate-800/40 backdrop-blur-xl rounded-xl p-6 cursor-pointer border border-slate-200/50 dark:border-slate-700/50 hover:border-emerald-500/30 transition-all duration-300 shadow-sm">
+                    <summary class="flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
+                        <span data-lang="faq_q2">Woher stammen die Finanzdaten?</span>
+                        <span
+                            class="transform group-open:rotate-180 transition-transform duration-300 text-emerald-500">▼</span>
+                    </summary>
+                    <p class="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed" data-lang="faq_a2">
+                        Wir beziehen unsere Daten von institutionellen Anbietern und überprüfen diese täglich auf
+                        Aktualität. Die Fundamentaldaten basieren auf den offiziellen SEC-Filings und
+                        Geschäftsberichten.
+                    </p>
+                </details>
+
+                <details
+                    class="group bg-white/50 dark:bg-slate-800/40 backdrop-blur-xl rounded-xl p-6 cursor-pointer border border-slate-200/50 dark:border-slate-700/50 hover:border-emerald-500/30 transition-all duration-300 shadow-sm">
+                    <summary class="flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
+                        <span data-lang="faq_q3">Ist ValueRadar für Anfänger geeignet?</span>
+                        <span
+                            class="transform group-open:rotate-180 transition-transform duration-300 text-emerald-500">▼</span>
+                    </summary>
+                    <p class="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed" data-lang="faq_a3">
+                        Absolut. Unser Ziel ist es, komplexe Bilanzen in einfache, verständliche Scores zu übersetzen.
+                        Du musst kein BWL-Studium haben, um Qualität zu erkennen.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA BANNER (Neu hinzugefügt) -->
+    <section
+        class="py-12 px-4 bg-gradient-to-b from-white to-slate-50 dark:from-slate-900 dark:to-[#080d19] relative z-20 pb-24">
+        <div
+            class="max-w-5xl mx-auto bg-gradient-to-r from-emerald-600 to-blue-600 rounded-3xl p-10 md:p-16 text-center text-white shadow-2xl relative overflow-hidden group">
+            <div
+                class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition duration-700">
+            </div>
+            <div
+                class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full translate-y-1/2 -translate-x-1/2 group-hover:scale-110 transition duration-700">
+            </div>
+
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-6 relative z-10" data-lang="cta_title">Starte deine
+                Analyse.</h2>
+            <p class="text-emerald-50 text-lg md:text-xl mb-10 max-w-2xl mx-auto relative z-10" data-lang="cta_text">
+                Finde noch heute Aktien mit echter Substanz und baue dir ein Portfolio auf, das bleibt.
+            </p>
+            <button onclick="document.getElementById('login-modal').classList.remove('hidden')"
+                class="bg-white text-emerald-600 hover:bg-slate-100 px-10 py-4 rounded-xl font-bold text-lg shadow-lg hover:scale-105 transition transform duration-200 relative z-10"
+                data-lang="cta_btn">
+                Kostenlos Starten
+            </button>
+        </div>
+    </section>
+
+    <!-- FOOTER (Neu hinzugefügt, ersetzt "Created by") -->
+    <footer
+        class="bg-slate-100 dark:bg-[#080d19] border-t border-slate-200 dark:border-slate-800 pt-16 pb-8 px-4 relative z-20 mt-auto relative overflow-hidden">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 mb-12 relative z-10">
+            <div class="col-span-2 md:col-span-1">
+                <span class="text-xl font-extrabold tracking-tight text-emerald-600 dark:text-emerald-400 block mb-4">
+                    ValueRadar
+                </span>
+                <p class="text-slate-500 text-sm leading-relaxed" data-lang="footer_desc">
+                    Die intelligente Plattform für fundamentale Aktienanalyse. Datenbasiert, transparent und unabhängig.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-slate-900 dark:text-white mb-4 uppercase text-xs tracking-wider"
+                    data-lang="footer_product">Produkt</h4>
+                <ul class="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+                    <li><a href="#" class="hover:text-emerald-500 transition">Features</a></li>
+                    <li><a href="#" class="hover:text-emerald-500 transition">Preise</a></li>
+                    <li><a href="#" class="hover:text-emerald-500 transition">Roadmap</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-slate-900 dark:text-white mb-4 uppercase text-xs tracking-wider"
+                    data-lang="footer_legal">Rechtliches</h4>
+                <ul class="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+                    <li><a href="#" class="hover:text-emerald-500 transition">Impressum</a></li>
+                    <li><a href="#" class="hover:text-emerald-500 transition">Datenschutz</a></li>
+                    <li><a href="#" class="hover:text-emerald-500 transition">Disclaimer</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-slate-900 dark:text-white mb-4 uppercase text-xs tracking-wider"
+                    data-lang="footer_social">Social</h4>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-emerald-500 hover:text-white transition">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-emerald-500 hover:text-white transition">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-3.36-4-3.11-4 0V19h-3v-9h3v1.27a3.62 3.62 0 013.24-1.77c3.67 0 4.76 2.62 4.76 6z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto text-xs text-slate-400 relative z-10">
+            <p>&copy; 2024 ValueRadar. All rights reserved.</p>
+            <p class="mt-2 md:mt-0">Created by <span class="text-emerald-500 font-bold">Lars Ender</span></p>
+        </div>
+    </footer>
+
+    <!-- LOGIN MODAL (Unverändert übernommen) -->
     <div id="login-modal"
         class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black/80 backdrop-blur-sm transition-opacity">
         <div
@@ -289,7 +546,6 @@
                 about_label: "Unsere Vision",
                 about_title: "Über ValueRadar",
                 about_text: "ValueRadar wurde entwickelt, um Anlegern klare und fundierte Unternehmensanalysen zu bieten. Statt sich auf Trends oder Stimmungen zu verlassen, untersucht unser System Geschäftsmodelle, Profitabilität, finanzielle Stabilität und langfristige Entwicklungspotenziale. Das Ziel: Transparente, verständliche und datenbasierte Einblicke in die Substanz eines Unternehmens.",
-                created_by: "Created by",
 
                 // Boxen
                 box_qual_title: "Qualität",
@@ -299,7 +555,32 @@
                 box_safe_title: "Sicherheit",
                 box_safe_text: "Automatische Risiko-Checks erkennen hohe Verschuldung, schwache Cashflows und instabile Ertragslagen frühzeitig und filtern solche Unternehmen aus.",
 
-                // Login / Register Modal (KOMPLETT)
+                // Preview Section
+                preview_label: "Das Dashboard",
+                preview_title: "Einblicke, die zählen",
+                preview_text: "Sieh die Substanz hinter den Zahlen. Unsere visuelle Aufbereitung macht komplexe Finanzdaten auf einen Blick verständlich – vom Gesamtscore bis zum detaillierten Chart.",
+
+                // FAQ Section (NEU)
+                faq_title: "Häufige Fragen",
+                faq_q1: "Welche Märkte werden abgedeckt?",
+                faq_a1: "Aktuell unterstützen wir den gesamten US-Markt (NYSE, NASDAQ) sowie den deutschen Markt (XETRA). Wir arbeiten stetig daran, weitere europäische Börsenplätze hinzuzufügen.",
+                faq_q2: "Woher stammen die Finanzdaten?",
+                faq_a2: "Wir beziehen unsere Daten von institutionellen Anbietern und überprüfen diese täglich auf Aktualität. Die Fundamentaldaten basieren auf den offiziellen SEC-Filings und Geschäftsberichten.",
+                faq_q3: "Ist ValueRadar für Anfänger geeignet?",
+                faq_a3: "Absolut. Unser Ziel ist es, komplexe Bilanzen in einfache, verständliche Scores zu übersetzen. Du musst kein BWL-Studium haben, um Qualität zu erkennen.",
+
+                // CTA Section (NEU)
+                cta_title: "Starte deine Analyse.",
+                cta_text: "Finde noch heute Aktien mit echter Substanz und baue dir ein Portfolio auf, das bleibt.",
+                cta_btn: "Kostenlos Starten",
+
+                // Footer (NEU)
+                footer_desc: "Die intelligente Plattform für fundamentale Aktienanalyse. Datenbasiert, transparent und unabhängig.",
+                footer_product: "Produkt",
+                footer_legal: "Rechtliches",
+                footer_social: "Social",
+
+                // Login / Register Modal
                 modal_subtitle: "Willkommen zurück!",
                 label_user: "Benutzername",
                 label_email: "Email",
@@ -328,7 +609,6 @@
                 about_label: "Our Vision",
                 about_title: "About ValueRadar",
                 about_text: "ValueRadar was created to provide investors with clear and well-founded company insights. Instead of relying on trends or market sentiment, our system evaluates business models, profitability, financial stability, and long-term growth potential. The goal: transparent, understandable, and data-driven insights into the true substance of a business.",
-                created_by: "Created by",
 
                 // Boxen
                 box_qual_title: "Quality",
@@ -338,7 +618,32 @@
                 box_safe_title: "Safety",
                 box_safe_text: "Automated risk checks detect high debt, weak cash flows, and unstable earnings early on and filter such companies out.",
 
-                // Login / Register Modal (COMPLETE)
+                // Preview Section
+                preview_label: "The Dashboard",
+                preview_title: "Insights that matter",
+                preview_text: "See the substance behind the numbers. Our visual presentation makes complex financial data understandable at a glance – from the overall score to detailed charts.",
+
+                // FAQ Section (NEW)
+                faq_title: "Frequently Asked Questions",
+                faq_q1: "Which markets are covered?",
+                faq_a1: "We currently support the entire US market (NYSE, NASDAQ) and the German market (XETRA). We are constantly working on adding more European exchanges.",
+                faq_q2: "Where does the financial data come from?",
+                faq_a2: "We source our data from institutional providers and verify it daily for accuracy. Fundamental data is based on official SEC filings and annual reports.",
+                faq_q3: "Is ValueRadar suitable for beginners?",
+                faq_a3: "Absolutely. Our goal is to translate complex balance sheets into simple, understandable scores. You don't need a finance degree to spot quality.",
+
+                // CTA Section (NEW)
+                cta_title: "Start your analysis.",
+                cta_text: "Find stocks with real substance today and build a portfolio that lasts.",
+                cta_btn: "Start for Free",
+
+                // Footer (NEW)
+                footer_desc: "The intelligent platform for fundamental stock analysis. Data-driven, transparent, and independent.",
+                footer_product: "Product",
+                footer_legal: "Legal",
+                footer_social: "Social",
+
+                // Login / Register Modal
                 modal_subtitle: "Welcome back!",
                 label_user: "Username",
                 label_email: "Email",
