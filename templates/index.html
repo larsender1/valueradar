@@ -32,7 +32,8 @@
             theme: {
                 extend: {
                     colors: {
-                        dark: { bg: '#0b1120', card: '#1e293b' }
+                        dark: { bg: '#0b1120', card: '#1e293b' },
+                        brand: { accent: '#10b981' } // Emerald-500 equivalent
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -77,10 +78,33 @@
                 linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
         }
 
+        /* Radar Canvas */
+        #radar-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            /* Behind content but possibly mixed with grid */
+        }
+
+        /* Ensure content is above canvas */
+        main,
+        section,
+        footer,
+        nav {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Blobs for ambiance - keeping them but lowering opacity slightly so Radar shows */
         .blob {
             position: absolute;
             filter: blur(80px);
-            opacity: 0.4;
+            opacity: 0.3;
+            /* Reduced slightly */
             animation: move 10s infinite alternate;
         }
 
@@ -137,22 +161,29 @@
 <body
     class="bg-slate-50 text-gray-900 dark:bg-[#0b1120] dark:text-white transition-colors duration-300 overflow-x-hidden flex flex-col min-h-screen">
 
-    <!-- Fixierter Hintergrund-Layer -->
-    <div class="fixed inset-0 z-0 pointer-events-none bg-grid-pattern h-screen w-full"></div>
+    <!-- Radar Canvas Background -->
+    <canvas id="radar-canvas"></canvas>
+
+    <!-- Fixierter Hintergrund-Layer (Grid) -->
+    <div class="fixed inset-0 z-0 pointer-events-none bg-grid-pattern h-screen w-full mix-blend-overlay opacity-50">
+    </div>
 
     <nav
         class="absolute top-0 left-0 w-full z-50 p-6 flex justify-between items-center max-w-7xl mx-auto left-0 right-0">
-        <div class="flex flex-col leading-tight">
+        <!-- Logo Section: Adjusted for left alignment -->
+        <div class="flex flex-col leading-tight items-start">
             <span class="text-2xl font-extrabold tracking-tight text-emerald-600 dark:text-emerald-400">
                 ValueRadar
             </span>
-            <span class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 -mt-1">
+            <!-- 'items-start' above ensures this is flush left. Removed -mt-1 to give it breathing room if needed, or kept it. 
+                 Added tracking-widest for better optical alignment. -->
+            <span class="text-[10px] uppercase tracking-widest text-slate-500 dark:text-slate-400 -mt-1">
                 by Lars Ender
             </span>
         </div>
 
         <div class="flex gap-4 items-center">
-            <a href="#about" class="text-sm font-bold hover:text-emerald-500 transition cursor-pointer"
+            <a href="#about" class="text-sm font-bold hover:text-emerald-500 transition cursor-pointer hidden md:block"
                 data-lang="nav_about">Über uns</a>
 
             <button onclick="toggleLang()" id="lang-btn"
@@ -573,6 +604,106 @@
     </div>
 
     <script>
+        // ---------- RADAR ANIMATION LOGIC ----------
+        const canvas = document.getElementById('radar-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let radarAngle = 0;
+        let blips = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        function drawRadar() {
+            // Check Dark Mode directly from DOM
+            const isDark = document.documentElement.classList.contains('dark');
+
+            // Adjust colors based on mode
+            const color = isDark ? '0, 200, 133' : '100, 116, 139'; // Green in Dark, Slate in Light
+            const ringOpacity = isDark ? 0.05 : 0.03;
+            const sweepOpacity = isDark ? 0.15 : 0.05;
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Center of radar
+            const centerX = width / 2;
+            const centerY = height * 0.4; // Slightly higher than center to match Hero area
+            const maxRadius = Math.max(width, height) * 0.7;
+
+            // 1. Draw Concentric Rings
+            ctx.strokeStyle = `rgba(${color}, ${ringOpacity})`;
+            ctx.lineWidth = 1;
+
+            for (let r = 0; r < maxRadius; r += 120) {
+                if (r === 0) continue;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // 2. Draw Crosshairs
+            ctx.beginPath();
+            ctx.moveTo(centerX - maxRadius, centerY);
+            ctx.lineTo(centerX + maxRadius, centerY);
+            ctx.moveTo(centerX, centerY - maxRadius);
+            ctx.lineTo(centerX, centerY + maxRadius);
+            ctx.stroke();
+
+            // 3. Draw Radar Sweep
+            radarAngle += 0.015;
+
+            const gradient = ctx.createConicGradient(radarAngle, centerX, centerY);
+            gradient.addColorStop(0, `rgba(${color}, 0)`);
+            gradient.addColorStop(0.7, `rgba(${color}, 0)`);
+            gradient.addColorStop(1, `rgba(${color}, ${sweepOpacity})`); // Tail
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, maxRadius, radarAngle, radarAngle + Math.PI * 2);
+            ctx.fill();
+
+            // 4. Random Blips (Dots that appear)
+            // Add new blip randomly
+            if (Math.random() > 0.98) {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = Math.random() * (width > 800 ? 500 : 300) + 100;
+                // Only spawn if within the "active" sweep roughly (visual fake)
+                blips.push({
+                    x: centerX + Math.cos(angle) * radius,
+                    y: centerY + Math.sin(angle) * radius,
+                    life: 1.0,
+                    size: Math.random() * 2 + 2
+                });
+            }
+
+            // Draw and update blips
+            blips.forEach((blip, index) => {
+                ctx.fillStyle = `rgba(${color}, ${blip.life})`;
+                ctx.beginPath();
+                ctx.arc(blip.x, blip.y, blip.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Ring ripple effect
+                ctx.strokeStyle = `rgba(${color}, ${blip.life * 0.5})`;
+                ctx.beginPath();
+                ctx.arc(blip.x, blip.y, blip.size + (1 - blip.life) * 20, 0, Math.PI * 2);
+                ctx.stroke();
+
+                blip.life -= 0.02;
+                if (blip.life <= 0) blips.splice(index, 1);
+            });
+
+            requestAnimationFrame(drawRadar);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        drawRadar();
+
+
         // ---------- THEME ----------
         function toggleTheme() {
             document.documentElement.classList.toggle('dark');
