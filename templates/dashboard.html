@@ -373,8 +373,6 @@
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1W</button>
                                 <button onclick="updateTimeframe('1M')" data-tf="1M"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1M</button>
-                                <button onclick="updateTimeframe('6M')" data-tf="6M"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">6M</button>
                                 <button onclick="updateTimeframe('1Y')" data-tf="1Y"
                                     class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1Y</button>
                                 <!-- NEU -->
@@ -414,15 +412,20 @@
                             <h3 class="text-lg font-bold text-white flex items-center gap-2">
                                 <i data-lucide="activity" class="text-emerald-500 w-5 h-5"></i>
                                 <span data-i18n="chart.title">Price Action</span>
+                                <p id="tf-perf" class="text-[11px] text-slate-400 mt-1 font-medium"></p>
                             </h3>
+                            <!-- NEU: Performance im aktuellen Timeframe -->
+                            <p id="tf-perf" class="text-[11px] text-slate-400 mt-1 font-medium">
+                                <!-- wird per JS gefüllt, z.B. +4.23% (1M) -->
+                            </p>
                         </div>
+
 
                         <div class="mt-12 px-3 md:hidden flex flex-col gap-2 z-10">
                             <div
                                 class="flex bg-slate-900 rounded-lg p-1 border border-slate-800 w-full justify-between">
                                 <button onclick="updateTimeframe('1W')" data-tf="1W" class="tf-btn ...">1W</button>
                                 <button onclick="updateTimeframe('1M')" data-tf="1M" class="tf-btn ...">1M</button>
-                                <button onclick="updateTimeframe('6M')" data-tf="6M" class="tf-btn ...">6M</button>
                                 <button onclick="updateTimeframe('1Y')" data-tf="1Y" class="tf-btn ...">1Y</button>
                                 <!-- NEU -->
                                 <button onclick="updateTimeframe('5Y')" data-tf="5Y"
@@ -1232,6 +1235,7 @@
 
             lastHistoryData = data;
             renderMainChart(lastHistoryData);
+            updateTimeframePerformanceLabel(tf, lastHistoryData);
         }
 
         function setActiveTimeframe(tf) {
@@ -1246,6 +1250,43 @@
         function updateTimeframe(tf) {
             setActiveTimeframe(tf);
             updateChart(tf);
+        }
+
+        function updateTimeframePerformanceLabel(tf, data) {
+            const el = document.getElementById('tf-perf');
+            if (!el) return;
+
+            if (!data || !data.candle || data.candle.length < 2) {
+                el.textContent = '';
+                el.className = 'text-[11px] text-slate-400 mt-1 font-medium';
+                return;
+            }
+
+            const candles = data.candle;
+            const firstClose = candles[0][4];
+            const lastClose = candles[candles.length - 1][4];
+
+            if (!firstClose || !lastClose || firstClose <= 0) {
+                el.textContent = '';
+                el.className = 'text-[11px] text-slate-400 mt-1 font-medium';
+                return;
+            }
+
+            const perf = (lastClose / firstClose - 1) * 100;
+            const sign = perf > 0 ? '+' : '';
+            const text = `${sign}${perf.toFixed(2)}% (${tf})`;
+
+            el.className = 'text-[11px] mt-1 font-medium';
+
+            if (perf > 0.05) {
+                el.classList.add('text-emerald-400');
+            } else if (perf < -0.05) {
+                el.classList.add('text-rose-400');
+            } else {
+                el.classList.add('text-slate-400');
+            }
+
+            el.textContent = text;
         }
 
         function renderMainChart(d) {
