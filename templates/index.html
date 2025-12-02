@@ -32,7 +32,7 @@
             theme: {
                 extend: {
                     colors: {
-                        dark: { bg: '#0b1120', card: '#1e293b' } // Etwas satteres Dunkelblau für mehr Kontrast
+                        dark: { bg: '#0b1120', card: '#1e293b' }
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -40,6 +40,7 @@
                     animation: {
                         'float-slow': 'float 8s ease-in-out infinite',
                         'float-reverse-slow': 'float-reverse 7s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     },
                     keyframes: {
                         float: {
@@ -62,7 +63,7 @@
             font-family: 'Inter', sans-serif;
         }
 
-        /* NEU: Das Grid Pattern für den modernen Tech-Look */
+        /* Grid Pattern */
         .bg-grid-pattern {
             background-size: 40px 40px;
             background-image: linear-gradient(to right, rgba(100, 116, 139, 0.04) 1px, transparent 1px),
@@ -93,7 +94,20 @@
             }
         }
 
-        /* Styles für die FAQ Animation */
+        /* CSS Chart Line Animation */
+        .chart-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 5s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* FAQ Animation */
         details>summary {
             list-style: none;
         }
@@ -123,7 +137,7 @@
 <body
     class="bg-slate-50 text-gray-900 dark:bg-[#0b1120] dark:text-white transition-colors duration-300 overflow-x-hidden flex flex-col min-h-screen">
 
-    <!-- NEU: Fixierter Hintergrund-Layer -->
+    <!-- Fixierter Hintergrund-Layer -->
     <div class="fixed inset-0 z-0 pointer-events-none bg-grid-pattern h-screen w-full"></div>
 
     <nav
@@ -162,7 +176,6 @@
 
     <!-- HERO SECTION -->
     <main class="relative z-10 flex flex-col justify-center items-center text-center px-4 min-h-screen w-full">
-        <!-- Blobs leicht angepasst für besseres Blending -->
         <div
             class="blob bg-emerald-500/30 w-96 h-96 rounded-full top-0 left-0 -z-10 mix-blend-multiply dark:mix-blend-screen">
         </div>
@@ -190,7 +203,6 @@
             Login / Starten
         </button>
 
-        <!-- NEU: Weicher Fade-Out nach unten -->
         <div
             class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-slate-50 dark:from-[#0b1120] to-transparent pointer-events-none">
         </div>
@@ -201,11 +213,9 @@
         </div>
     </main>
 
-    <!-- SECTION ABOUT: Mit Glassmorphismus und subtilem Hintergrund -->
+    <!-- SECTION ABOUT -->
     <section id="about"
         class="py-32 px-4 relative z-20 bg-gradient-to-b from-slate-50 via-slate-100 to-white dark:from-[#0b1120] dark:via-[#0f172a] dark:to-slate-900 overflow-hidden">
-
-        <!-- Hintergrund-Effekt -->
         <div
             class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-emerald-500/5 blur-[120px] -z-10 rounded-full pointer-events-none">
         </div>
@@ -224,7 +234,7 @@
             </p>
 
             <div class="grid md:grid-cols-3 gap-8 mb-16 text-left">
-                <!-- Quality Box: Mit Backdrop Blur -->
+                <!-- Quality Box -->
                 <div
                     class="p-8 bg-white/50 dark:bg-slate-800/40 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-slate-700/50 hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-md">
                     <div class="mb-5">
@@ -286,7 +296,7 @@
         </div>
     </section>
 
-    <!-- PREVIEW SECTION (Neu hinzugefügt) -->
+    <!-- PREVIEW SECTION (Integriert mit Bild & CSS Karten) -->
     <section
         class="py-20 px-4 relative z-10 overflow-hidden bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-900 dark:via-[#0f172a] dark:to-slate-900">
         <div class="max-w-6xl mx-auto text-center relative z-10">
@@ -306,35 +316,67 @@
                     class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-emerald-500/20 to-blue-600/20 rounded-full blur-[100px] -z-10">
                 </div>
 
-                <!-- Hauptbild -->
+                <!-- HAUPTBILD: Verweist auf dein echtes Bild -->
                 <div
-                    class="relative z-20 rounded-xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-900">
-                    <img src="https://placehold.co/1200x750/0f172a/10b981?text=ValueRadar+Pro+Dashboard&font=roboto"
-                        alt="ValueRadar Dashboard Preview"
-                        class="w-full h-auto object-cover opacity-90 hover:opacity-100 transition duration-500"
+                    class="relative z-20 rounded-xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-900 aspect-video group">
+                    <img src="image_61bf84.jpg" alt="ValueRadar Dashboard Preview"
+                        class="w-full h-full object-cover group-hover:scale-[1.01] transition duration-700"
                         loading="lazy">
                     <div
-                        class="absolute top-0 left-0 w-full h-full pointer-events-none bg-gradient-to-t from-slate-900/80 via-transparent to-transparent">
+                        class="absolute inset-0 pointer-events-none bg-gradient-to-t from-slate-900/40 via-transparent to-transparent">
                     </div>
                 </div>
 
-                <!-- Schwebende Elemente -->
+                <!-- KARTE LINKS: CSS Chart -->
                 <div
-                    class="absolute -bottom-12 -left-12 z-30 w-[35%] rounded-lg shadow-2xl overflow-hidden border border-slate-700 hidden md:block animate-float-slow bg-slate-800">
-                    <img src="https://placehold.co/600x400/1e293b/3b82f6?text=Chart+Analyse&font=roboto"
-                        alt="Finanz Charts Preview" class="w-full h-auto opacity-90" loading="lazy">
+                    class="absolute -bottom-12 -left-4 md:-left-12 z-30 w-[40%] md:w-[35%] rounded-xl shadow-2xl border border-slate-700 bg-slate-800/90 backdrop-blur-md p-4 animate-float-slow hidden sm:block text-left">
+                    <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Chart Analyse</span>
+                        <div class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    </div>
+                    <svg viewBox="0 0 200 100" class="w-full h-24 overflow-visible">
+                        <path d="M0,80 Q50,90 80,60 T150,40 T200,20" fill="none" stroke="#10b981" stroke-width="3"
+                            class="chart-line drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                        <path d="M0,80 Q50,90 80,60 T150,40 T200,20 V100 H0 Z" fill="url(#gradient)" opacity="0.2" />
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#10b981;stop-opacity:0" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div class="flex justify-between mt-2 text-xs">
+                        <span class="text-emerald-400 font-bold">+24.5%</span>
+                        <span class="text-slate-500">Last Year</span>
+                    </div>
                 </div>
 
+                <!-- KARTE RECHTS: CSS Gauge -->
                 <div
-                    class="absolute -top-12 -right-12 z-10 w-[30%] rounded-lg shadow-2xl overflow-hidden border border-slate-700 hidden md:block animate-float-reverse-slow bg-slate-800">
-                    <img src="https://placehold.co/500x350/1e293b/a855f7?text=Risk+Check&font=roboto"
-                        alt="Echtzeit Daten Preview" class="w-full h-auto opacity-90" loading="lazy">
+                    class="absolute -top-12 -right-4 md:-right-12 z-10 w-[35%] md:w-[30%] rounded-xl shadow-2xl border border-slate-700 bg-slate-800/90 backdrop-blur-md p-4 animate-float-reverse-slow hidden sm:block text-left">
+                    <div class="flex justify-between items-center mb-2 border-b border-slate-700 pb-2">
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">VR Score</span>
+                        <span class="text-xs bg-blue-500/20 text-blue-400 px-1.5 rounded">92</span>
+                    </div>
+
+                    <div class="relative flex justify-center items-center py-2">
+                        <svg viewBox="0 0 100 50" class="w-24 h-12">
+                            <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="#334155" stroke-width="10"
+                                stroke-linecap="round" />
+                            <path d="M10,50 A40,40 0 0,1 75,20" fill="none" stroke="#3b82f6" stroke-width="10"
+                                stroke-linecap="round" class="drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+                        </svg>
+                        <div class="absolute bottom-2 text-center">
+                            <span class="text-xl font-bold text-white">Strong</span>
+                            <span class="block text-[10px] text-slate-400">Buy</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FAQ SECTION (Neu hinzugefügt) -->
+    <!-- FAQ SECTION (Integriert) -->
     <section
         class="py-24 px-4 bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-900 dark:via-[#0f172a] dark:to-slate-900 relative z-20 overflow-hidden">
         <div class="max-w-3xl mx-auto relative z-10">
@@ -344,7 +386,8 @@
             <div class="space-y-4">
                 <details
                     class="group bg-white/50 dark:bg-slate-800/40 backdrop-blur-xl rounded-xl p-6 cursor-pointer border border-slate-200/50 dark:border-slate-700/50 hover:border-emerald-500/30 transition-all duration-300 shadow-sm">
-                    <summary class="flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
+                    <summary
+                        class="flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg select-none">
                         <span data-lang="faq_q1">Welche Märkte werden abgedeckt?</span>
                         <span
                             class="transform group-open:rotate-180 transition-transform duration-300 text-emerald-500">▼</span>
@@ -357,7 +400,8 @@
 
                 <details
                     class="group bg-white/50 dark:bg-slate-800/40 backdrop-blur-xl rounded-xl p-6 cursor-pointer border border-slate-200/50 dark:border-slate-700/50 hover:border-emerald-500/30 transition-all duration-300 shadow-sm">
-                    <summary class="flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
+                    <summary
+                        class="flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg select-none">
                         <span data-lang="faq_q2">Woher stammen die Finanzdaten?</span>
                         <span
                             class="transform group-open:rotate-180 transition-transform duration-300 text-emerald-500">▼</span>
@@ -371,7 +415,8 @@
 
                 <details
                     class="group bg-white/50 dark:bg-slate-800/40 backdrop-blur-xl rounded-xl p-6 cursor-pointer border border-slate-200/50 dark:border-slate-700/50 hover:border-emerald-500/30 transition-all duration-300 shadow-sm">
-                    <summary class="flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
+                    <summary
+                        class="flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg select-none">
                         <span data-lang="faq_q3">Ist ValueRadar für Anfänger geeignet?</span>
                         <span
                             class="transform group-open:rotate-180 transition-transform duration-300 text-emerald-500">▼</span>
@@ -385,7 +430,7 @@
         </div>
     </section>
 
-    <!-- FINAL CTA BANNER (Neu hinzugefügt) -->
+    <!-- FINAL CTA BANNER (Integriert) -->
     <section
         class="py-12 px-4 bg-gradient-to-b from-white to-slate-50 dark:from-slate-900 dark:to-[#080d19] relative z-20 pb-24">
         <div
@@ -410,7 +455,7 @@
         </div>
     </section>
 
-    <!-- FOOTER (Neu hinzugefügt, ersetzt "Created by") -->
+    <!-- FOOTER (Integriert) -->
     <footer
         class="bg-slate-100 dark:bg-[#080d19] border-t border-slate-200 dark:border-slate-800 pt-16 pb-8 px-4 relative z-20 mt-auto relative overflow-hidden">
         <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 mb-12 relative z-10">
