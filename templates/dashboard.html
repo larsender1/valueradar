@@ -1112,6 +1112,12 @@
                     console.log("Details error:", d.error);
                     return;
                 }
+                // ⬇️ Live-Preis aus Backend übernehmen
+                if (d.price_now != null) {
+                    currentPrice = d.price_now;
+                    document.getElementById('header-price').innerText =
+                        "$" + Number(d.price_now).toFixed(2);
+                }
 
                 document.getElementById('header-industry').innerText = d.industry || '-';
                 document.getElementById('header-sector').innerText = d.sector || '-';

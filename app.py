@@ -163,7 +163,7 @@ def get_details(symbol):
         # Dividende
         div_yield = info.get("dividendYield")
 
-        # Preis und Performance
+                # Preis und Performance
         price_now = info.get("currentPrice") or info.get("regularMarketPrice")
 
         hist = None
@@ -173,20 +173,25 @@ def get_details(symbol):
             hist = ticker.history(period="2y", interval="1d")
             if hist is not None and not hist.empty:
                 hist = hist.dropna(subset=["Close"])
-                price_now = float(hist["Close"].iloc[-1])
+                last_close = float(hist["Close"].iloc[-1])
 
-                # 1Y Performance
+                # Nur falls currentPrice fehlt, Fallback auf letzten Close
+                if price_now is None:
+                    price_now = last_close
+
+                # 1Y Performance auf Basis des Schlusskurses
                 if len(hist) > 250:
                     price_1y_ago = float(hist["Close"].iloc[-252])
-                    perf_1y = (price_now / price_1y_ago - 1) * 100
+                    perf_1y = (last_close / price_1y_ago - 1) * 100
 
                 # 3M Performance
                 if len(hist) > 60:
                     idx_3m = max(0, len(hist) - 60)
                     price_3m_ago = float(hist["Close"].iloc[idx_3m])
-                    perf_3m = (price_now / price_3m_ago - 1) * 100
+                    perf_3m = (last_close / price_3m_ago - 1) * 100
         except Exception as e:
             print(f"History-Fehler {symbol}: {e}")
+
 
         # News (Yahoo Finance)
         news_list = []
