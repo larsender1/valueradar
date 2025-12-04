@@ -1137,13 +1137,17 @@
                     else pegEl.className = "text-xl font-bold text-yellow-400";
                 }
 
-                if (d.mcap != null) {
-                    document.getElementById('kpi-mcap').innerText = formatNumber(d.mcap);
+                // Market Cap aus Backend (market_cap)
+                if (d.market_cap != null) {
+                    document.getElementById('kpi-mcap').innerText = formatNumber(d.market_cap);
                 }
 
-                if (d.margin != null) {
-                    document.getElementById('kpi-margin').innerText = d.margin.toFixed(1) + "%";
+                // Profit Margin aus Backend (profit_margin, kommt als Dezimalzahl z.B. 0.185)
+                if (d.profit_margin != null) {
+                    document.getElementById('kpi-margin').innerText =
+                        (d.profit_margin * 100).toFixed(1) + "%";
                 }
+
 
                 const newsEl = document.getElementById('news-list');
                 if (newsEl) {
