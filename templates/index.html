@@ -710,8 +710,9 @@
         }
 
         // ---------- I18N ----------
-        let lang = 'EN';
-        document.addEventListener("DOMContentLoaded", () => toggleLang());
+        let lang = 'DE'; // Startzustand intern: DE
+        document.addEventListener("DOMContentLoaded", () => toggleLang()); // erster Toggle -> EN
+
 
         const translations = {
             DE: {
