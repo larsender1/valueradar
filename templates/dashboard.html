@@ -1,476 +1,1595 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ValueRadar - Final Dashboard</title>
+    <title>ValueRadar Pro Terminal</title>
+    <meta name="description"
+        content="ValueRadar Pro Terminal – interaktives Dashboard für Fundamentalanalyse, Kennzahlen, Charts und Watchlists.">
+    <meta name="robots" content="noindex, nofollow">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#020617',
+                            card: '#020617'
+                        }
+                    },
+                    boxShadow: {
+                        'glow': '0 0 40px rgba(16,185,129,0.25)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #0b0f19; 
-            color: #e2e8f0;
-        }
-        
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #334155; }
-
-        /* Glass Card Style */
-        .glass-card {
-            background: rgba(17, 24, 39, 0.4); 
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .glass-card:hover {
-            border-color: rgba(20, 184, 166, 0.3);
-            background: rgba(17, 24, 39, 0.6);
-            transform: translateY(-1px);
-        }
-        
-        .glass-header {
-            background: rgba(11, 15, 25, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        body {
+            background-color: #020617;
+            min-height: 100vh;
+            color: #cbd5e1;
         }
 
-        .bg-grid-pattern {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        body.light h1,
+        body.light h2,
+        body.light h3,
+        body.light .text-slate-100 {
+            color: #0f172a !important;
         }
 
-        /* Watchlist Styles */
-        .wl-item { border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s; }
-        .wl-item:hover { background: rgba(255,255,255,0.03); }
-        .wl-item.active { background: rgba(20, 184, 166, 0.05); border-left: 3px solid #14b8a6; }
-        .wl-badge { background: rgba(255,255,255,0.1); color: #94a3b8; font-size: 10px; padding: 1px 4px; border-radius: 3px; }
+        .bg-dark-gradient {
+            background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.10) 0, transparent 55%),
+                radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.10) 0, transparent 55%);
+        }
+
+        .bg-dark-card {
+            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95) 0, rgba(15, 23, 42, 0.98) 40%, #020617 100%);
+        }
+
+        .border-dark-border {
+            border-color: rgba(30, 64, 175, 0.3);
+        }
+
+        .scroll-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scroll-thin::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .scroll-thin::-webkit-scrollbar-thumb {
+            background: rgba(30, 64, 175, 0.6);
+            border-radius: 9999px;
+        }
+
+        .region-btn.active-region {
+            background-color: #10b981;
+            color: white !important;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+        }
+
+        .tf-btn {
+            transition: all 0.15s ease-in-out;
+        }
+
+        .active-tf {
+            background-color: #10b981;
+            color: white !important;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+        }
+
+        .watch-row-active {
+            background-color: #0f172a !important;
+            border-color: #10b981 !important;
+        }
+
+        body.light {
+            background-color: #f9fafb;
+            color: #0f172a;
+        }
+
+        body.light .bg-dark-card {
+            background-color: #ffffff;
+        }
+
+        body.light .border-dark-border {
+            border-color: #e5e7eb;
+        }
+
+        .apexcharts-tooltip {
+            background: #1e293b !important;
+            border-color: #334155 !important;
+            color: #fff;
+        }
+
+        .apexcharts-tooltip-title {
+            background: #0f172a !important;
+            border-bottom-color: #1e293b !important;
+        }
+
+        .glass {
+            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98) 0, rgba(15, 23, 42, 1) 45%, rgba(15, 23, 42, 1) 100%);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            backdrop-filter: blur(18px);
+        }
+
+        .ticker-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: radial-gradient(circle, #22c55e 0, #16a34a 40%, #166534 100%);
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+        }
+
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-none {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
-<body class="h-screen flex overflow-hidden selection:bg-teal-500/30 selection:text-white">
 
-    <!-- Background -->
-    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+<body class="text-slate-100">
+    <header class="border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-lg sticky top-0 z-50">
+        <div class="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between gap-2">
 
-    <!-- SIDEBAR (Watchlist) -->
-    <aside class="w-80 border-r border-slate-800/50 bg-[#080b14] hidden lg:flex flex-col z-20 relative">
-        <div class="h-16 flex items-center px-6 gap-3">
-            <div class="bg-teal-600 text-white font-bold px-2 py-0.5 rounded text-xs shadow-lg shadow-teal-900/50">VR</div>
-            <span class="font-bold text-lg tracking-tight text-white">ValueRadar <span class="text-teal-500 text-xs">PRO</span></span>
+            <div class="flex items-center gap-3">
+                <button onclick="window.location.href='/'"
+                    class="hidden sm:inline-flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-emerald-400 px-2 py-1 rounded-lg border border-slate-700 hover:border-emerald-500 bg-slate-950/60 transition">
+                    <i data-lucide="arrow-left" class="w-3 h-3"></i>
+                </button>
+
+                <a href="#" class="flex items-center gap-2 group">
+                    <div
+                        class="bg-emerald-500 text-white font-bold text-xs p-1 rounded group-hover:bg-emerald-400 transition">
+                        VR
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span class="text-lg font-bold text-white tracking-tight">ValueRadar</span>
+                        <span class="text-[10px] text-emerald-500 font-bold tracking-wider">PRO</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+
+                <div class="md:hidden">
+                    <select
+                        class="bg-slate-900 border border-slate-800 text-xs text-slate-300 rounded-lg px-2 py-1 focus:outline-none focus:border-emerald-500"
+                        onchange="filterStocks(this.value)">
+                        <option value="ALL">Alle</option>
+                        <option value="US">US</option>
+                        <option value="DE">DE</option>
+                        <option value="FAV">Watchlist</option>
+                    </select>
+                </div>
+
+                <div class="hidden md:flex bg-slate-900 rounded-lg p-1 border border-slate-800">
+                    <button onclick="filterStocks('ALL')"
+                        class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
+                        data-reg="ALL" data-i18n="region.all">Alle</button>
+                    <button onclick="filterStocks('US')"
+                        class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
+                        data-reg="US" data-i18n="region.us">US</button>
+                    <button onclick="filterStocks('DE')"
+                        class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
+                        data-reg="DE" data-i18n="region.de">DE</button>
+                    <button onclick="filterStocks('FAV')"
+                        class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
+                        data-reg="FAV" data-i18n="region.fav">Watchlist</button>
+                </div>
+
+                <div class="hidden md:flex items-center gap-2">
+                    <div class="h-4 w-px bg-slate-800 mx-1"></div>
+                    <button onclick="toggleTheme()"
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition"
+                        title="Design wechseln">
+                        <i id="theme-icon-desktop" data-lucide="moon" class="w-4 h-4"></i>
+                    </button>
+                    <a href="/logout"
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-slate-700 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition"
+                        title="Logout">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <div class="relative md:hidden">
+                    <button onclick="toggleMobileSettings()"
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-emerald-400 transition">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                    </button>
+
+                    <div id="mobile-settings-menu"
+                        class="hidden absolute right-0 top-full mt-2 w-48 bg-slate-900 border border-slate-800 rounded-xl shadow-xl z-50 p-2">
+                        <div class="text-[10px] text-slate-500 font-bold uppercase px-2 py-1 mb-1">Einstellungen</div>
+
+                        <button onclick="toggleTheme()"
+                            class="w-full flex items-center justify-between px-2 py-2 text-xs text-slate-300 hover:bg-slate-800 rounded-lg mb-1">
+                            <span>Design wechseln</span>
+                            <i id="theme-icon-mobile" data-lucide="moon" class="w-3 h-3"></i>
+                        </button>
+
+                        <div class="flex gap-1 p-1 bg-slate-950 rounded-lg border border-slate-800 mb-2">
+                            <button id="btn-lang-de" onclick="setLang('de')"
+                                class="flex-1 py-1 text-xs text-center rounded text-emerald-400 bg-slate-800">DE</button>
+                            <button id="btn-lang-en" onclick="setLang('en')"
+                                class="flex-1 py-1 text-xs text-center rounded text-slate-400">EN</button>
+                        </div>
+
+                        <div class="h-px bg-slate-800 my-1"></div>
+                        <a href="/logout"
+                            class="flex items-center gap-2 px-2 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-lg">
+                            <i data-lucide="log-out" class="w-3 h-3"></i>
+                            <span>Logout</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div
+                    class="hidden sm:flex w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-sky-500 items-center justify-center text-xs font-bold shadow-lg shadow-emerald-500/20">
+                    VR
+                </div>
+            </div>
         </div>
+    </header>
 
-        <div class="px-5 pt-4 pb-2">
-            <div class="flex justify-between items-center mb-1">
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Watchlist</span>
-                <div class="flex gap-2">
-                    <button class="text-[9px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded hover:text-white transition">CSV SYNC</button>
-                    <button class="text-slate-400 hover:text-white">+</button>
-                </div>
-            </div>
-            <div class="text-[10px] text-slate-600 mb-3">Global Undervalued Stocks</div>
-            <div class="relative">
-                <input type="text" placeholder="Filtere nach Name oder Ticker..." class="w-full bg-[#111621] text-xs rounded border border-slate-800 px-3 py-2 text-slate-300 focus:outline-none focus:border-slate-600 transition placeholder-slate-600">
-            </div>
-        </div>
+    <main class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 space-y-6">
+        <section id="view-dashboard" class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-        <div class="flex-1 overflow-y-auto mt-2">
-            <!-- GM -->
-            <div class="wl-item active px-5 py-3 cursor-pointer group">
-                <div class="flex justify-between items-center mb-1">
-                    <div class="flex items-center gap-2"><span class="font-bold text-white text-sm">General Motors</span><span class="wl-badge group-hover:bg-slate-700 transition">GM</span></div>
-                    <span class="font-bold text-white text-sm">$76.09</span>
-                </div>
-                <div class="flex justify-between items-center text-[10px]">
-                    <span class="text-slate-500">US • KGV 4.8</span>
-                    <div class="flex items-center gap-1 text-teal-400"><span>Underpriced</span></div>
-                </div>
-            </div>
-            <!-- Fox -->
-            <div class="wl-item px-5 py-3 cursor-pointer group opacity-80 hover:opacity-100">
-                <div class="flex justify-between items-center mb-1">
-                    <div class="flex items-center gap-2"><span class="font-medium text-slate-300 text-sm">Fox Corp</span><span class="wl-badge">FOX</span></div>
-                    <span class="font-medium text-slate-300 text-sm">$58.26</span>
-                </div>
-                <div class="flex justify-between items-center text-[10px]"><span class="text-slate-600">US • KGV 13.09</span></div>
-            </div>
-             <!-- Globe -->
-            <div class="wl-item px-5 py-3 cursor-pointer group opacity-80 hover:opacity-100">
-                <div class="flex justify-between items-center mb-1">
-                    <div class="flex items-center gap-2"><span class="font-medium text-slate-300 text-sm">Globe Life</span><span class="wl-badge">GL</span></div>
-                    <span class="font-medium text-slate-300 text-sm">$134.73</span>
-                </div>
-                <div class="flex justify-between items-center text-[10px]"><span class="text-slate-600">US • KGV 9.77</span></div>
-            </div>
-        </div>
-        <div class="p-3 text-[10px] text-slate-600 text-center border-t border-slate-800">Powered by Python Scan</div>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 flex flex-col relative overflow-hidden z-10">
-        
-        <!-- HEADER -->
-        <header class="h-20 glass-header flex items-center justify-between px-8 lg:px-10 sticky top-0 z-30 shrink-0">
-            <div>
-                <h1 class="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
-                    General Motors Company
-                    <span class="text-sm font-medium text-slate-400 bg-slate-800/50 px-2 py-1 rounded border border-slate-700/50">GM</span>
-                </h1>
-                <div class="flex items-center gap-2 mt-1 text-xs text-slate-400">
-                    <span>Auto Manufacturers</span><span class="text-slate-600">•</span>
-                    <span>Consumer Cyclical</span><span class="text-slate-600">•</span>
-                    <a href="#" class="text-teal-500 hover:text-teal-400">Yahoo Finance ↗</a>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-8">
-                <!-- VR Score -->
-                <div class="flex flex-col items-end">
+            <aside
+                class="lg:col-span-1 order-1 overflow-hidden rounded-2xl glass shadow-glow flex flex-col max-h-[380px] lg:max-h-[650px]">
+                <div class="px-3 py-2 md:px-4 md:py-3 border-b border-slate-800/80 flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">VR Score</span>
-                        <div class="flex items-center justify-center bg-teal-500/10 border border-teal-500/50 rounded px-2 py-0.5">
-                            <span class="text-lg font-bold text-teal-400">92</span>
+                        <span class="ticker-dot"></span>
+                        <div>
+                            <div class="text-[11px] text-slate-500 uppercase tracking-[0.2em] font-bold"
+                                data-i18n="watchlist.title">Watchlist</div>
+                            <div class="text-xs text-slate-400" data-i18n="watchlist.subtitle">Global Undervalued Stocks
+                            </div>
                         </div>
                     </div>
-                    <span class="text-[9px] text-teal-600 font-bold uppercase tracking-widest mt-0.5">Excellent</span>
+                    <div class="flex items-center gap-2">
+                        <span
+                            class="text-[10px] text-slate-500 uppercase tracking-wide bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800">CSV
+                            Sync</span>
+                        <button onclick="addSymbolToWatchlist()"
+                            class="w-7 h-7 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-emerald-400 hover:border-emerald-500 transition"
+                            title="Symbol hinzufügen">
+                            <i data-lucide="plus" class="w-3 h-3"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <div class="text-right border-l border-white/10 pl-8">
-                    <div class="text-4xl font-bold text-white tracking-tight">$76.09</div>
-                    <div class="text-sm text-teal-400 font-medium flex items-center justify-end gap-1">Live Price</div>
+                <div class="px-2 pt-2 pb-1 border-b border-slate-800/80 bg-slate-950/60 md:px-3 md:pt-3 md:pb-2">
+                    <div
+                        class="flex items-center bg-slate-900/90 border border-slate-800 rounded-xl px-2 py-1.5 text-xs text-slate-400 shadow-inner shadow-slate-950">
+                        <i data-lucide="list-filter" class="w-3.5 h-3.5 text-slate-500 mr-2"></i>
+                        <input type="text" id="watchlist-search" placeholder="Filtere nach Name oder Ticker..."
+                            class="bg-transparent border-none outline-none text-xs w-full text-slate-100 placeholder-slate-600"
+                            onkeyup="filterStocksByName(this.value)">
+                    </div>
+                </div>
+
+                <div id="watchlist-container"
+                    class="flex-1 overflow-y-auto scroll-thin divide-y divide-slate-800/70 bg-slate-950/60"></div>
+
+                <div
+                    class="px-3 py-2 border-t border-slate-800/80 bg-slate-950/80 flex items-center justify-between text-[11px] text-slate-500">
+                    <span id="watchlist-count">0 Aktien</span>
+                    <span class="flex items-center gap-1">
+                        <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+                        <span>Powered by Python Scan</span>
+                    </span>
+                </div>
+            </aside>
+
+            <section class="lg:col-span-3 order-2 flex flex-col gap-6">
+                <div class="flex flex-col md:flex-row justify-between items-end gap-4">
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <h1 id="header-name" class="text-3xl font-bold tracking-tight text-slate-100">Lade Daten...
+                            </h1>
+                            <span id="badge-ticker"
+                                class="bg-slate-900/80 text-xs px-2 py-0.5 rounded border border-slate-700 font-mono">---</span>
+                            <span id="badge-region"
+                                class="bg-slate-900/80 text-xs px-2 py-0.5 rounded border border-slate-700 font-bold">--</span>
+                        </div>
+                        <div class="text-sm text-slate-500 flex gap-4">
+                            <span id="header-industry">Technology</span> •
+                            <span id="header-sector">Consumer Electronics</span>
+                            <a id="yahoo-link" href="#" target="_blank"
+                                class="text-xs text-blue-500 hover:underline flex items-center gap-1">Yahoo Finance
+                                ↗</a>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div id="header-price" class="text-4xl font-bold tracking-tight text-slate-100">--</div>
+                        <div class="text-emerald-400 text-sm font-medium flex items-center justify-end gap-1">
+                            <i data-lucide="trending-up" class="w-4 h-4"></i>
+                            <span data-i18n="header.liveprice">Live Price</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <div
+                        class="bg-dark-card border border-dark-border rounded-xl p-4 relative overflow-hidden group hover:border-slate-600 transition">
+                        <div
+                            class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition text-emerald-500">
+                            <i data-lucide="bar-chart-2" class="w-8 h-8"></i>
+                        </div>
+                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1" data-i18n="kpi.pe">
+                            KGV (PE)</div>
+                        <div id="kpi-pe" class="text-xl font-bold text-white">--</div>
+                    </div>
+                    <div
+                        class="bg-dark-card border border-dark-border rounded-xl p-4 hover:border-slate-600 transition">
+                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1" data-i18n="kpi.peg">
+                            PEG Ratio</div>
+                        <div id="kpi-peg" class="text-xl font-bold text-white">--</div>
+                    </div>
+                    <div class="bg-dark-card border border-dark-border rounded-xl p-4 opacity-70">
+                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1"
+                            data-i18n="kpi.mcap">Market Cap</div>
+                        <div id="kpi-mcap" class="text-xl font-bold text-white">N/A</div>
+                    </div>
+                    <div class="bg-dark-card border border-dark-border rounded-xl p-4 opacity-70">
+                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1"
+                            data-i18n="kpi.margin">Margins</div>
+                        <div id="kpi-margin" class="text-xl font-bold text-white">N/A</div>
+                    </div>
+                    <div class="bg-dark-card border border-dark-border rounded-xl p-4">
+                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1"
+                            data-i18n="kpi.analyst">Analyst Rating</div>
+                        <div class="text-xl font-bold text-emerald-400">BUY</div>
+                    </div>
+                    <div class="bg-dark-card border border-dark-border rounded-xl p-4 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent"></div>
+                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1 relative z-10"
+                            data-i18n="kpi.vrscore">VR Score</div>
+                        <div class="text-xl font-bold text-emerald-400 relative z-10">92</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div
+                        class="lg:col-span-2 bg-dark-card border border-dark-border rounded-2xl p-1 flex flex-col shadow-xl min-h-[360px] md:min-h-[500px] relative">
+                        <div class="absolute top-4 right-4 z-10 hidden md:flex gap-2">
+                            <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
+                                <button onclick="updateTimeframe('1W')" data-tf="1W"
+                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1W</button>
+                                <button onclick="updateTimeframe('1M')" data-tf="1M"
+                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1M</button>
+                                <button onclick="updateTimeframe('1Y')" data-tf="1Y"
+                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1Y</button>
+                                <!-- NEU -->
+                                <button onclick="updateTimeframe('5Y')" data-tf="5Y"
+                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">5Y</button>
+                                <!-- /NEU -->
+                                <button onclick="updateTimeframe('MAX')" data-tf="MAX"
+                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">MAX</button>
+                            </div>
+
+                            <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
+                                <button onclick="toggleMA('20')" data-ma="20"
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
+                                    20</button>
+                                <button onclick="toggleMA('50')" data-ma="50"
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
+                                    50</button>
+                                <button onclick="toggleMA('200')" data-ma="200"
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
+                                    200</button>
+                            </div>
+
+                            <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
+                                <button onclick="setChartType('line')" data-ctype="line"
+                                    class="charttype-btn px-3 py-1 text-xs font-bold rounded text-slate-400 hover:bg-slate-800 transition">
+                                    Line
+                                </button>
+                                <button onclick="setChartType('candles')" data-ctype="candles"
+                                    class="charttype-btn px-3 py-1 text-xs font-bold rounded text-slate-400 hover:bg-slate-800 transition">
+                                    Candles
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="absolute top-4 left-4 z-10">
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i data-lucide="activity" class="text-emerald-500 w-5 h-5"></i>
+                                <span data-i18n="chart.title">Price Action</span>
+                            </h3>
+
+                            <!-- Performance im aktuellen Timeframe -->
+                            <p id="tf-perf" class="text-[11px] text-slate-400 mt-1 font-medium"></p>
+                        </div>
+
+
+
+                        <div class="mt-12 px-3 md:hidden flex flex-col gap-2 z-10">
+                            <div
+                                class="flex bg-slate-900 rounded-lg p-1 border border-slate-800 w-full justify-between">
+                                <button onclick="updateTimeframe('1W')" data-tf="1W" class="tf-btn ...">1W</button>
+                                <button onclick="updateTimeframe('1M')" data-tf="1M" class="tf-btn ...">1M</button>
+                                <button onclick="updateTimeframe('1Y')" data-tf="1Y" class="tf-btn ...">1Y</button>
+                                <!-- NEU -->
+                                <button onclick="updateTimeframe('5Y')" data-tf="5Y"
+                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">5Y</button>
+                                <!-- /NEU -->
+                                <button onclick="updateTimeframe('MAX')" data-tf="MAX" class="tf-btn ...">MAX</button>
+                            </div>
+
+                            <div
+                                class="flex bg-slate-900 rounded-lg p-1 border border-slate-800 w-full justify-between">
+                                <button onclick="toggleMA('20')" data-ma="20"
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
+                                    20</button>
+                                <button onclick="toggleMA('50')" data-ma="50"
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
+                                    50</button>
+                                <button onclick="toggleMA('200')" data-ma="200"
+                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
+                                    200</button>
+                            </div>
+                        </div>
+
+                        <div id="chart" class="w-full h-full pt-4 md:pt-12"></div>
+                    </div>
+
+                    <div class="bg-dark-card border border-dark-border rounded-2xl p-4 flex flex-col min-h-[400px]">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3
+                                class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 flex items-center gap-2">
+                                <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-400"></i>
+                                <span data-i18n="fin.title">Financials (Est.)</span>
+                            </h3>
+                            <span
+                                class="text-[10px] text-slate-500 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full">2020–2024E</span>
+                        </div>
+                        <div id="fin-chart" class="w-full flex-1 min-h-[200px]"></div>
+
+                        <div class="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-800">
+                            <div>
+                                <div class="text-[10px] text-slate-500 font-bold uppercase" data-i18n="fin.revgrowth">
+                                    Revenue Growth</div>
+                                <div id="kpi-revgrowth" class="text-lg font-bold text-emerald-400">+12%</div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] text-slate-500 font-bold uppercase" data-i18n="fin.netmargin">
+                                    Net Margin</div>
+                                <div id="kpi-netmargin" class="text-lg font-bold text-white">18.5%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                    <div
+                        class="md:col-span-4 bg-dark-card border border-dark-border rounded-2xl p-5 flex flex-col items-center justify-center relative shadow-lg min-h-[300px]">
+                        <div class="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-emerald-500/10 to-transparent">
+                        </div>
+                        <div class="relative flex flex-col items-center gap-4 w-full">
+                            <h3
+                                class="text-sm font-bold text-slate-400 uppercase tracking-[0.25em] flex items-center gap-2">
+                                <i data-lucide="gauge" class="w-4 h-4 text-emerald-400"></i>
+                                <span data-i18n="sentiment.title">Sentiment</span>
+                            </h3>
+                            <div id="gauge-chart" class="w-full h-40"></div>
+                            <div class="relative text-center space-y-1">
+                                <div class="text-xs text-emerald-400 font-semibold tracking-wide"
+                                    data-i18n="sentiment.label">Strong Buy</div>
+                                <div class="text-[11px] text-slate-500" data-i18n="sentiment.subtitle">Based on
+                                    technical & valuation factors</div>
+                            </div>
+                            <div class="w-full pt-4 border-t border-slate-800">
+                                <div class="text-xs text-slate-500 text-center mb-2" data-i18n="sentiment.keydrivers">
+                                    Key Drivers</div>
+                                <ul id="mini-pros-list" class="text-xs text-emerald-400 space-y-1 px-4">
+                                    <li>• Lade Analyse...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="md:col-span-8 bg-dark-card border border-dark-border rounded-2xl p-5 flex flex-col shadow-lg min-h-[300px]">
+                        <h3
+                            class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <i data-lucide="newspaper" class="w-4 h-4"></i>
+                            <span data-i18n="news.title">Aktuelle News</span>
+                        </h3>
+                        <div id="news-container" class="space-y-3 overflow-y-auto max-h-[250px] pr-2">
+                            <span class="text-slate-500 text-sm" data-i18n="news.loading">Lade Nachrichten...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-dark-card border border-dark-border rounded-2xl p-5 flex flex-col">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div
+                                class="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/40 flex items-center justify-center">
+                                <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold uppercase tracking-[0.25em] text-emerald-400"
+                                    data-i18n="strengths.title">Stärken</div>
+                                <div class="text-[11px] text-slate-500" data-i18n="strengths.subtitle">Warum die Aktie
+                                    interessant ist</div>
+                            </div>
+                        </div>
+                        <ul id="strengths-list" class="space-y-2 text-sm text-slate-100">
+                            <li class="text-slate-500 text-sm" data-i18n="strengths.loading">Lade Stärken...</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-dark-card border border-dark-border rounded-2xl p-5 flex flex-col">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div
+                                class="w-8 h-8 rounded-full bg-rose-500/10 border border-rose-500/40 flex items-center justify-center">
+                                <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold uppercase tracking-[0.25em] text-rose-400"
+                                    data-i18n="risks.title">Risiken</div>
+                                <div class="text-[11px] text-slate-500" data-i18n="risks.subtitle">Worauf du achten
+                                    solltest</div>
+                            </div>
+                        </div>
+                        <ul id="risks-list" class="space-y-2 text-sm text-slate-100">
+                            <li class="text-slate-500 text-sm" data-i18n="risks.loading">Lade Risiken...</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section id="view-glossary" class="hidden">
+            <div class="bg-dark-card border border-dark-border rounded-2xl p-6 space-y-4">
+                <h2 class="text-xl font-bold text-slate-100 mb-2" data-i18n="glossary.heading">Erklärungen der
+                    Kennzahlen</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-slate-200">
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">KGV (PE)</h3>
+                        <p data-i18n="glossary.pe">
+                            Das Kurs-Gewinn-Verhältnis vergleicht den Aktienkurs mit dem Gewinn pro Aktie.
+                            Niedriger ist grundsätzlich günstiger, hängt aber stark vom Sektor ab.
+                        </p>
+                    </div>
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">PEG Ratio</h3>
+                        <p data-i18n="glossary.peg">
+                            Bewertet das KGV im Verhältnis zum Gewinnwachstum. Werte um 1 gelten oft als fair,
+                            unter 1 als attraktiv.
+                        </p>
+                    </div>
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">Market Cap</h3>
+                        <p data-i18n="glossary.mcap">
+                            Marktkapitalisierung = Aktienkurs × Anzahl Aktien. Zeigt, wie groß ein Unternehmen an
+                            der Börse bewertet ist.
+                        </p>
+                    </div>
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">Revenue Growth
+                        </h3>
+                        <p data-i18n="glossary.revgrowth">
+                            Prozentuales Umsatzwachstum im Vergleich zum Vorjahr. Positives Wachstum ist meist ein gutes
+                            Zeichen.
+                        </p>
+                    </div>
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">Net Margin</h3>
+                        <p data-i18n="glossary.netmargin">
+                            Netto-Marge = Gewinn nach allen Kosten im Verhältnis zum Umsatz.
+                            Höhere Margen bedeuten meist höhere Profitabilität.
+                        </p>
+                    </div>
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">EPS</h3>
+                        <p data-i18n="glossary.eps">
+                            Earnings per Share – Gewinn je Aktie. Wichtige Basisgröße für Bewertungskennzahlen wie das
+                            KGV.
+                        </p>
+                    </div>
                 </div>
             </div>
-        </header>
-
-        <!-- SCROLL AREA -->
-        <div class="flex-1 overflow-y-auto p-6 lg:p-10 scroll-smooth pb-32">
-            <div class="max-w-7xl mx-auto space-y-8">
-
-                <!-- 1. CHART SECTION -->
-                <section class="glass-card rounded-xl p-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex items-center gap-2">
-                             <h2 class="text-lg font-bold text-white flex items-center gap-2">Price Action</h2>
-                             <span class="text-xs text-teal-400 font-bold bg-teal-500/10 px-2 py-0.5 rounded">+197.24% (MAX)</span>
-                        </div>
-                        <div class="flex gap-2">
-                            <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5">
-                                <button class="px-3 py-1 text-xs font-bold text-slate-400 hover:text-white transition">1W</button>
-                                <button class="px-3 py-1 text-xs font-bold text-slate-400 hover:text-white transition">1M</button>
-                                <button class="px-3 py-1 text-xs font-bold text-slate-400 hover:text-white transition">1Y</button>
-                                <button class="px-3 py-1 text-xs font-bold bg-teal-600 text-white rounded-[3px] shadow-sm transition">MAX</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="h-[450px] w-full"><canvas id="mainChart"></canvas></div>
-                </section>
-
-                <!-- 2. PROFILE -->
-                <section class="px-2">
-                    <h3 class="text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Unternehmensprofil</h3>
-                    <p class="text-sm text-slate-400 leading-relaxed max-w-5xl">
-                        <span class="text-white font-bold">General Motors Company (GM)</span> entwirft, baut und verkauft weltweit Lastkraftwagen, Crossover, Autos und Automobilteile. Das Unternehmen treibt den Wandel zur Elektromobilität mit seiner Ultium-Plattform voran und investiert massiv in autonome Fahrtechnologien durch seine Tochtergesellschaft Cruise. Zu den Kernmarken gehören Chevrolet, Buick, GMC und Cadillac. GM positioniert sich als Value-Play im Automobilsektor mit starkem Fokus auf Cash-Flow und Dividendenrendite.
-                    </p>
-                </section>
-
-                <!-- 3. KPI STACK (The List with Middle Visuals) -->
-                <section class="flex flex-col gap-3">
-                    
-                    <!-- Market Cap -->
-                    <div class="glass-card rounded-lg p-5 flex items-center justify-between border-l-4 border-l-teal-500 bg-gradient-to-r from-teal-900/20 to-transparent group cursor-default">
-                        <div class="flex items-center gap-6 w-1/4">
-                            <div class="p-3 bg-teal-500/10 rounded-lg text-teal-400">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-teal-400 uppercase tracking-widest mb-1">Market Cap</div>
-                                <div class="text-xs text-slate-500">Unternehmenswert</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Middle: Spacer / Visual (Just simple line for Market Cap as it's the hero) -->
-                        <div class="flex-1 px-8 flex items-center">
-                             <div class="h-1 w-full bg-slate-800 rounded-full relative overflow-hidden">
-                                 <!-- Decorative progress to show size relative to sector leader (e.g. Tesla) -->
-                                 <div class="h-full bg-teal-500 w-[25%] rounded-full opacity-50"></div>
-                             </div>
-                             <span class="text-[9px] text-slate-500 ml-2">vs. Sector Leader</span>
-                        </div>
-
-                        <div class="flex items-center gap-12 w-1/4 justify-end">
-                            <div class="text-right">
-                                <div class="text-xs text-green-400 font-medium mb-0.5 flex items-center justify-end gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> +8.2%</div>
-                                <div class="text-[10px] text-slate-600">vs. Vorjahr</div>
-                            </div>
-                            <div class="text-right min-w-[120px]">
-                                <div class="text-3xl font-bold text-white tracking-tight">72.4B</div>
-                                <span class="bg-teal-500/20 text-teal-300 text-[10px] px-2 py-0.5 rounded font-bold border border-teal-500/30">Large Cap</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- KGV (Range Bar) -->
-                    <div class="glass-card rounded-lg p-5 flex items-center justify-between border-l-4 border-l-slate-700 hover:border-l-teal-500 bg-gradient-to-r from-transparent to-transparent hover:from-white/5 transition group">
-                        <div class="flex items-center gap-6 w-1/4">
-                            <div class="p-3 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">KGV (P/E)</div>
-                                <div class="text-xs text-slate-500">Bewertung</div>
-                            </div>
-                        </div>
-
-                        <!-- Middle: 52-Week Range Visualization -->
-                        <div class="flex-1 px-8 flex flex-col justify-center">
-                            <div class="flex justify-between text-[9px] text-slate-500 mb-1">
-                                <span>Low: 4.2</span>
-                                <span>High: 18.5</span>
-                            </div>
-                            <div class="h-2 w-full bg-slate-800 rounded-full relative">
-                                <!-- The Range -->
-                                <div class="absolute left-0 top-0 bottom-0 right-0 rounded-full bg-gradient-to-r from-teal-900/50 to-slate-800"></div>
-                                <!-- Current Value Marker -->
-                                <div class="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-teal-400 rounded-full shadow-[0_0_10px_#2dd4bf]" style="left: 70%;"></div>
-                            </div>
-                            <div class="text-center text-[9px] text-teal-500 mt-1 font-bold">Historisch Günstig</div>
-                        </div>
-
-                        <div class="flex items-center gap-12 w-1/4 justify-end">
-                            <div class="text-right">
-                                <div class="text-xs text-green-400 font-medium mb-0.5 flex items-center justify-end gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg> -12.4%</div>
-                                <div class="text-[10px] text-slate-600">vs. Vorjahr (Besser)</div>
-                            </div>
-                            <div class="text-right min-w-[120px]">
-                                <div class="text-3xl font-bold text-white tracking-tight font-mono">14.52</div>
-                                <span class="text-teal-400 text-[10px] font-bold">Günstig</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Margins (Sector Comparison Bar) -->
-                    <div class="glass-card rounded-lg p-5 flex items-center justify-between border-l-4 border-l-slate-700 hover:border-l-teal-500 bg-gradient-to-r from-transparent to-transparent hover:from-white/5 transition group">
-                        <div class="flex items-center gap-6 w-1/4">
-                            <div class="p-3 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">Profit Margin</div>
-                                <div class="text-xs text-slate-500">Profitabilität</div>
-                            </div>
-                        </div>
-
-                        <!-- Middle: Sector vs Company -->
-                        <div class="flex-1 px-8 flex flex-col justify-center gap-2">
-                             <div class="flex items-center gap-2">
-                                 <span class="text-[9px] text-slate-500 w-12 text-right">GM</span>
-                                 <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
-                                     <div class="h-full bg-white w-[20%]"></div>
-                                 </div>
-                                 <span class="text-[9px] text-white w-8">1.6%</span>
-                             </div>
-                             <div class="flex items-center gap-2">
-                                 <span class="text-[9px] text-slate-500 w-12 text-right">Sektor</span>
-                                 <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
-                                     <div class="h-full bg-slate-600 w-[60%]"></div>
-                                 </div>
-                                 <span class="text-[9px] text-slate-400 w-8">5.2%</span>
-                             </div>
-                        </div>
-
-                        <div class="flex items-center gap-12 w-1/4 justify-end">
-                            <div class="text-right">
-                                <div class="text-xs text-red-400 font-medium mb-0.5 flex items-center justify-end gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg> -2.1%</div>
-                                <div class="text-[10px] text-slate-600">vs. Vorjahr</div>
-                            </div>
-                            <div class="text-right min-w-[120px]">
-                                <div class="text-3xl font-bold text-white tracking-tight font-mono">1.6%</div>
-                                <span class="text-red-400 text-[10px] font-bold">Low Profitability</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Dividende (Payout Bar) -->
-                    <div class="glass-card rounded-lg p-5 flex items-center justify-between border-l-4 border-l-slate-700 hover:border-l-teal-500 bg-gradient-to-r from-transparent to-transparent hover:from-white/5 transition group">
-                        <div class="flex items-center gap-6 w-1/4">
-                            <div class="p-3 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">Dividend Yield</div>
-                                <div class="text-xs text-slate-500">Rendite</div>
-                            </div>
-                        </div>
-
-                        <!-- Middle: Payout Ratio -->
-                        <div class="flex-1 px-8 flex flex-col justify-center">
-                            <div class="flex justify-between text-[9px] text-slate-500 mb-1">
-                                <span>Payout Ratio: 18%</span>
-                                <span>Safe Limit: 60%</span>
-                            </div>
-                            <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden flex">
-                                <div class="h-full bg-teal-500 w-[18%]"></div> <!-- Payout -->
-                                <div class="h-full bg-slate-700 w-[42%] opacity-30"></div> <!-- Buffer -->
-                            </div>
-                            <div class="text-center text-[9px] text-teal-500 mt-1 font-bold">Sehr sicher gedeckt</div>
-                        </div>
-
-                        <div class="flex items-center gap-12 w-1/4 justify-end">
-                            <div class="text-right">
-                                <div class="text-xs text-green-400 font-medium mb-0.5 flex items-center justify-end gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> +5.2%</div>
-                                <div class="text-[10px] text-slate-600">Growth (5Y)</div>
-                            </div>
-                            <div class="text-right min-w-[120px]">
-                                <div class="text-3xl font-bold text-white tracking-tight font-mono">4.1%</div>
-                                <span class="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded border border-slate-700">18% Payout</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Analyst Rating (Consensus Bar) -->
-                    <div class="glass-card rounded-lg p-5 flex items-center justify-between border-l-4 border-l-slate-700 hover:border-l-teal-500 bg-gradient-to-r from-transparent to-transparent hover:from-white/5 transition group">
-                        <div class="flex items-center gap-6 w-1/4">
-                            <div class="p-3 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">Analyst Rating</div>
-                                <div class="text-xs text-slate-500">Consensus</div>
-                            </div>
-                        </div>
-
-                        <!-- Middle: Buy/Hold/Sell Distribution -->
-                        <div class="flex-1 px-8 flex flex-col justify-center">
-                             <div class="flex h-2 w-full rounded-full overflow-hidden">
-                                 <div class="bg-teal-500 w-[65%]"></div>
-                                 <div class="bg-slate-600 w-[25%]"></div>
-                                 <div class="bg-red-800 w-[10%]"></div>
-                             </div>
-                             <div class="flex justify-between text-[9px] text-slate-500 mt-1">
-                                 <span>14 Buy</span>
-                                 <span>5 Hold</span>
-                                 <span>2 Sell</span>
-                             </div>
-                        </div>
-
-                        <div class="flex items-center gap-12 w-1/4 justify-end">
-                            <div class="text-right">
-                                <div class="text-xs text-slate-400 font-medium mb-0.5">21 Analysten</div>
-                                <div class="text-[10px] text-slate-600">High Confidence</div>
-                            </div>
-                            <div class="text-right min-w-[120px]">
-                                <div class="text-3xl font-bold text-teal-400 tracking-tight">BUY</div>
-                                <span class="text-[10px] text-teal-500/80">Outperform</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </section>
-
-                <!-- 4. DEEP DIVE (Split View) -->
-                <section class="flex flex-col gap-6">
-                    <!-- Financials -->
-                    <div class="glass-card rounded-xl p-6">
-                         <div class="flex justify-between items-center mb-6">
-                             <h3 class="text-sm font-bold text-slate-300">Financials (Est.)</h3>
-                             <div class="flex gap-4 text-xs">
-                                 <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-teal-500"></span> Revenue</div>
-                                 <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-500"></span> Net Income</div>
-                             </div>
-                         </div>
-                         <div class="h-56 flex items-end justify-between gap-4 px-4">
-                             <div class="flex-1 flex flex-col justify-end gap-1 h-full"><div class="w-full bg-teal-500/20 h-[40%] rounded-t"><div class="w-full bg-blue-500 h-[20%] rounded-b opacity-80"></div></div><span class="text-[10px] text-center text-slate-500">2020</span></div>
-                             <div class="flex-1 flex flex-col justify-end gap-1 h-full"><div class="w-full bg-teal-500/20 h-[50%] rounded-t"><div class="w-full bg-blue-500 h-[25%] rounded-b opacity-80"></div></div><span class="text-[10px] text-center text-slate-500">2021</span></div>
-                             <div class="flex-1 flex flex-col justify-end gap-1 h-full"><div class="w-full bg-teal-500/20 h-[60%] rounded-t"><div class="w-full bg-blue-500 h-[30%] rounded-b opacity-80"></div></div><span class="text-[10px] text-center text-slate-500">2022</span></div>
-                             <div class="flex-1 flex flex-col justify-end gap-1 h-full"><div class="w-full bg-teal-500/20 h-[70%] rounded-t"><div class="w-full bg-blue-500 h-[35%] rounded-b opacity-80"></div></div><span class="text-[10px] text-center text-white font-bold">2023</span></div>
-                             <div class="flex-1 flex flex-col justify-end gap-1 h-full"><div class="w-full bg-teal-500/10 h-[80%] rounded-t border-t border-dashed border-teal-500/50"><div class="w-full bg-blue-500/50 h-[40%] rounded-b"></div></div><span class="text-[10px] text-center text-slate-500">2024E</span></div>
-                         </div>
-                    </div>
-
-                    <!-- Sentiment -->
-                    <div class="glass-card rounded-xl p-6 flex flex-col items-center justify-center relative">
-                         <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-4">Sentiment</div>
-                         <div class="relative w-32 h-32 flex items-center justify-center">
-                             <svg class="w-full h-full transform -rotate-90">
-                                 <circle cx="64" cy="64" r="56" stroke="#1e293b" stroke-width="10" fill="none"/>
-                                 <circle cx="64" cy="64" r="56" stroke="#2dd4bf" stroke-width="10" fill="none" stroke-dasharray="351" stroke-dashoffset="90" stroke-linecap="round"/>
-                             </svg>
-                             <div class="absolute text-center">
-                                 <div class="text-2xl font-bold text-white">74%</div>
-                             </div>
-                         </div>
-                         <div class="mt-4 text-center"><div class="text-teal-400 font-bold">Strong Buy</div></div>
-                    </div>
-                </section>
-
-                <!-- 5. STRENGTHS & RISKS -->
-                <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="glass-card rounded-xl p-6">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="p-1.5 bg-green-500/10 rounded-full text-green-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg></div>
-                            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Stärken</h3>
-                        </div>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-2 text-xs text-slate-300"><span class="text-green-400 font-bold">•</span> KGV 14.030535 (Kein PEG)</li>
-                            <li class="flex items-start gap-2 text-xs text-slate-300"><span class="text-green-400 font-bold">•</span> Positive 1J-Performance (43.3%)</li>
-                        </ul>
-                    </div>
-                    <div class="glass-card rounded-xl p-6">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="p-1.5 bg-red-500/10 rounded-full text-red-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg></div>
-                            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Risiken</h3>
-                        </div>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-2 text-xs text-slate-300"><span class="text-red-400 font-bold">•</span> Rückläufiger Umsatz (-0.3%)</li>
-                        </ul>
-                    </div>
-                </section>
-            </div>
-        </div>
+        </section>
     </main>
 
-    <script>
-        const ctx = document.getElementById('mainChart').getContext('2d');
-        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, 'rgba(20, 184, 166, 0.1)'); 
-        gradient.addColorStop(1, 'rgba(20, 184, 166, 0)');
+    <footer class="text-center text-xs text-slate-500 py-6">
+        ValueRadar Terminal v2.0 • Data provided by Yahoo Finance & Custom API
+    </footer>
 
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
-                datasets: [{
-                    label: 'Price',
-                    data: [25, 20, 28, 32, 30, 28, 35, 33, 38, 20, 55, 35, 40, 50, 76],
-                    borderColor: '#2dd4bf', 
-                    backgroundColor: gradient,
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10 } } },
-                    y: { grid: { color: 'rgba(255, 255, 255, 0.03)', borderDash: [4, 4] }, ticks: { color: '#64748b', font: { size: 10 }, callback: v => v } }
-                },
-                interaction: { intersect: false, mode: 'index' }
+    <script>
+        lucide.createIcons();
+
+        /* ---------- MOBILE SETTINGS MENU ---------- */
+        function toggleMobileSettings() {
+            const menu = document.getElementById('mobile-settings-menu');
+            if (menu) menu.classList.toggle('hidden');
+        }
+
+        // Klick außerhalb schließt das Menü
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('mobile-settings-menu');
+            const btn = document.querySelector('button[onclick="toggleMobileSettings()"]');
+
+            if (menu && !menu.classList.contains('hidden')) {
+                if (btn && !btn.contains(event.target) && !menu.contains(event.target)) {
+                    menu.classList.add('hidden');
+                }
             }
+        });
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const body = document.body;
+            const nowDark = html.classList.toggle('dark');
+            body.classList.toggle('light', !nowDark);
+
+            const iconDesk = document.getElementById('theme-icon-desktop');
+            if (iconDesk) iconDesk.setAttribute('data-lucide', nowDark ? 'moon' : 'sun');
+
+            const iconMob = document.getElementById('theme-icon-mobile');
+            if (iconMob) iconMob.setAttribute('data-lucide', nowDark ? 'moon' : 'sun');
+
+            lucide.createIcons();
+        }
+
+        /* ---------- I18N ---------- */
+
+        let currentLang = localStorage.getItem('vr_lang') || 'de';
+
+        const translations = {
+            de: {
+                'header.back': 'Zurück',
+                'header.live': 'Live',
+                'header.scan': 'Scan: Global Undervalued Watchlist',
+                'header.account': 'Account',
+                'header.liveprice': 'Live Price',
+                'region.all': 'Alle',
+                'region.us': 'US',
+                'region.de': 'DE',
+                'region.fav': 'Watchlist',
+                'tab.dashboard': 'Dashboard',
+                'tab.glossary': 'Erklärungen',
+                'watchlist.title': 'Watchlist',
+                'watchlist.subtitle': 'Global Undervalued Stocks',
+                'kpi.pe': 'KGV (PE)',
+                'kpi.peg': 'PEG Ratio',
+                'kpi.mcap': 'Market Cap',
+                'kpi.margin': 'Margins',
+                'kpi.analyst': 'Analyst Rating',
+                'kpi.vrscore': 'VR Score',
+                'chart.title': 'Price Action',
+                'fin.title': 'Financials (Est.)',
+                'fin.revgrowth': 'Revenue Growth',
+                'fin.netmargin': 'Net Margin',
+                'sentiment.title': 'Sentiment',
+                'sentiment.label': 'Strong Buy',
+                'sentiment.subtitle': 'Based on technical & valuation factors',
+                'glossary.title': 'Kennzahlen erklärt',
+                'glossary.pe': 'Kurs-Gewinn-Verhältnis – zeigt, wie viele Jahre der aktuelle Gewinn gebraucht würde, um den Aktienkurs zu „bezahlen“.',
+                'glossary.peg': 'PEG Ratio – PE im Verhältnis zum Gewinnwachstum. Werte unter 1 gelten oft als attraktiv.',
+                'glossary.mcap': 'Marktkapitalisierung = Kurs × Anzahl Aktien. Zeigt die Größe eines Unternehmens an der Börse.',
+                'glossary.revgrowth': 'Revenue Growth – prozentuales Umsatzwachstum zum Vorjahr.',
+                'glossary.netmargin': 'Net Margin – Nettogewinn im Verhältnis zum Umsatz.',
+                'glossary.eps': 'Earnings per Share – Gewinn je Aktie.',
+            },
+            en: {
+                'header.back': 'Back',
+                'header.live': 'Live',
+                'header.scan': 'Scan: Global Undervalued Watchlist',
+                'header.account': 'Account',
+                'header.liveprice': 'Live Price',
+                'region.all': 'All',
+                'region.us': 'US',
+                'region.de': 'DE',
+                'region.fav': 'Watchlist',
+                'tab.dashboard': 'Dashboard',
+                'tab.glossary': 'Glossary',
+                'watchlist.title': 'Watchlist',
+                'watchlist.subtitle': 'Global Undervalued Stocks',
+                'kpi.pe': 'P/E Ratio',
+                'kpi.peg': 'PEG Ratio',
+                'kpi.mcap': 'Market Cap',
+                'kpi.margin': 'Margins',
+                'kpi.analyst': 'Analyst Rating',
+                'kpi.vrscore': 'VR Score',
+                'chart.title': 'Price Action',
+                'fin.title': 'Financials (Est.)',
+                'fin.revgrowth': 'Revenue Growth',
+                'fin.netmargin': 'Net Margin',
+                'sentiment.title': 'Sentiment',
+                'sentiment.label': 'Strong Buy',
+                'sentiment.subtitle': 'Based on technical & valuation factors',
+                'glossary.title': 'Key Metrics Explained',
+                'glossary.pe': 'Price-Earnings ratio – how many years of earnings are “priced in”.',
+                'glossary.peg': 'PEG Ratio – PE relative to earnings growth. Values below 1 are often attractive.',
+                'glossary.mcap': 'Market capitalisation = price × shares outstanding.',
+                'glossary.revgrowth': 'Revenue growth compared to previous year.',
+                'glossary.netmargin': 'Net margin = net income / revenue.',
+                'glossary.eps': 'Earnings per Share – net income per share.',
+            }
+        };
+
+        function applyTranslations() {
+            const t = translations[currentLang] || {};
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.textContent = t[key];
+            });
+
+            const input = document.getElementById('search-input');
+            if (input) {
+                input.placeholder = currentLang === 'de' ? 'Suche Aktie.' : 'Search stock.';
+            }
+        }
+
+        function setLang(lang) {
+            if (!translations[lang]) return;
+            currentLang = lang;
+            localStorage.setItem('vr_lang', lang);
+
+            const deBtn = document.getElementById('btn-lang-de');
+            const enBtn = document.getElementById('btn-lang-en');
+
+            if (deBtn && enBtn) {
+                deBtn.classList.remove('bg-slate-800', 'text-emerald-400');
+                deBtn.classList.add('text-slate-400');
+
+                enBtn.classList.remove('bg-slate-800', 'text-emerald-400');
+                enBtn.classList.add('text-slate-400');
+
+                if (lang === 'de') {
+                    deBtn.classList.add('bg-slate-800', 'text-emerald-400');
+                    deBtn.classList.remove('text-slate-400');
+                } else {
+                    enBtn.classList.add('bg-slate-800', 'text-emerald-400');
+                    enBtn.classList.remove('text-slate-400');
+                }
+            }
+
+            applyTranslations();
+        }
+
+        /* ---------- VIEW SWITCH ---------- */
+
+        function switchView(view) {
+            const dash = document.getElementById('view-dashboard');
+            const gloss = document.getElementById('view-glossary');
+            const tabDash = document.getElementById('tab-dashboard');
+            const tabGloss = document.getElementById('tab-glossary');
+
+            if (view === 'glossary') {
+                dash.classList.add('hidden');
+                gloss.classList.remove('hidden');
+
+                tabDash.classList.remove('bg-slate-800', 'text-emerald-400');
+                tabDash.classList.add('text-slate-400');
+                tabGloss.classList.add('bg-slate-800', 'text-emerald-400');
+                tabGloss.classList.remove('text-slate-400');
+            } else {
+                gloss.classList.add('hidden');
+                dash.classList.remove('hidden');
+
+                tabGloss.classList.remove('bg-slate-800', 'text-emerald-400');
+                tabGloss.classList.add('text-slate-400');
+                tabDash.classList.add('bg-slate-800', 'text-emerald-400');
+                tabDash.classList.remove('text-slate-400');
+            }
+
+            lucide.createIcons();
+        }
+
+        /* ---------- GLOBAL STATE ---------- */
+
+        let fullList = [];
+        let filteredList = [];
+        let currentSymbol = "";
+        let currentPrice = 100;
+        let chart = null;
+        let finChart = null;
+        let gaugeChart = null;
+        let abortController = new AbortController();
+        let currentTimeframe = '1Y';
+        let lastHistoryData = null;
+        let showMA20 = true;
+        let showMA50 = false;
+        let showMA200 = false;
+        let currentChartType = 'line';  // 'line' oder 'candles'
+
+        /* ---------- WATCHLIST (localStorage) ---------- */
+
+        function getFavorites() {
+            try {
+                return JSON.parse(localStorage.getItem('vr_favorites') || '[]');
+            } catch {
+                return [];
+            }
+        }
+
+        function saveFavorites(list) {
+            localStorage.setItem('vr_favorites', JSON.stringify(list));
+        }
+
+        function toggleFavorite(ev, symbol) {
+            ev.stopPropagation();
+            let favs = getFavorites();
+            if (favs.includes(symbol)) {
+                favs = favs.filter(s => s !== symbol);
+            } else {
+                favs.push(symbol);
+            }
+            saveFavorites(favs);
+            renderStockList();
+        }
+
+        async function addSymbolToWatchlist() {
+            let sym = prompt(currentLang === 'de'
+                ? 'Gib das Tickersymbol ein (z.B. AAPL):'
+                : 'Enter ticker symbol (e.g. AAPL):');
+            if (!sym) return;
+            sym = sym.trim().toUpperCase();
+            if (!sym) return;
+
+            if (fullList.some(s => (s.Symbol || s.symbol || '').toUpperCase() === sym)) {
+                alert(currentLang === 'de'
+                    ? 'Symbol ist bereits in der Liste.'
+                    : 'Symbol is already in the list.');
+                return;
+            }
+
+            try {
+                const r = await fetch(`/api/details/${sym}`);
+                const d = await r.json();
+                if (d.error) throw new Error(d.error);
+
+                let region = 'US';
+                if ((d.country || '').includes('Germany')) region = 'DE';
+
+                const newItem = {
+                    Symbol: sym,
+                    Name: d.name || sym,
+                    Region: region,
+                    Price: d.price_now || 0,
+                    Reason: currentLang === 'de' ? 'Manuell hinzugefügt' : 'Added manually'
+                };
+                fullList.push(newItem);
+
+                let favs = getFavorites();
+                if (!favs.includes(sym)) {
+                    favs.push(sym);
+                    saveFavorites(favs);
+                }
+
+                filterStocks('ALL');
+                const idx = filteredList.findIndex(s => (s.Symbol || s.symbol) === sym);
+                if (idx >= 0) selectStock(filteredList[idx], idx);
+            } catch (e) {
+                console.error(e);
+                alert(currentLang === 'de'
+                    ? 'Symbol konnte nicht geladen werden. Prüfe den Ticker.'
+                    : 'Could not load symbol. Please check the ticker.');
+            }
+        }
+
+        /* ---------- HELPERS ---------- */
+
+        function formatNumber(num) {
+            if (num == null) return 'N/A';
+            if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
+            if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+            if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+            return num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+        }
+
+        /* ---------- INITIAL LOAD ---------- */
+
+        fetch('/api/stocks')
+            .then(r => r.json())
+            .then(d => {
+                fullList = d;
+                if (!fullList || fullList.length === 0) {
+                    fullList = [
+                        { Symbol: 'AAPL', Name: 'Apple Inc.', Region: 'US', Price: 175.50 },
+                        { Symbol: 'SAP', Name: 'SAP SE', Region: 'DE', Price: 140.20 },
+                        { Symbol: 'TSLA', Name: 'Tesla Inc.', Region: 'US', Price: 210.00 }
+                    ];
+                }
+                filterStocks('ALL');
+            });
+
+        /* ---------- FILTER FUNCTIONS ---------- */
+
+        function filterDropdown(query) {
+            const activeRegionBtn = document.querySelector('.region-btn.active-region');
+            const currentReg = activeRegionBtn ? activeRegionBtn.dataset.reg : 'ALL';
+
+            let list = fullList;
+
+            if (currentReg === 'FAV') {
+                const favs = getFavorites();
+                list = list.filter(s => favs.includes(s.Symbol || s.symbol));
+            } else if (currentReg !== 'ALL') {
+                list = list.filter(
+                    s => (s.region || s.Region || "US").toUpperCase() === currentReg
+                );
+            }
+
+            if (query) {
+                const lowerQ = query.toLowerCase();
+                list = list.filter(s =>
+                    (s.Name && s.Name.toLowerCase().includes(lowerQ)) ||
+                    (s.Symbol && s.Symbol.toLowerCase().includes(lowerQ))
+                );
+            }
+
+            filteredList = list;
+            renderStockList();
+        }
+
+        function filterStocks(reg) {
+            document.querySelectorAll('.region-btn').forEach(b => {
+                b.classList.remove('active-region');
+            });
+            const btn = document.querySelector(`.region-btn[data-reg="${reg}"]`);
+            if (btn) btn.classList.add('active-region');
+
+            if (reg === 'FAV') {
+                const favs = getFavorites();
+                filteredList = fullList.filter(s => favs.includes(s.Symbol || s.symbol));
+            } else if (reg === 'ALL') {
+                filteredList = fullList;
+            } else {
+                filteredList = fullList.filter(
+                    s => (s.Region || s.region || "US").toUpperCase() === reg
+                );
+            }
+
+            renderStockList();
+        }
+
+        function filterStocksByName(query) {
+            query = (query || "").toLowerCase();
+            const activeRegionBtn = document.querySelector('.region-btn.active-region');
+            const currentReg = activeRegionBtn ? activeRegionBtn.dataset.reg : 'ALL';
+
+            let list = fullList;
+
+            if (currentReg === 'FAV') {
+                const favs = getFavorites();
+                list = list.filter(s => favs.includes(s.Symbol || s.symbol));
+            } else if (currentReg !== 'ALL') {
+                list = list.filter(
+                    s => (s.Region || s.region || "US").toUpperCase() === currentReg
+                );
+            }
+
+            if (query) {
+                list = list.filter(s =>
+                    (s.Name && s.Name.toLowerCase().includes(query)) ||
+                    (s.Symbol && s.Symbol.toLowerCase().includes(query))
+                );
+            }
+
+            filteredList = list;
+            renderStockList();
+        }
+
+        /* ---------- WATCHLIST RENDER ---------- */
+
+        function renderStockList() {
+            const container = document.getElementById('watchlist-container');
+            container.innerHTML = '';
+
+            if (!filteredList || filteredList.length === 0) {
+                container.innerHTML = '<div class="p-4 text-xs text-slate-500 text-center">Keine Einträge gefunden.</div>';
+                document.getElementById('watchlist-count').innerText = '0 Aktien';
+                return;
+            }
+
+            const favs = getFavorites();
+
+            filteredList.forEach((s, idx) => {
+                const symbol = s.Symbol || s.symbol;
+                const isFav = favs.includes(symbol);
+
+                const row = document.createElement('button');
+                row.className = "w-full text-left px-3 py-2.5 hover:bg-slate-900/80 transition flex items-center justify-between gap-3 text-xs border-b border-slate-800/60";
+                row.onclick = () => selectStock(s, idx);
+
+                const left = document.createElement('div');
+                left.className = "min-w-0 flex-1";
+
+                const title = document.createElement('div');
+                title.className = "flex items-center gap-2";
+
+                title.innerHTML = `
+                <button class="p-0.5 rounded-full border border-slate-700 hover:border-emerald-400 transition" onclick="toggleFavorite(event, '${symbol}')">
+                    <i data-lucide="${isFav ? 'star' : 'star'}" class="w-3 h-3 ${isFav ? 'fill-emerald-400 text-emerald-400' : 'text-slate-500'}"></i>
+                </button>
+                <span class="font-semibold text-slate-100 truncate max-w-[150px]">${s.Name || s.name}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-slate-400">${symbol}</span>
+                `;
+
+                const subtitle = document.createElement('div');
+                subtitle.className = "flex items-center gap-2 mt-0.5 text-[10px] text-slate-500";
+                subtitle.innerHTML = `
+                <span class="uppercase tracking-wide">${s.Region || s.region || "US"}</span>
+                <span class="w-1 h-1 rounded-full bg-slate-600"></span>
+                <span>${s.Reason || 'Underpriced'}</span>
+                `;
+
+                left.appendChild(title);
+                left.appendChild(subtitle);
+
+                const right = document.createElement('div');
+                right.className = "text-right flex flex-col items-end gap-0.5";
+
+                const price = parseFloat(s.Price || s.price || 0).toFixed(2);
+                right.innerHTML = `
+                <div class="text-sm font-semibold text-slate-100">$${price}</div>
+                <div class="text-[10px] text-emerald-400 flex items-center gap-1">
+                    <i data-lucide="sparkles" class="w-3 h-3"></i>
+                    <span>Underpriced</span>
+                </div>
+            `;
+
+                row.appendChild(left);
+                row.appendChild(right);
+                container.appendChild(row);
+            });
+
+            document.getElementById('watchlist-count').innerText = `${filteredList.length} Aktien`;
+
+            if (filteredList.length > 0 && !currentSymbol) {
+                selectStock(filteredList[0], 0);
+            }
+
+            lucide.createIcons();
+        }
+
+        /* ---------- STOCK SELECTION + DETAILS ---------- */
+
+        function selectStock(s, idx) {
+            const rows = document.querySelectorAll('#watchlist-container > button');
+            rows.forEach((r, i) => {
+                r.classList.toggle('watch-row-active', i === idx);
+            });
+
+            currentSymbol = s.Symbol || s.symbol;
+            currentPrice = parseFloat(s.Price || s.price || 0);
+
+            document.getElementById('header-name').innerText = s.Name || s.name;
+            document.getElementById('badge-ticker').innerText = currentSymbol;
+            document.getElementById('badge-region').innerText = s.Region || s.region || "US";
+            document.getElementById('header-price').innerText = "$" + parseFloat(currentPrice).toFixed(2);
+            document.getElementById('yahoo-link').href = `https://finance.yahoo.com/quote/${currentSymbol}`;
+
+            let pe = s.kgv || s.pe || s.trailingpe || "N/A";
+            document.getElementById('kpi-pe').innerText = (typeof pe === 'number') ? pe.toFixed(2) : pe;
+
+            let peg = s.peg || s.pgratio || s.pegratio || "N/A";
+            const pegEl = document.getElementById('kpi-peg');
+            pegEl.innerText = peg;
+            const pegNum = parseFloat(peg);
+            if (!isNaN(pegNum)) {
+                if (pegNum < 1) pegEl.className = "text-xl font-bold text-emerald-400";
+                else if (pegNum > 2) pegEl.className = "text-xl font-bold text-rose-400";
+                else pegEl.className = "text-xl font-bold text-yellow-400";
+            } else {
+                pegEl.className = "text-xl font-bold text-white";
+            }
+
+            updateChart(currentTimeframe);
+            loadDetails(currentSymbol);
+            renderFinancialChart();
+            renderGauge(Math.floor(Math.random() * 40) + 60);
+        }
+
+        async function loadDetails(sym) {
+            try {
+                const r = await fetch(`/api/details/${sym}`);
+                const d = await r.json();
+
+                if (d.error) {
+                    console.log("Details error:", d.error);
+                    return;
+                }
+                // ⬇️ Live-Preis aus Backend übernehmen
+                if (d.price_now != null) {
+                    currentPrice = d.price_now;
+                    document.getElementById('header-price').innerText =
+                        "$" + Number(d.price_now).toFixed(2);
+                }
+
+                document.getElementById('header-industry').innerText = d.industry || '-';
+                document.getElementById('header-sector').innerText = d.sector || '-';
+
+                if (d.pe != null) {
+                    const peEl = document.getElementById('kpi-pe');
+                    peEl.innerText = d.pe.toFixed(2);
+                }
+
+                if (d.peg != null) {
+                    const pegEl = document.getElementById('kpi-peg');
+                    const pegNum = d.peg;
+                    pegEl.innerText = pegNum.toFixed(2);
+
+                    if (pegNum < 1) pegEl.className = "text-xl font-bold text-emerald-400";
+                    else if (pegNum > 2) pegEl.className = "text-xl font-bold text-rose-400";
+                    else pegEl.className = "text-xl font-bold text-yellow-400";
+                }
+
+                // Market Cap aus Backend (market_cap)
+                if (d.market_cap != null) {
+                    document.getElementById('kpi-mcap').innerText = formatNumber(d.market_cap);
+                }
+
+                // Profit Margin aus Backend (profit_margin, kommt als Dezimalzahl z.B. 0.185)
+                if (d.profit_margin != null) {
+                    document.getElementById('kpi-margin').innerText =
+                        (d.profit_margin * 100).toFixed(1) + "%";
+                }
+
+
+                const newsEl = document.getElementById('news-list');
+                if (newsEl) {
+                    if (d.news && d.news.length) {
+                        newsEl.innerHTML = d.news.map(n => `
+                    <a href="${n.link}" target="_blank"
+                       class="flex flex-col border-b border-slate-800 pb-3 last:border-0
+                              hover:bg-slate-800/50 p-2 rounded transition group">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-[10px] text-emerald-400 font-bold
+                                         bg-emerald-500/10 px-2 py-0.5 rounded
+                                         border border-emerald-500/20">
+                                ${n.publisher}
+                            </span>
+                            <span class="text-[10px] text-slate-500">${n.date || ''}</span>
+                        </div>
+                        <h4 class="text-sm text-slate-200 group-hover:text-emerald-400
+                                   transition font-medium leading-tight">
+                            ${n.title}
+                        </h4>
+                    </a>
+                `).join('');
+                    } else {
+                        newsEl.innerHTML =
+                            `<div class="text-slate-500 text-sm italic p-2">${currentLang === 'de' ? 'Keine aktuellen Nachrichten.' : 'No current news.'}</div>`;
+                    }
+                }
+
+                const miniPros = document.getElementById('mini-pros-list');
+                if (d.pros && d.pros.length) {
+                    miniPros.innerHTML = d.pros.slice(0, 3)
+                        .map(p => `<li>• ${p}</li>`).join('');
+                } else {
+                    miniPros.innerHTML = '<li>--</li>';
+                }
+
+                const strengthsEl = document.getElementById('strengths-list');
+                const risksEl = document.getElementById('risks-list');
+
+                if (strengthsEl) {
+                    if (d.pros && d.pros.length) {
+                        strengthsEl.innerHTML = d.pros
+                            .map(p => `<li>• ${p}</li>`).join('');
+                    } else {
+                        strengthsEl.innerHTML = `<li class="text-slate-500 text-sm">${currentLang === 'de' ? 'Keine Stärken verfügbar.' : 'No strengths available.'}</li>`;
+                    }
+                }
+
+                if (risksEl) {
+                    if (d.risks && d.risks.length) {
+                        risksEl.innerHTML = d.risks
+                            .map(r => `<li>• ${r}</li>`).join('');
+                    } else {
+                        risksEl.innerHTML = `<li class="text-slate-500 text-sm">${currentLang === 'de' ? 'Keine Risiken verfügbar.' : 'No risks available.'}</li>`;
+                    }
+                }
+
+            } catch (e) {
+                console.log("Details fetch error:", e);
+            }
+        }
+
+        /* ---------- CHARTS ---------- */
+
+        async function updateChart(tf) {
+            currentTimeframe = tf;
+
+            document.querySelectorAll('.tf-btn').forEach(b => {
+                b.classList.remove('active-tf');
+                b.classList.add('text-slate-400', 'hover:bg-slate-800');
+                if (b.innerText === tf) {
+                    b.classList.add('active-tf');
+                    b.classList.remove('text-slate-400', 'hover:bg-slate-800');
+                }
+            });
+
+            if (abortController) abortController.abort();
+            abortController = new AbortController();
+
+            let data = null;
+            try {
+                const r = await fetch(`/api/history/${currentSymbol}/${tf}`, { signal: abortController.signal });
+                const json = await r.json();
+                if (!json.error && json.candle && json.candle.length > 0) {
+                    data = json;
+                } else {
+                    throw new Error("Empty Data");
+                }
+            } catch (e) {
+                if (e.name === 'AbortError') return;
+                console.warn("Nutze Fallback-Chart Daten");
+                data = generateFallbackData(tf, currentPrice);
+            }
+
+            lastHistoryData = data;
+            renderMainChart(lastHistoryData);
+            updateTimeframePerformanceLabel(tf, lastHistoryData);
+        }
+
+        function setActiveTimeframe(tf) {
+            const buttons = document.querySelectorAll('.tf-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active-tf');
+            });
+            const active = document.querySelectorAll('.tf-btn[data-tf="' + tf + '"]');
+            active.forEach(btn => btn.classList.add('active-tf'));
+        }
+
+        function updateTimeframe(tf) {
+            setActiveTimeframe(tf);
+            updateChart(tf);
+        }
+
+        function updateTimeframePerformanceLabel(tf, data) {
+            const el = document.getElementById('tf-perf');
+            if (!el) return;
+
+            if (!data || !data.candle || data.candle.length < 2) {
+                el.textContent = '';
+                el.className = 'text-[11px] text-slate-400 mt-1 font-medium';
+                return;
+            }
+
+            const candles = data.candle;
+            const firstClose = candles[0][4];
+            const lastClose = candles[candles.length - 1][4];
+
+            if (!firstClose || !lastClose || firstClose <= 0) {
+                el.textContent = '';
+                el.className = 'text-[11px] text-slate-400 mt-1 font-medium';
+                return;
+            }
+
+            const perf = (lastClose / firstClose - 1) * 100;
+            const sign = perf > 0 ? '+' : '';
+            const text = `${sign}${perf.toFixed(2)}% (${tf})`;
+
+            el.className = 'text-[11px] mt-1 font-medium';
+
+            if (perf > 0.05) {
+                el.classList.add('text-emerald-400');
+            } else if (perf < -0.05) {
+                el.classList.add('text-rose-400');
+            } else {
+                el.classList.add('text-slate-400');
+            }
+
+            el.textContent = text;
+        }
+
+        function renderMainChart(d) {
+            if (!d || !d.candle) return;
+
+            const candleSeries = d.candle.map(x => ({
+                x: x[0],
+                y: [x[1], x[2], x[3], x[4]]  // O, H, L, C
+            }));
+
+            const lineSeries = d.candle.map(x => ({
+                x: x[0],
+                y: x[4]  // Close
+            }));
+
+            const series = [];
+
+            if (currentChartType === 'candles') {
+                series.push({
+                    name: 'Price',
+                    type: 'candlestick',
+                    data: candleSeries
+                });
+            } else {
+                series.push({
+                    name: 'Price',
+                    type: 'line',
+                    data: lineSeries
+                });
+            }
+
+            if (showMA20 && d.ma20 && d.ma20.length) {
+                series.push({ name: 'MA 20', type: 'line', data: d.ma20 });
+            }
+            if (showMA50 && d.ma50 && d.ma50.length) {
+                series.push({ name: 'MA 50', type: 'line', data: d.ma50 });
+            }
+            if (showMA200 && d.ma200 && d.ma200.length) {
+                series.push({ name: 'MA 200', type: 'line', data: d.ma200 });
+            }
+
+            const isCandles = (currentChartType === 'candles');
+
+            const options = {
+                chart: {
+                    type: isCandles ? 'candlestick' : 'line',
+                    height: '100%',
+                    fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont',
+                    toolbar: { show: false },
+                    background: 'transparent',
+                    animations: { enabled: false }
+                },
+                theme: { mode: 'dark' },
+                series: series,
+                colors: ['#10b981', '#3b82f6', '#f97316', '#e11d48'],
+                stroke: {
+                    curve: isCandles ? 'straight' : 'smooth',
+                    width: isCandles ? 1 : 2
+                },
+                plotOptions: isCandles ? {
+                    candlestick: {
+                        colors: {
+                            upward: '#10b981',
+                            downward: '#ef4444'
+                        },
+                        wick: {
+                            useFillColor: true
+                        }
+                    }
+                } : {},
+                dataLabels: { enabled: false },
+                xaxis: {
+                    type: 'datetime',
+                    axisBorder: { show: false },
+                    axisTicks: { show: false },
+                    labels: {
+                        style: {
+                            colors: '#475569',
+                            fontSize: '10px',
+                            fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont'
+                        }
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        formatter: (v) => v.toFixed(2),
+                        style: {
+                            colors: '#475569',
+                            fontSize: '10px',
+                            fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont'
+                        },
+                        offsetX: -6
+                    }
+                },
+                grid: {
+                    borderColor: '#0f172a',
+                    strokeDashArray: 2,
+                    padding: { top: 0, right: 4, bottom: 0, left: 4 }
+                },
+                tooltip: { theme: 'dark' },
+                legend: { show: false }
+            };
+
+
+            if (chart) chart.destroy();
+            chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+        }
+
+        function updateMAButtons() {
+            document.querySelectorAll('.ma-btn').forEach(btn => {
+                const ma = btn.dataset.ma;
+                let isActive = false;
+                if (ma === '20') isActive = showMA20;
+                if (ma === '50') isActive = showMA50;
+                if (ma === '200') isActive = showMA200;
+
+                if (isActive) {
+                    btn.classList.add('active-tf');
+                    btn.classList.remove('text-slate-400', 'hover:bg-slate-800');
+                } else {
+                    btn.classList.remove('active-tf');
+                    btn.classList.add('text-slate-400', 'hover:bg-slate-800');
+                }
+            });
+        }
+
+        function toggleMA(len) {
+            if (len === '20') showMA20 = !showMA20;
+            if (len === '50') showMA50 = !showMA50;
+            if (len === '200') showMA200 = !showMA200;
+
+            updateMAButtons();
+
+            if (lastHistoryData) {
+                renderMainChart(lastHistoryData);
+            }
+        }
+
+        // NEW: Chart-Type Buttons (Line / Candles)
+        function updateChartTypeButtons() {
+            document.querySelectorAll('.charttype-btn').forEach(btn => {
+                const t = btn.dataset.ctype;
+                if (t === currentChartType) {
+                    btn.classList.add('active-tf');
+                    btn.classList.remove('text-slate-400', 'hover:bg-slate-800');
+                } else {
+                    btn.classList.remove('active-tf');
+                    btn.classList.add('text-slate-400', 'hover:bg-slate-800');
+                }
+            });
+        }
+
+        function setChartType(type) {
+            currentChartType = type;
+            updateChartTypeButtons();
+            if (lastHistoryData) {
+                renderMainChart(lastHistoryData);
+            }
+        }
+
+        function renderFinancialChart() {
+            const options = {
+                chart: {
+                    type: 'bar',
+                    height: 200,
+                    toolbar: { show: false },
+                    background: 'transparent',
+                    stacked: true
+                },
+                theme: { mode: 'dark' },
+                series: [
+                    { name: 'Revenue', data: [10, 12, 14, 13, 15] },
+                    { name: 'Net Income', data: [2, 3, 4, 3, 5] }
+                ],
+                plotOptions: {
+                    bar: {
+                        borderRadius: 4,
+                        columnWidth: '45%'
+                    }
+                },
+                dataLabels: { enabled: false },
+                xaxis: {
+                    categories: ['2020', '2021', '2022', '2023', '2024E'],
+                    labels: {
+                        style: { colors: '#64748b', fontSize: '11px' }
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        style: { colors: '#64748b', fontSize: '11px' }
+                    }
+                },
+                colors: ['#22c55e', '#0ea5e9'],
+                grid: { borderColor: '#1e293b', strokeDashArray: 3 },
+                legend: { show: false },
+                tooltip: { theme: 'dark' }
+            };
+
+            if (finChart) finChart.destroy();
+            finChart = new ApexCharts(document.querySelector("#fin-chart"), options);
+            finChart.render();
+        }
+
+        function renderGauge(val) {
+            const options = {
+                chart: {
+                    height: 200,
+                    type: 'radialBar',
+                    toolbar: { show: false },
+                    background: 'transparent'
+                },
+                series: [val],
+                plotOptions: {
+                    radialBar: {
+                        startAngle: -135,
+                        endAngle: 135,
+                        hollow: {
+                            size: '60%',
+                            background: 'transparent'
+                        },
+                        track: {
+                            background: '#020617',
+                            strokeWidth: '100%'
+                        },
+                        dataLabels: {
+                            name: {
+                                show: true,
+                                color: '#94a3b8',
+                                fontSize: '11px',
+                                offsetY: 40
+                            },
+                            value: {
+                                formatter: function (val) {
+                                    return parseInt(val) + "%";
+                                },
+                                color: '#e5e7eb',
+                                fontSize: '24px',
+                                fontWeight: 700,
+                                offsetY: -10
+                            }
+                        }
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'dark',
+                        type: 'horizontal',
+                        shadeIntensity: 0.5,
+                        gradientToColors: ['#22c55e', '#0ea5e9'],
+                        inverseColors: false,
+                        opacityFrom: 1,
+                        opacityTo: 1,
+                        stops: [0, 50, 100]
+                    }
+                },
+                stroke: {
+                    lineCap: 'round'
+                },
+                labels: ['Score']
+            };
+            if (gaugeChart) gaugeChart.destroy();
+            gaugeChart = new ApexCharts(document.querySelector("#gauge-chart"), options);
+            gaugeChart.render();
+        }
+
+        function generateFallbackData(tf, price) {
+            let points = 50;
+            let now = new Date().getTime();
+            let candles = [];
+            let p = price;
+
+            for (let i = 0; i < points; i++) {
+                candles.unshift([now - (i * 86400000), p, p * (1.01), p * (0.99), p]);
+                p = p * (1 + (Math.random() - 0.5) * 0.02);
+            }
+
+            return {
+                candle: candles
+            };
+        }
+
+        /* ---------- DOM READY ---------- */
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setLang(currentLang);
+            setActiveTimeframe('1Y');
+            updateMAButtons();
+            updateChartTypeButtons();
+
+            const nameSpan = document.getElementById('account-name');
         });
     </script>
 </body>
+
 </html>
