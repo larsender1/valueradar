@@ -2395,7 +2395,9 @@
                     const growth = (d.revenue_growth * 100).toFixed(1);
                     const el = document.getElementById('val-growth');
                     el.innerText = (growth > 0 ? "+" : "") + growth + "%";
-                    el.className = growth > 0 ? "text-2xl font-bold text-white tracking-tight" : "text-2xl font-bold text-red-400 tracking-tight";
+                    el.className = growth > 0
+                        ? "text-3xl lg:text-4xl font-bold text-white tracking-tight leading-none"
+                        : "text-3xl lg:text-4xl font-bold text-red-400 tracking-tight leading-none";
 
                     const badge = document.getElementById('val-growth-badge');
                     badge.innerText = growth > 0 ? "Growing" : "Declining";
