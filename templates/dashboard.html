@@ -490,11 +490,100 @@
                         </ul>
                     </div>
                 </section>
-
-                <div class="text-center text-[10px] text-slate-600 pb-4" data-i18n="label-disclaimer">
-                    Data provided for informational purposes only. Not financial advice.
-                </div>
             </div>
+            </section>
+
+            <!-- Extra Fundamentalkennzahlen -->
+            <section class="glass-card rounded-xl p-6 mt-4">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-[0.25em] mb-4">
+                    Zusätzliche Kennzahlen
+                </h3>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-xs">
+                    <!-- Beta -->
+                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
+                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Beta</div>
+                        <div id="kpi-beta" class="text-sm font-semibold text-slate-100">...</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Volatilität vs. Markt</div>
+                    </div>
+
+                    <!-- Debt / Equity -->
+                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
+                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Debt /
+                            Equity</div>
+                        <div id="kpi-de" class="text-sm font-semibold text-slate-100">...</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Verschuldungsgrad</div>
+                    </div>
+
+                    <!-- ROE -->
+                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
+                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">ROE</div>
+                        <div id="kpi-roe" class="text-sm font-semibold text-slate-100">...</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Eigenkapitalrendite</div>
+                    </div>
+
+                    <!-- ROIC -->
+                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
+                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">ROIC</div>
+                        <div id="kpi-roic" class="text-sm font-semibold text-slate-100">...</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Rendite auf eingesetztes Kapital</div>
+                    </div>
+
+                    <!-- EV / EBITDA -->
+                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
+                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">EV / EBITDA
+                        </div>
+                        <div id="kpi-ev-ebitda" class="text-sm font-semibold text-slate-100">...</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Bewertung im Branchenvergleich</div>
+                    </div>
+
+                    <!-- EV / Sales -->
+                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
+                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">EV / Sales
+                        </div>
+                        <div id="kpi-ev-sales" class="text-sm font-semibold text-slate-100">...</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Bewertung nach Umsatz</div>
+                    </div>
+
+                    <!-- Current Ratio -->
+                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
+                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Current
+                            Ratio</div>
+                        <div id="kpi-current" class="text-sm font-semibold text-slate-100">...</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Kurzfristige Liquidität</div>
+                    </div>
+
+                    <!-- Quick Ratio -->
+                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
+                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Quick Ratio
+                        </div>
+                        <div id="kpi-quick" class="text-sm font-semibold text-slate-100">...</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Strengere Liquidität</div>
+                    </div>
+
+                    <!-- Free Cash Flow -->
+                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
+                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Free Cash
+                            Flow</div>
+                        <div id="kpi-fcf" class="text-sm font-semibold text-slate-100">...</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Nach Investitionen verfügbar</div>
+                    </div>
+
+                    <!-- Payout Ratio -->
+                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
+                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Payout
+                            Ratio</div>
+                        <div id="kpi-payout" class="text-sm font-semibold text-slate-100">...</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Dividende vs. Gewinn</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="text-center text-[10px] text-slate-600 pb-4">
+                Data provided for informational purposes only. Not financial advice.
+            </div>
+
+        </div>
         </div>
     </main>
 
@@ -817,6 +906,18 @@
             document.getElementById('strengths-list').innerHTML = '<li class="text-xs text-slate-500">Loading...</li>';
             document.getElementById('risks-list').innerHTML = '<li class="text-xs text-slate-500">Loading...</li>';
 
+            // Reset Extra-KPIs
+            const extraIds = [
+                'kpi-beta', 'kpi-de', 'kpi-roe', 'kpi-roic',
+                'kpi-ev-ebitda', 'kpi-ev-sales',
+                'kpi-current', 'kpi-quick',
+                'kpi-fcf', 'kpi-payout'
+            ];
+            extraIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = '...';
+            });
+
             updateChart(currentTimeframe);
             loadDetails(currentSymbol);
         }
@@ -900,10 +1001,45 @@
                     document.getElementById('growth-bar').style.width = "0%";
                 }
 
+                // --- Extra KPIs unten ---
+                const fmt = (v, ddec = 2) => (v != null ? v.toFixed(ddec) : "N/A");
+
+                document.getElementById('kpi-beta').innerText =
+                    d.beta != null ? d.beta.toFixed(2) : "N/A";
+
+                document.getElementById('kpi-de').innerText =
+                    d.debt_to_equity != null ? d.debt_to_equity.toFixed(1) : "N/A";
+
+                document.getElementById('kpi-roe').innerText =
+                    d.roe != null ? (d.roe * 100).toFixed(1) + "%" : "N/A";
+
+                document.getElementById('kpi-roic').innerText =
+                    d.roic != null ? (d.roic * 100).toFixed(1) + "%" : "N/A";
+
+                document.getElementById('kpi-ev-ebitda').innerText =
+                    d.ev_to_ebitda != null ? d.ev_to_ebitda.toFixed(1) : "N/A";
+
+                document.getElementById('kpi-ev-sales').innerText =
+                    d.ev_to_sales != null ? d.ev_to_sales.toFixed(1) : "N/A";
+
+                document.getElementById('kpi-current').innerText =
+                    d.current_ratio != null ? d.current_ratio.toFixed(2) : "N/A";
+
+                document.getElementById('kpi-quick').innerText =
+                    d.quick_ratio != null ? d.quick_ratio.toFixed(2) : "N/A";
+
+                document.getElementById('kpi-fcf').innerText =
+                    d.free_cash_flow != null ? "$" + formatNumber(d.free_cash_flow) : "N/A";
+
+                document.getElementById('kpi-payout').innerText =
+                    d.payout_ratio != null ? (d.payout_ratio * 100).toFixed(1) + "%" : "N/A";
+
+
                 // Lists & News
                 updateList('strengths-list', d.pros);
                 updateList('risks-list', d.risks);
                 renderNews(d.news);
+
 
                 // VR Score (simple heuristic)
                 let score = 50;
