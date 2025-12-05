@@ -498,129 +498,147 @@
 
                 <!-- Beta -->
                 <div
-                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-slate-800 rounded-lg text-slate-400">
-                            <i data-lucide="activity" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                Beta
-                            </div>
-                            <div class="text-[10px] text-slate-500">
-                                Volatilität vs. Markt
+                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                    <div class="md:w-1/2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="activity" class="w-5 h-5"></i>
                             </div>
                         </div>
+
+                        <div
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            Beta
+                        </div>
+
+                        <div class="text-[10px] text-slate-500 mb-1">Volatilität vs. Markt</div>
+
+                        <div id="kpi-beta" class="text-2xl font-bold text-white tracking-tight">--</div>
                     </div>
-                    <div class="text-right">
-                        <div id="kpi-beta" class="text-xl font-bold text-white">--</div>
-                    </div>
+
                 </div>
+
 
                 <!-- Debt / Equity -->
                 <div
-                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-slate-800 rounded-lg text-slate-400">
-                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                Debt / Equity
-                            </div>
-                            <div class="text-[10px] text-slate-500">
-                                Verschuldungsgrad
+                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                    <div class="md:w-1/2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
                             </div>
                         </div>
+
+                        <div
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            Debt / Equity
+                        </div>
+
+                        <div class="text-[10px] text-slate-500 mb-1">Verschuldungsgrad</div>
+
+                        <div id="kpi-de" class="text-2xl font-bold text-white tracking-tight">--</div>
                     </div>
-                    <div class="text-right">
-                        <div id="kpi-de" class="text-xl font-bold text-white">--</div>
-                    </div>
+
                 </div>
+
 
                 <!-- ROE -->
                 <div
-                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-slate-800 rounded-lg text-slate-400">
-                            <i data-lucide="pie-chart" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                ROE
-                            </div>
-                            <div class="text-[10px] text-slate-500">
-                                Eigenkapitalrendite
+                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                    <div class="md:w-1/2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="pie-chart" class="w-5 h-5"></i>
                             </div>
                         </div>
+
+                        <div
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            ROE
+                        </div>
+
+                        <div class="text-[10px] text-slate-500 mb-1">Eigenkapitalrendite</div>
+
+                        <div id="kpi-roe" class="text-2xl font-bold text-white tracking-tight">--</div>
                     </div>
-                    <div class="text-right">
-                        <div id="kpi-roe" class="text-xl font-bold text-white">--</div>
-                    </div>
+
                 </div>
+
 
                 <!-- ROIC -->
                 <div
-                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-slate-800 rounded-lg text-slate-400">
-                            <i data-lucide="trending-up" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                ROIC
-                            </div>
-                            <div class="text-[10px] text-slate-500">
-                                Rendite auf eingesetztes Kapital
+                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                    <div class="md:w-1/2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="trending-up" class="w-5 h-5"></i>
                             </div>
                         </div>
+
+                        <div
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            ROIC
+                        </div>
+
+                        <div class="text-[10px] text-slate-500 mb-1">Rendite auf eingesetztes Kapital</div>
+
+                        <div id="kpi-roic" class="text-2xl font-bold text-white tracking-tight">--</div>
                     </div>
-                    <div class="text-right">
-                        <div id="kpi-roic" class="text-xl font-bold text-white">--</div>
-                    </div>
+
                 </div>
+
 
                 <!-- EV / EBITDA -->
                 <div
-                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-slate-800 rounded-lg text-slate-400">
-                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                EV / EBITDA
-                            </div>
-                            <div class="text-[10px] text-slate-500">
-                                Bewertung im Branchenvergleich
+                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                    <div class="md:w-1/2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
                             </div>
                         </div>
+
+                        <div
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            EV / EBITDA
+                        </div>
+
+                        <div class="text-[10px] text-slate-500 mb-1">Bewertung im Branchenvergleich</div>
+
+                        <div id="kpi-ev-ebitda" class="text-2xl font-bold text-white tracking-tight">--</div>
                     </div>
-                    <div class="text-right">
-                        <div id="kpi-ev-ebitda" class="text-xl font-bold text-white">--</div>
-                    </div>
+
                 </div>
+
 
                 <!-- EV / Sales -->
                 <div
-                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-slate-800 rounded-lg text-slate-400">
-                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                EV / Sales
-                            </div>
-                            <div class="text-[10px] text-slate-500">
-                                Bewertung nach Umsatz
+                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                    <div class="md:w-1/2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="bar-chart" class="w-5 h-5"></i>
                             </div>
                         </div>
+
+                        <div
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            EV / Sales
+                        </div>
+
+                        <div class="text-[10px] text-slate-500 mb-1">Bewertung nach Umsatz</div>
+
+                        <div id="kpi-ev-sales" class="text-2xl font-bold text-white tracking-tight">--</div>
                     </div>
-                    <div class="text-right">
-                        <div id="kpi-ev-sales" class="text-xl font-bold text-white">--</div>
-                    </div>
+
                 </div>
+
 
                 <!-- Current Ratio -->
                 <div
@@ -645,74 +663,78 @@
 
                 <!-- Quick Ratio -->
                 <div
-                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-slate-800 rounded-lg text-slate-400">
-                            <i data-lucide="zap" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                Quick Ratio
-                            </div>
-                            <div class="text-[10px] text-slate-500">
-                                Strengere Liquidität
+                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                    <div class="md:w-1/2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="zap" class="w-5 h-5"></i>
                             </div>
                         </div>
+
+                        <div
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            Quick Ratio
+                        </div>
+
+                        <div class="text-[10px] text-slate-500 mb-1">Strengere Liquidität</div>
+
+                        <div id="kpi-quick" class="text-2xl font-bold text-white tracking-tight">--</div>
                     </div>
-                    <div class="text-right">
-                        <div id="kpi-quick" class="text-xl font-bold text-white">--</div>
-                    </div>
+
                 </div>
 
                 <!-- Free Cash Flow -->
                 <div
-                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-slate-800 rounded-lg text-slate-400">
-                            <i data-lucide="dollar-sign" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                Free Cash Flow
-                            </div>
-                            <div class="text-[10px] text-slate-500">
-                                Nach Investitionen verfügbar
+                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                    <div class="md:w-1/2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
                             </div>
                         </div>
+
+                        <div
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            Free Cash Flow
+                        </div>
+
+                        <div class="text-[10px] text-slate-500 mb-1">Nach Investitionen verfügbar</div>
+
+                        <div id="kpi-fcf" class="text-2xl font-bold text-white tracking-tight">--</div>
                     </div>
-                    <div class="text-right">
-                        <div id="kpi-fcf" class="text-xl font-bold text-white">--</div>
-                    </div>
+
                 </div>
 
                 <!-- Payout Ratio -->
                 <div
-                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-slate-800 rounded-lg text-slate-400">
-                            <i data-lucide="percent" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                Payout Ratio
-                            </div>
-                            <div class="text-[10px] text-slate-500">
-                                Dividende vs. Gewinn
+                    class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                    <div class="md:w-1/2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="percent" class="w-5 h-5"></i>
                             </div>
                         </div>
+
+                        <div
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            Payout Ratio
+                        </div>
+
+                        <div class="text-[10px] text-slate-500 mb-1">Dividende vs. Gewinn</div>
+
+                        <div id="kpi-payout" class="text-2xl font-bold text-white tracking-tight">--</div>
                     </div>
-                    <div class="text-right">
-                        <div id="kpi-payout" class="text-xl font-bold text-white">--</div>
-                    </div>
+
                 </div>
 
-            </section>
 
 
-
-            <div class="text-center text-[10px] text-slate-600 pb-4">
-                Data provided for informational purposes only. Not financial advice.
-            </div>
+                <div class="text-center text-[10px] text-slate-600 pb-4">
+                    Data provided for informational purposes only. Not financial advice.
+                </div>
 
         </div>
         </div>
