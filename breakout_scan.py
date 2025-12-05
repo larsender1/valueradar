@@ -1,385 +1,264 @@
 import yfinance as yf
 import pandas as pd
-import concurrent.futures
-import warnings
-import pandas_ta as ta
 import requests
+import numpy as np
+import concurrent.futures
+from io import StringIO
+import time
 
-# FutureWarnings unterdrücken
-warnings.filterwarnings("ignore", category=FutureWarning)
+# ==============================================================================
+# KONFIGURATION: Generalisiertes Quantitatives Breakout-Modell (GQBM)
+# ==============================================================================
+# Basierend auf - Gewichtung der Dimensionen
+SCORE_THRESHOLD = 70      # Ab diesem Score landet die Aktie auf der Liste
+MAX_WORKERS = 10          # Anzahl der parallelen Threads (nicht zu hoch setzen wegen API-Limit)
 
-# ==========================================
-# KONFIGURATION
-# ==========================================
-MAX_WORKERS = 15
-MIN_BARS = 150
-MIN_SCORE_TO_SAVE = 80
+# Gewichtung (Max 100 Punkte)
+W_TREND = 20    # Trend-Struktur (EMA Stacking)
+W_VOLAT = 20    # Volatilität (Bollinger Squeeze)
+W_MOMENT = 15   # Momentum (RSI Regime)
+W_VOLUME = 25   # Volumen (RVol)
+W_PATTERN = 20  # Muster (Nähe zum High / Konsolidierung)
 
-
-# ==========================================
-# 1. DATENQUELLEN (REGIONEN)
-# ==========================================
-
-def get_us_watchlist():
-    print("Lade US High-Beta / Growth-Watchlist...")
-    tickers = [
-        "AAPL", "MSFT", "NVDA", "AMZN", "META", "GOOGL", "TSLA",
-        "PLTR", "NET", "SNOW", "UBER",
-        "CELH", "ELF", "ONON", "IOT",
-        "AVAV", "APP", "ARM", "SHOP",
-        "MSTR", "COIN", "RIOT", "MARA",
-    ]
-    tickers = sorted(set(tickers))
-    print(f"-> {len(tickers)} US-Watchlist-Aktien bereit.")
-    return tickers
-
+# ==============================================================================
+# 1. DATENQUELLEN (REGIORNEN: US, EU, ASIEN)
+# ==============================================================================
 
 def get_sp500_tickers():
-    print("Lade S&P 500 (USA)...")
-    url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+    """Lade S&P 500 (USA)"""
     try:
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-        }
-        html = requests.get(url, headers=headers, timeout=10).text
-        tables = pd.read_html(html)
-
-        df = None
-        for tbl in tables:
-            if "Symbol" in tbl.columns:
-                df = tbl
-                break
-
-        if df is None:
-            print("[WARN] Konnte S&P 500 Tabelle nicht finden.")
-            return []
-
-        tickers = df["Symbol"].astype(str).str.replace(".", "-", regex=False).tolist()
-        tickers = sorted(set(tickers))
-        print(f"-> {len(tickers)} S&P 500 Aktien bereit.")
-        return tickers
-
-    except Exception as e:
-        print(f"[ERROR] S&P 500 Laden: {e}")
+        url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
+        tables = pd.read_html(url)
+        df = tables[0]
+        tickers = df['Symbol'].str.replace('.', '-', regex=False).tolist()
+        return [(t, "US") for t in tickers]
+    except:
         return []
 
-
-def get_dax_tickers():
-    print("Lade DAX 40 (Deutschland)...")
-    dax = [
-        "ADS.DE", "AIR.DE", "ALV.DE", "BAS.DE", "BAYN.DE", "BEI.DE", "BMW.DE", "BNR.DE",
-        "CBK.DE", "CON.DE", "1COV.DE", "DTG.DE", "DBK.DE", "DB1.DE", "DHL.DE", "DTE.DE",
-        "EOAN.DE", "FRE.DE", "HNR1.DE", "HEI.DE", "HEN3.DE", "IFX.DE", "MBG.DE", "MRK.DE",
-        "MTX.DE", "MUV2.DE", "PUM.DE", "QIA.DE", "RWE.DE", "SAP.DE", "SRT3.DE", "SIE.DE",
-        "ENR.DE", "SY1.DE", "VOW3.DE", "VNA.DE", "ZAL.DE", "SHL.DE", "HLAG.DE", "RHM.DE",
-    ]
-    dax = sorted(set(dax))
-    print(f"-> {len(dax)} DE-Aktien bereit.")
-    return dax
-
-
 def get_euro_tickers():
-    print("Lade EURO STOXX 50 (Europa)...")
-    euro = [
-        "ASML.AS", "MC.PA", "SAP.DE", "PRX.AS", "SIE.DE", "TTE.PA", "SAN.MC", "OR.PA",
-        "ALV.DE", "AIR.PA", "IBE.MC", "RMS.PA", "SU.PA", "AI.PA", "DTE.DE", "BNP.PA",
-        "ABI.BR", "ITX.MC", "VOW3.DE", "BAYN.DE", "BMW.DE", "INGA.AS", "BAS.DE", "MBG.DE",
-        "KER.PA", "AD.AS", "CS.PA", "SAF.PA", "MUV2.DE", "ENEL.MI", "ISP.MI", "ENI.MI",
-        "STLAM.MI", "RACE.MI", "ORA.PA", "DG.PA", "BN.PA", "CAP.PA", "NOKIA.HE", "AH.AS",
-        "UNA.AS", "PHIA.AS", "HEIA.AS", "KNEBV.HE", "BBVA.MC", "CRH.L",
+    """Lade wichtige Euro-Werte (Auswahl)"""
+    # Manuelle Auswahl starker EU-Werte + Euro Stoxx 50 Vertreter
+    tickers = [
+        "ASML.AS", "MC.PA", "SAP.DE", "SIE.DE", "AIR.PA", "RMS.PA", "OR.PA",
+        "ITX.MC", "TTE.PA", "IBE.MC", "ALV.DE", "DTE.DE", "SU.PA", "MBG.DE",
+        "BMW.DE", "VOW3.DE", "BAS.DE", "ADYEN.AS", "PRX.AS", "ABI.BR",
+        "EL.PA", "KER.PA", "BNP.PA", "SAN.MC", "BBVA.MC", "CS.PA", "RI.PA",
+        "RACE.MI", "STLAM.MI", "ENEL.MI", "ISP.MI", "ZAL.DE", "HFG.DE"
     ]
-    euro = sorted(set(euro))
-    print(f"-> {len(euro)} EU-Aktien bereit.")
-    return euro
-
+    return [(t, "EU") for t in tickers]
 
 def get_asia_tickers():
-    print("Lade Asien High-Beta / Tech / EV...")
-    asia = [
-        "9984.T", "6758.T", "7203.T", "6861.T", "7974.T",
-        "005930.KS", "000660.KS", "035420.KS", "035720.KS",
-        "0700.HK", "9988.HK", "3690.HK", "9618.HK", "1211.HK", "2318.HK",
-        "TSM", "NIO", "LI", "XPEV",
+    """Lade Asien (Japan & Hong Kong Tech/Growth Auswahl)"""
+    # Fokus auf Liquide Werte aus Nikkei 225 und Hang Seng
+    tickers = [
+        # Japan (.T)
+        "7203.T", # Toyota
+        "6758.T", # Sony
+        "8035.T", # Tokyo Electron (Semi)
+        "9984.T", # SoftBank Group
+        "6861.T", # Keyence (Automation)
+        "6920.T", # Lasertec (Semi)
+        "7974.T", # Nintendo
+        "6501.T", # Hitachi
+        "4063.T", # Shin-Etsu Chemical
+        "7741.T", # HOYA
+        # Hong Kong (.HK)
+        "0700.HK", # Tencent
+        "9988.HK", # Alibaba
+        "3690.HK", # Meituan
+        "1810.HK", # Xiaomi
+        "1211.HK", # BYD
+        "0981.HK", # SMIC (Semi)
+        "9618.HK", # JD.com
+        "2015.HK", # Li Auto
     ]
-    asia = sorted(set(asia))
-    print(f"-> {len(asia)} ASIA-Aktien bereit.")
-    return asia
+    return [(t, "ASIA") for t in tickers]
 
+# ==============================================================================
+# 2. TECHNISCHE INDIKATOREN (HELFER)
+# ==============================================================================
 
-# ==========================================
-# TECHNISCHE INDIKATOREN
-# ==========================================
-
-def compute_rsi(series: pd.Series, period: int = 14) -> pd.Series:
+def calculate_rsi(series, period=14):
     delta = series.diff()
-    gain = delta.clip(lower=0)
-    loss = -delta.clip(upper=0)
-
-    avg_gain = gain.rolling(period).mean()
-    avg_loss = loss.rolling(period).mean()
-
-    rs = avg_gain / avg_loss
+    gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
+    rs = gain / loss
     return 100 - (100 / (1 + rs))
 
-
-def compute_indicators(df: pd.DataFrame) -> pd.DataFrame:
-    if "Close" not in df or "Volume" not in df:
-        return df
-
-    close = df["Close"]
-    vol = df["Volume"]
-
-    # Stabile EMA-Berechnung über Preisreihe
-    df["ema10"] = ta.ema(close, length=10)
-    df["ema20"] = ta.ema(close, length=20)
-    df["sma50"] = ta.sma(close, length=50)
-    df["sma200"] = ta.sma(close, length=200)
-
-    df["rsi14"] = compute_rsi(close, 14)
-
-    # Bollinger Band Breite
-    ma20 = close.rolling(20).mean()
-    std20 = close.rolling(20).std()
-    upper = ma20 + 2 * std20
-    lower = ma20 - 2 * std20
-    df["bb_width"] = (upper - lower) / close
-
-    df["vol_50d"] = vol.rolling(50).mean()
-    df["rvol"] = vol / df["vol_50d"]
-
-    df["high_252"] = close.rolling(252, min_periods=50).max()
-
+def calculate_indicators(df):
+    if len(df) < 200: return None
+    
+    # Gleitende Durchschnitte für EMA Stacking 
+    df['EMA_10'] = df['Close'].ewm(span=10, adjust=False).mean()
+    df['EMA_20'] = df['Close'].ewm(span=20, adjust=False).mean()
+    df['SMA_50'] = df['Close'].rolling(window=50).mean()
+    df['SMA_200'] = df['Close'].rolling(window=200).mean()
+    
+    # Bollinger Bänder für Squeeze 
+    df['BB_Mid'] = df['Close'].rolling(window=20).mean()
+    df['BB_Std'] = df['Close'].rolling(window=20).std()
+    df['BB_Up'] = df['BB_Mid'] + (2 * df['BB_Std'])
+    df['BB_Low'] = df['BB_Mid'] - (2 * df['BB_Std'])
+    # Bandwidth: Wie eng ziehen sich die Bänder zusammen?
+    df['BBW'] = (df['BB_Up'] - df['BB_Low']) / df['BB_Mid']
+    
+    # RSI 
+    df['RSI'] = calculate_rsi(df['Close'])
+    
+    # Volumen Durchschnitt (50 Tage) für RVol 
+    df['Vol_SMA50'] = df['Volume'].rolling(window=50).mean()
+    
     return df
 
+# ==============================================================================
+# 3. DER ANALYST (GQBM LOGIK)
+# ==============================================================================
 
-# ==========================================
-# BREAKOUT-SCORE
-# ==========================================
-
-def score_breakout(df: pd.DataFrame):
-    if len(df) < MIN_BARS:
-        return None
-
-    df = compute_indicators(df)
-    last = df.iloc[-1]
-
-    # Fehlende Kernwerte -> unbrauchbar
-    for col in ["sma200", "sma50", "ema10", "ema20", "rsi14"]:
-        if pd.isna(last.get(col)):
-            return None
-
-    close = float(last["Close"])
-    ema10 = float(last["ema10"])
-    ema20 = float(last["ema20"])
-    sma50 = float(last["sma50"])
-    sma200 = float(last["sma200"])
-    rsi = float(last["rsi14"])
-    rvol = float(last["rvol"]) if not pd.isna(last["rvol"]) else None
-    bb = float(last["bb_width"]) if not pd.isna(last["bb_width"]) else None
-    high_252 = float(last["high_252"]) if not pd.isna(last["high_252"]) else None
-
-    bbw_50d_mean = df["bb_width"].rolling(50).mean().iloc[-1]
-
-    # Trendfilter
-    if not (close > sma50 and close > sma200):
-        return None
-
-    # Volatilitätskompression
-    if bb is None or pd.isna(bbw_50d_mean) or not (bb < bbw_50d_mean):
-        return None
-
-    # Momentum
-    if rsi < 50 or rsi > 85:
-        return None
-
-    # Volumenfilter
-    if rvol is None or rvol < 1.3:
-        return None
-
-    # 52W Nähe
-    if high_252 is None or close / high_252 < 0.9:
-        return None
-
-    score = 0
-    flags = []
-
-    # Trend: EMA stacking
-    if close > ema10 > ema20 > sma50 > sma200:
-        score += 20
-        flags.append("Trend: perfektes EMA-Stacking")
-    else:
-        score += 10
-        flags.append("Trend: über 50/200 SMA")
-
-    # Volatilität
-    bbw_120_min = df["bb_width"].rolling(120, min_periods=50).min().iloc[-1]
-    if not pd.isna(bbw_120_min) and bb <= bbw_120_min * 1.2:
-        score += 20
-        flags.append("Volatilität: starker Squeeze (VCP-Proxy)")
-    elif bb < bbw_50d_mean * 0.8:
-        score += 15
-        flags.append("Volatilität: enger Squeeze")
-    else:
-        score += 8
-        flags.append("Volatilität: leicht komprimiert")
-
-    # Momentum
-    if 55 <= rsi <= 70:
-        score += 15
-        flags.append("Momentum: RSI Pre-Breakout")
-    elif 70 < rsi <= 80:
-        score += 10
-        flags.append("Momentum: RSI Power Zone")
-    else:
-        score += 5
-
-    # Volume
-    if rvol >= 2.0:
-        score += 25
-        flags.append("Volumen: RVol > 2")
-    elif rvol >= 1.6:
-        score += 18
-        flags.append("Volumen: RVol > 1.6")
-    else:
-        score += 10
-
-    # Pattern-Proximity
-    rel = close / high_252
-    if rel >= 0.98:
-        score += 20
-        flags.append("Muster: direkt am 52W-High")
-    elif rel >= 0.95:
-        score += 15
-        flags.append("Muster: nahe 52W-High")
-    else:
-        score += 8
-
-    return {
-        "score": score,
-        "close": close,
-        "rsi": rsi,
-        "rvol": rvol,
-        "bb_width": bb,
-        "flags": "; ".join(flags),
-    }
-
-
-# ==========================================
-# EINZELAKTIEN-ANALYSE
-# ==========================================
-
-def analyze_stock(job):
-    symbol, region = job
+def analyze_stock_gqbm(data_packet):
+    symbol, region = data_packet
+    
     try:
-        df = yf.download(symbol, period="1y", interval="1d", auto_adjust=False, progress=False)
-
-        # Kein DataFrame → skip
-        if df is None or df.empty:
-            print(f"[WARN] Keine Daten für {symbol}")
+        # Lade Historie (1 Jahr) für technische Analyse
+        stock = yf.Ticker(symbol)
+        df = stock.history(period="1y")
+        
+        if df.empty or len(df) < 200:
             return None
 
-        # MultiIndex flatten
-        if isinstance(df.columns, pd.MultiIndex):
-            df.columns = df.columns.get_level_values(0)
+        # Indikatoren berechnen
+        df = calculate_indicators(df)
+        if df is None: return None
+        
+        # Wir betrachten den aktuellsten Tag
+        curr = df.iloc[-1]
+        
+        # --- SCORING SYSTEM (GQBM) ---
+        score = 0
+        reasons = []
+        
+        # 1. TREND STRUKTUR (Max 20 Pkt) 
+        # Ideal: Preis > EMA10 > EMA20 > SMA50 > SMA200
+        trend_perfect = (curr['Close'] > curr['EMA_10'] > curr['EMA_20'] > curr['SMA_50'] > curr['SMA_200'])
+        trend_strong = (curr['Close'] > curr['SMA_50'] > curr['SMA_200'])
+        
+        if trend_perfect:
+            score += 20
+            reasons.append("Perfect Trend Order")
+        elif trend_strong:
+            score += 10
+            
+        # 2. VOLATILITÄT (Max 20 Pkt) 
+        # BBW Squeeze: Ist die aktuelle Bandbreite sehr gering (Konsolidierung)?
+        # Wir vergleichen BBW heute mit dem 6-Monats-Schnitt der BBW
+        avg_bbw = df['BBW'].rolling(120).mean().iloc[-1]
+        
+        if curr['BBW'] < avg_bbw * 0.8: # Squeeze (20% enger als normal)
+            score += 20
+            reasons.append("Volatility Squeeze")
+        elif curr['BBW'] < avg_bbw:
+            score += 10
 
-        if "Close" not in df or "Volume" not in df:
-            print(f"[WARN] {symbol}: Close/Volume fehlen")
-            return None
-
-        result = score_breakout(df)
-        if result is None:
-            return None
-
-        return {
-            "Region": region,
-            "Symbol": symbol,
-            "Price": round(result["close"], 2),
-            "Score": int(result["score"]),
-            "RSI14": round(result["rsi"], 2),
-            "RVol": round(result["rvol"], 2) if result["rvol"] else None,
-            "BBW": result["bb_width"],
-            "Flags": result["flags"],
-            "Link": f"https://finance.yahoo.com/quote/{symbol}",
-        }
-
+        # 3. MOMENTUM / RSI (Max 15 Pkt) 
+        # Power Zone: RSI > 68 (kurz vor oder im Breakout)
+        # Aber nicht "Toxic" (> 85 zu lange)
+        if 65 <= curr['RSI'] <= 80:
+            score += 15
+            reasons.append(f"RSI Power Zone ({curr['RSI']:.1f})")
+        elif 50 <= curr['RSI'] < 65:
+            score += 5 # Neutral bis Bullisch
+            
+        # 4. VOLUMEN / RVOL (Max 25 Pkt) 
+        # Volumen heute vs 50-Tage Schnitt
+        if curr['Vol_SMA50'] > 0:
+            rvol = curr['Volume'] / curr['Vol_SMA50']
+        else:
+            rvol = 0
+            
+        if rvol > 2.0: # Doppeltes Volumen
+            score += 25
+            reasons.append(f"Explosive Volume (x{rvol:.1f})")
+        elif rvol > 1.5:
+            score += 15
+            reasons.append(f"High Volume (x{rvol:.1f})")
+            
+        # 5. MUSTER / PRICE GEOMETRY (Max 20 Pkt) 
+        # Proxy: Preis nahe dem 52-Wochen-Hoch (innerhalb von 10-15%)
+        # Das deutet auf "High Tight Flag" oder Konsolidierung am Top hin
+        high_52 = df['Close'].max()
+        dist_to_high = (high_52 - curr['Close']) / high_52
+        
+        if dist_to_high < 0.05: # Weniger als 5% vom Top entfernt
+            score += 20
+            reasons.append("Near All-Time-High")
+        elif dist_to_high < 0.15:
+            score += 10
+            
+        # --- FILTER ---
+        if score >= SCORE_THRESHOLD:
+            return {
+                'Region': region,
+                'Symbol': symbol,
+                'Price': round(curr['Close'], 2),
+                'Score': score,
+                'RVol': round(rvol, 2),
+                'RSI': round(curr['RSI'], 1),
+                'Setup': ", ".join(reasons),
+                'Link': f"https://finance.yahoo.com/quote/{symbol}"
+            }
+            
     except Exception as e:
-        print(f"[ERROR] {symbol}: {e}")
         return None
+    return None
 
-
-# ==========================================
-# MAIN
-# ==========================================
+# ==============================================================================
+# 4. HAUPTPROGRAMM
+# ==============================================================================
 
 if __name__ == "__main__":
-
-    all_jobs = []
-    seen = set()
-
-    # Listen hinzufügen
-    for t in get_us_watchlist():
-        if t not in seen:
-            seen.add(t)
-            all_jobs.append((t, "US"))
-
-    for t in get_dax_tickers():
-        if t not in seen:
-            seen.add(t)
-            all_jobs.append((t, "DE"))
-
-    for t in get_euro_tickers():
-        if t not in seen:
-            seen.add(t)
-            all_jobs.append((t, "EU"))
-
-    for t in get_asia_tickers():
-        if t not in seen:
-            seen.add(t)
-            all_jobs.append((t, "ASIA"))
-
-    for t in get_sp500_tickers():
-        if t not in seen:
-            seen.add(t)
-            all_jobs.append((t, "US"))
-
-    print(f"\nStarte GLOBAL-BREAKOUT-SCAN von {len(all_jobs)} Aktien...")
-    print("=" * 80)
-    print(f"{'Region':<6} | {'Symbol':<10} | {'Score':<5} | {'RSI':<6} | {'RVol':<6} | Kurzinfo")
+    start_time = time.time()
+    
+    # 1. Listen generieren
+    print("Sammle Ticker aus US, EU und ASIEN...")
+    us = get_sp500_tickers()
+    eu = get_euro_tickers()
+    asia = get_asia_tickers()
+    
+    all_jobs = us + eu + asia
+    # Nur zum Testen begrenzen wir es (entferne [:50] für vollen Scan)
+    # all_jobs = all_jobs[:50] 
+    
+    print(f"Starte GQBM-Scan für {len(all_jobs)} Aktien.")
+    print(f"Filter: Score >= {SCORE_THRESHOLD} | Momentum & Breakout Fokus")
+    print("="*80)
+    print(f"{'Region':<6} | {'Symbol':<10} | {'Score':<5} | {'Price':<8} | {'RVol':<5} | {'RSI':<5} | Setup")
     print("-" * 80)
-
+    
     results = []
-
-    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
-        futures = {ex.submit(analyze_stock, job): job for job in all_jobs}
+    
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        future_to_stock = {executor.submit(analyze_stock_gqbm, job): job for job in all_jobs}
+        
         counter = 0
         total = len(all_jobs)
-
-        for f in concurrent.futures.as_completed(futures):
+        
+        for future in concurrent.futures.as_completed(future_to_stock):
             counter += 1
-            print(f"Fortschritt: {counter}/{total} checked...", end="\r")
-
-            res = f.result()
+            if counter % 10 == 0:
+                print(f"Progress: {counter}/{total}...", end="\r")
+            
+            res = future.result()
             if res:
                 results.append(res)
-                print(
-                    f"✅ [{res['Region']}] | {res['Symbol']:<10} | {res['Score']:<5} | "
-                    f"{res['RSI14']:<6} | {str(res['RVol']):<6} | {(res['Flags'] or '')[:40]}..."
-                )
+                # Sofortige Ausgabe bei Treffer
+                print(f"{res['Region']:<6} | {res['Symbol']:<10} | {res['Score']:<5} | {res['Price']:<8} | {res['RVol']:<5} | {res['RSI']:<5} | {res['Setup']}")
 
-    print("\n" + "=" * 80)
-
+    print("\n" + "="*80)
+    print(f"SCAN ABGESCHLOSSEN in {round(time.time() - start_time, 2)}s")
+    print(f"{len(results)} Breakout-Kandidaten gefunden.")
+    
     if results:
-        df = pd.DataFrame(results).sort_values(by=["Score", "Region", "Symbol"], ascending=[False, True, True])
-        candidates = df[df["Score"] >= MIN_SCORE_TO_SAVE]
-
-        if not candidates.empty:
-            candidates.to_csv("breakout_scan.csv", index=False)
-            print(f"{len(candidates)} Breakout-Kandidaten gefunden und gespeichert!")
-        else:
-            print("Keine Kandidaten über Score-Grenze.")
-            print("Top 10 nach Score:")
-            print(df.head(10)[["Region", "Symbol", "Score", "RSI14", "RVol", "Flags"]])
-    else:
-        print("Gar keine auswertbaren Daten!")
-
-    print("=" * 80)
+        df_res = pd.DataFrame(results)
+        df_res = df_res.sort_values(by='Score', ascending=False)
+        filename = "gqbm_breakout_list.csv"
+        df_res.to_csv(filename, index=False)
+        print(f"Ergebnisse gespeichert in '{filename}'")
