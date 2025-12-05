@@ -31,111 +31,117 @@
         }
     </script>
 
-    <style>
+    <<style>
         body {
-            color: #e2e8f0;
-            font-family: 'Inter', sans-serif;
+        color: #e2e8f0;
+        font-family: 'Inter', sans-serif;
         }
 
+        /* Einheitliche Abstände für Abschnittsüberschriften */
+        .section-title {
+        margin-top: 80px;
+        margin-bottom: 40px;
+        }
 
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+        width: 6px;
+        height: 6px;
         }
 
+
         ::-webkit-scrollbar-track {
-            background: transparent;
+        background: transparent;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 3px;
+        background: #1e293b;
+        border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
+        background: #334155;
         }
 
         .glass-card {
-            background: rgba(17, 24, 39, 0.4);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+        background: rgba(17, 24, 39, 0.4);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
         }
 
         .glass-card:hover {
-            border-color: rgba(20, 184, 166, 0.3);
-            background: rgba(17, 24, 39, 0.6);
-            transform: translateY(-1px);
+        border-color: rgba(20, 184, 166, 0.3);
+        background: rgba(17, 24, 39, 0.6);
+        transform: translateY(-1px);
         }
 
         .glass-header {
-            background: rgba(11, 15, 25, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(11, 15, 25, 0.9);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .bg-grid-pattern {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        background-size: 40px 40px;
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
         }
 
         .wl-item {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            transition: background 0.2s;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        transition: background 0.2s;
         }
 
         .wl-item:hover {
-            background: rgba(255, 255, 255, 0.03);
+        background: rgba(255, 255, 255, 0.03);
         }
 
         .wl-item.active {
-            background: rgba(20, 184, 166, 0.05);
-            border-left: 3px solid #14b8a6;
+        background: rgba(20, 184, 166, 0.05);
+        border-left: 3px solid #14b8a6;
         }
 
         .wl-badge {
-            background: rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
-            font-size: 10px;
-            padding: 1px 4px;
-            border-radius: 3px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #94a3b8;
+        font-size: 10px;
+        padding: 1px 4px;
+        border-radius: 3px;
         }
 
         .chart-btn {
-            padding: 4px 10px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #94a3b8;
-            border-radius: 4px;
-            transition: all 0.2s;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #94a3b8;
+        border-radius: 4px;
+        transition: all 0.2s;
         }
 
         .chart-btn:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.05);
+        color: white;
+        background: rgba(255, 255, 255, 0.05);
         }
 
         .chart-btn.active {
-            background: #0d9488;
-            color: white;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        background: #0d9488;
+        color: white;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .apexcharts-tooltip {
-            background: #1e293b !important;
-            border-color: #334155 !important;
-            color: #fff;
+        background: #1e293b !important;
+        border-color: #334155 !important;
+        color: #fff;
         }
 
         .apexcharts-tooltip-title {
-            background: #0f172a !important;
-            border-bottom-color: #1e293b !important;
+        background: #0f172a !important;
+        border-bottom-color: #1e293b !important;
         }
-    </style>
+        </style>
 </head>
 
 <body class="h-screen flex overflow-hidden selection:bg-teal-500/30 selection:text-white">
@@ -340,7 +346,7 @@
                     </div>
                 </section>
 
-                <div class="w-full mt-16 mb-6 flex items-center gap-4">
+                <div class="w-full section-title flex items-center gap-4">
                     <div class="h-[1px] bg-gray-700 flex-1"></div>
                     <h2 class="text-gray-300 tracking-widest uppercase text-sm font-semibold">
                         Company Overview
@@ -393,7 +399,7 @@
                     <!--   SECTION TITLE: KEY KPIs    -->
                     <!-- ============================ -->
 
-                    <div class="w-full mt-16 mb-6 flex items-center gap-4">
+                    <div class="w-full section-title flex items-center gap-4">
                         <div class="h-[1px] bg-gray-700 flex-1"></div>
                         <h2 class="text-gray-300 tracking-widest uppercase text-sm font-semibold">
                             Key Performance Indicators
@@ -818,7 +824,7 @@
                     </section>
 
 
-                    <div class="w-full mt-16 mb-6 flex items-center gap-4">
+                    <div class="w-full section-title flex items-center gap-4">
                         <div class="h-[1px] bg-gray-700 w-10"></div>
                         <h2 class="text-gray-300 tracking-widest uppercase text-sm font-semibold">
                             News & Sentiment
@@ -970,7 +976,7 @@
                     </script>
 
 
-                    <div class="w-full mt-16 mb-6 flex items-center gap-4">
+                    <div class="w-full section-title flex items-center gap-4">
                         <div class="h-[1px] bg-gray-700 w-10"></div>
                         <h2 class="text-gray-300 tracking-widest uppercase text-sm font-semibold">
                             Strenghts & Risks
@@ -1047,7 +1053,7 @@
                     <!-- Extra Fundamentalkennzahlen – Layout wie Market Cap / Profit Margin (Wert links, Balken rechts) -->
                     <section class="grid grid-cols-1 gap-4 mt-4">
 
-                        <div class="w-full mt-16 mb-6 flex items-center gap-4">
+                        <div class="w-full section-title flex items-center gap-4">
                             <div class="h-[1px] bg-gray-700 w-10"></div>
                             <h2 class="text-gray-300 tracking-widest uppercase text-sm font-semibold">
                                 Extra Fundamentals
@@ -2322,7 +2328,7 @@
             document.getElementById('strengths-list').innerHTML = '<li class="text-xs text-slate-500">Loading...</li>';
             document.getElementById('risks-list').innerHTML = '<li class="text-xs text-slate-500">Loading...</li>';
 
-            // Reset Extra-KPIss
+            // Reset Extra-KPIs
             const extraIds = [
                 'kpi-beta', 'kpi-de', 'kpi-roe', 'kpi-roic',
                 'kpi-ev-ebitda', 'kpi-ev-sales',
