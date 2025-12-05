@@ -367,6 +367,25 @@
 
 
 
+                <!-- Gemeinsame KPI-Value-Klasse (GANZ OBEN im <head> oder vor deinem Dashboard einfügen) -->
+                <style>
+                    .kpi-value {
+                        font-size: 2.75rem;
+                        /* Basis ~ text-4xl */
+                        font-weight: 700;
+                        line-height: 1;
+                        letter-spacing: -0.02em;
+                    }
+
+                    @media (min-width: 1024px) {
+
+                        /* ~ lg:text-5xl */
+                        .kpi-value {
+                            font-size: 3.25rem;
+                        }
+                    }
+                </style>
+
                 <!-- ============================ -->
                 <!--   SECTION TITLE: KEY KPIs    -->
                 <!-- ============================ -->
@@ -405,13 +424,13 @@
                                         Market Cap
                                     </h3>
 
-                                    <span id="val-mcap"
-                                        class="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-none">--</span>
+                                    <span id="val-mcap" class="kpi-value text-white">--</span>
 
                                     <div class="h-2"></div>
 
-                                    <span id="mcap-summary" class="text-[11px] text-cyan-400 font-semibold block">Total
-                                        market value of the company.</span>
+                                    <span id="mcap-summary" class="text-[11px] text-cyan-400 font-semibold block">
+                                        Total market value of the company.
+                                    </span>
                                 </div>
                             </div>
 
@@ -436,8 +455,7 @@
                                             </h4>
                                             <p id="analysis-mcap" class="text-[13px] text-gray-300 leading-relaxed">
                                                 Market capitalization reflects the total value that the market assigns
-                                                to the
-                                                company based on share price and shares outstanding.
+                                                to the company based on share price and shares outstanding.
                                             </p>
                                         </div>
                                     </div>
@@ -477,12 +495,10 @@
 
                     <!-- P/E RATIO – MARKET CAP STYLE -->
                     <div class="group relative w-full">
-                        <!-- Glow -->
                         <div
                             class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-green-400 to-emerald-500 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700">
                         </div>
 
-                        <!-- Card Container -->
                         <div class="relative bg-[#0b0c10] border border-gray-800/80 rounded-2xl 
            flex flex-col lg:flex-row overflow-hidden 
            transition-all duration-300 group-hover:border-gray-700/80 
@@ -504,8 +520,7 @@
                                         P/E Ratio
                                     </h3>
 
-                                    <span id="val-pe"
-                                        class="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-none">--</span>
+                                    <span id="val-pe" class="kpi-value text-white">--</span>
 
                                     <div class="h-2"></div>
 
@@ -519,8 +534,6 @@
 
                             <!-- RIGHT -->
                             <div class="flex-1 p-6 lg:p-8 relative">
-
-                                <!-- Grid Overlay -->
                                 <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),
                            linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]
                            bg-[size:30px_30px] opacity-40 pointer-events-none">
@@ -541,8 +554,7 @@
                                             </h4>
                                             <p id="analysis-pe" class="text-[13px] text-gray-300 leading-relaxed">
                                                 The P/E ratio measures how the market values a company relative to
-                                                earnings.
-                                                Lower values may indicate undervaluation.
+                                                earnings. Lower values may indicate undervaluation.
                                             </p>
                                         </div>
                                     </div>
@@ -580,15 +592,12 @@
                     </div>
 
 
-
                     <!-- PROFIT MARGIN – MARKET CAP STYLE -->
                     <div class="group relative w-full mt-6">
-                        <!-- Glow -->
                         <div
                             class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-purple-400 to-indigo-500 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700">
                         </div>
 
-                        <!-- Card Container -->
                         <div class="relative bg-[#0b0c10] border border-gray-800/80 rounded-2xl 
            flex flex-col lg:flex-row overflow-hidden 
            transition-all duration-300 group-hover:border-gray-700/80 
@@ -611,8 +620,7 @@
                                         Profit Margin
                                     </h3>
 
-                                    <span id="val-margin"
-                                        class="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-none">--%</span>
+                                    <span id="val-margin" class="kpi-value text-white">--%</span>
 
                                     <div class="h-2"></div>
                                 </div>
@@ -620,8 +628,6 @@
 
                             <!-- RIGHT -->
                             <div class="flex-1 p-6 lg:p-8 relative">
-
-                                <!-- Grid Overlay -->
                                 <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),
                            linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]
                            bg-[size:30px_30px] opacity-40 pointer-events-none">
@@ -642,8 +648,7 @@
                                             </h4>
                                             <p id="analysis-margin" class="text-[13px] text-gray-300 leading-relaxed">
                                                 Profit margin reflects operational efficiency. Higher margins indicate
-                                                stronger
-                                                pricing power and healthier financials.
+                                                stronger pricing power and healthier financials.
                                             </p>
                                         </div>
                                     </div>
@@ -682,12 +687,10 @@
 
                     <!-- REVENUE GROWTH – MARKET CAP STYLE -->
                     <div class="group relative w-full mt-6">
-                        <!-- Glow -->
                         <div
                             class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700">
                         </div>
 
-                        <!-- Card Container -->
                         <div class="relative bg-[#0b0c10] border border-gray-800/80 rounded-2xl 
            flex flex-col lg:flex-row overflow-hidden 
            transition-all duration-300 group-hover:border-gray-700/80 
@@ -710,8 +713,7 @@
                                         Revenue Growth
                                     </h3>
 
-                                    <span id="val-growth"
-                                        class="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-none">--</span>
+                                    <span id="val-growth" class="kpi-value text-white">--</span>
 
                                     <div class="h-2"></div>
 
@@ -720,11 +722,8 @@
                                 </div>
                             </div>
 
-
                             <!-- RIGHT -->
                             <div class="flex-1 p-6 lg:p-8 relative">
-
-                                <!-- Grid Overlay -->
                                 <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),
                            linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]
                            bg-[size:30px_30px] opacity-40 pointer-events-none">
@@ -782,8 +781,8 @@
                         </div>
                     </div>
 
-
                 </section>
+
 
 
 
