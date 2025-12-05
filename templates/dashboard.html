@@ -499,85 +499,150 @@
                     Zusätzliche Kennzahlen
                 </h3>
 
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-xs">
+                <div class="space-y-3 text-xs">
+
                     <!-- Beta -->
-                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
-                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Beta</div>
-                        <div id="kpi-beta" class="text-sm font-semibold text-slate-100">...</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">Volatilität vs. Markt</div>
+                    <div
+                        class="flex items-center justify-between rounded-lg bg-slate-900/40 border border-slate-800 px-4 py-3">
+                        <div>
+                            <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">
+                                Beta
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">
+                                Volatilität vs. Markt
+                            </div>
+                        </div>
+                        <div id="kpi-beta" class="text-sm font-semibold text-slate-100">--</div>
                     </div>
 
                     <!-- Debt / Equity -->
-                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
-                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Debt /
-                            Equity</div>
-                        <div id="kpi-de" class="text-sm font-semibold text-slate-100">...</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">Verschuldungsgrad</div>
+                    <div
+                        class="flex items-center justify-between rounded-lg bg-slate-900/40 border border-slate-800 px-4 py-3">
+                        <div>
+                            <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">
+                                Debt / Equity
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">
+                                Verschuldungsgrad
+                            </div>
+                        </div>
+                        <div id="kpi-de" class="text-sm font-semibold text-slate-100">--</div>
                     </div>
 
                     <!-- ROE -->
-                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
-                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">ROE</div>
-                        <div id="kpi-roe" class="text-sm font-semibold text-slate-100">...</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">Eigenkapitalrendite</div>
+                    <div
+                        class="flex items-center justify-between rounded-lg bg-slate-900/40 border border-slate-800 px-4 py-3">
+                        <div>
+                            <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">
+                                ROE
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">
+                                Eigenkapitalrendite
+                            </div>
+                        </div>
+                        <div id="kpi-roe" class="text-sm font-semibold text-slate-100">--</div>
                     </div>
 
                     <!-- ROIC -->
-                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
-                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">ROIC</div>
-                        <div id="kpi-roic" class="text-sm font-semibold text-slate-100">...</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">Rendite auf eingesetztes Kapital</div>
+                    <div
+                        class="flex items-center justify-between rounded-lg bg-slate-900/40 border border-slate-800 px-4 py-3">
+                        <div>
+                            <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">
+                                ROIC
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">
+                                Rendite auf eingesetztes Kapital
+                            </div>
+                        </div>
+                        <div id="kpi-roic" class="text-sm font-semibold text-slate-100">--</div>
                     </div>
 
                     <!-- EV / EBITDA -->
-                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
-                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">EV / EBITDA
+                    <div
+                        class="flex items-center justify-between rounded-lg bg-slate-900/40 border border-slate-800 px-4 py-3">
+                        <div>
+                            <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">
+                                EV / EBITDA
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">
+                                Bewertung im Branchenvergleich
+                            </div>
                         </div>
-                        <div id="kpi-ev-ebitda" class="text-sm font-semibold text-slate-100">...</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">Bewertung im Branchenvergleich</div>
+                        <div id="kpi-ev-ebitda" class="text-sm font-semibold text-slate-100">--</div>
                     </div>
 
                     <!-- EV / Sales -->
-                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
-                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">EV / Sales
+                    <div
+                        class="flex items-center justify-between rounded-lg bg-slate-900/40 border border-slate-800 px-4 py-3">
+                        <div>
+                            <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">
+                                EV / Sales
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">
+                                Bewertung nach Umsatz
+                            </div>
                         </div>
-                        <div id="kpi-ev-sales" class="text-sm font-semibold text-slate-100">...</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">Bewertung nach Umsatz</div>
+                        <div id="kpi-ev-sales" class="text-sm font-semibold text-slate-100">--</div>
                     </div>
 
                     <!-- Current Ratio -->
-                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
-                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Current
-                            Ratio</div>
-                        <div id="kpi-current" class="text-sm font-semibold text-slate-100">...</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">Kurzfristige Liquidität</div>
+                    <div
+                        class="flex items-center justify-between rounded-lg bg-slate-900/40 border border-slate-800 px-4 py-3">
+                        <div>
+                            <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">
+                                Current Ratio
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">
+                                Kurzfristige Liquidität
+                            </div>
+                        </div>
+                        <div id="kpi-current" class="text-sm font-semibold text-slate-100">--</div>
                     </div>
 
                     <!-- Quick Ratio -->
-                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
-                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Quick Ratio
+                    <div
+                        class="flex items-center justify-between rounded-lg bg-slate-900/40 border border-slate-800 px-4 py-3">
+                        <div>
+                            <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">
+                                Quick Ratio
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">
+                                Strengere Liquidität
+                            </div>
                         </div>
-                        <div id="kpi-quick" class="text-sm font-semibold text-slate-100">...</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">Strengere Liquidität</div>
+                        <div id="kpi-quick" class="text-sm font-semibold text-slate-100">--</div>
                     </div>
 
                     <!-- Free Cash Flow -->
-                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
-                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Free Cash
-                            Flow</div>
-                        <div id="kpi-fcf" class="text-sm font-semibold text-slate-100">...</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">Nach Investitionen verfügbar</div>
+                    <div
+                        class="flex items-center justify-between rounded-lg bg-slate-900/40 border border-slate-800 px-4 py-3">
+                        <div>
+                            <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">
+                                Free Cash Flow
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">
+                                Nach Investitionen verfügbar
+                            </div>
+                        </div>
+                        <div id="kpi-fcf" class="text-sm font-semibold text-slate-100">--</div>
                     </div>
 
                     <!-- Payout Ratio -->
-                    <div class="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2">
-                        <div class="text-[10px] uppercase font-semibold text-slate-500 tracking-widest mb-1">Payout
-                            Ratio</div>
-                        <div id="kpi-payout" class="text-sm font-semibold text-slate-100">...</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">Dividende vs. Gewinn</div>
+                    <div
+                        class="flex items-center justify-between rounded-lg bg-slate-900/40 border border-slate-800 px-4 py-3">
+                        <div>
+                            <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">
+                                Payout Ratio
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">
+                                Dividende vs. Gewinn
+                            </div>
+                        </div>
+                        <div id="kpi-payout" class="text-sm font-semibold text-slate-100">--</div>
                     </div>
                 </div>
             </section>
+
 
             <div class="text-center text-[10px] text-slate-600 pb-4">
                 Data provided for informational purposes only. Not financial advice.

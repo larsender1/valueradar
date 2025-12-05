@@ -139,6 +139,8 @@ def get_details(symbol):
             info = ticker.info
         except Exception:
             info = {}
+        # Währung
+        currency = info.get("currency", "USD")
 
         # Name fallback
         name = info.get("longName") or info.get("shortName") or symbol
@@ -299,47 +301,54 @@ def get_details(symbol):
             risks.append("-- Keine weiteren Warnungen")
 
         return jsonify({
-    "symbol": symbol,
-    "name": name,
-    "sector": sector,
-    "industry": industry,
-    "price": price_now,
-    "currency": currency,
+            "symbol": symbol,
+            "name": name,
+            "sector": sector,
+            "industry": industry,
 
-    # KPIs
-    "market_cap": market_cap,
-    "pe": pe,
-    "peg": peg,
-    "pb": pb,
-    "ps": ps,
-    "profit_margin": profit_margin,
-    "revenue_growth": revenue_growth,
-    "div_yield": div_yield,
-    "payout_ratio": payout_ratio,
+            # Preis
+            "price": price_now,
+            "price_now": price_now,      # für das Frontend
+            "currency": currency,
 
-    # Additional KPIs
-    "beta": beta,
-    "debt_to_equity": debt_to_equity,
-    "roe": roe,
-    "roa": roa,
-    "roic": roic,
-    "ev_to_ebitda": ev_to_ebitda,
-    "ev_to_sales": ev_to_sales,
-    "current_ratio": current_ratio,
-    "quick_ratio": quick_ratio,
-    "free_cash_flow": free_cash_flow,
+            # KPIs
+            "market_cap": market_cap,
+            "pe": pe,
+            "peg": peg,
+            "pb": pb,
+            "ps": ps,
+            "profit_margin": profit_margin,
+            "revenue_growth": revenue_growth,
+            "div_yield": div_yield,
+            "payout_ratio": payout_ratio,
 
-    # Company
-    "description": description,
-    "year_high": year_high,
-    "year_low": year_low,
+            # Additional KPIs
+            "beta": beta,
+            "debt_to_equity": debt_to_equity,
+            "roe": roe,
+            "roa": roa,
+            "roic": roic,
+            "ev_to_ebitda": ev_to_ebitda,
+            "ev_to_sales": ev_to_sales,
+            "current_ratio": current_ratio,
+            "quick_ratio": quick_ratio,
+            "free_cash_flow": free_cash_flow,
 
-    # Lists
-    "pros": pros,
-    "risks": risks,
-    "news": news_list
-}
-)
+            # Company
+            "description": description,
+            "year_high": year_high,
+            "year_low": year_low,
+
+            # Performance (für VR-Score, falls du sie nutzen willst)
+            "perf_1y": perf_1y,
+            "perf_3m": perf_3m,
+
+            # Lists
+            "pros": pros,
+            "risks": risks,
+            "news": news_list
+        })
+
 
 
 
