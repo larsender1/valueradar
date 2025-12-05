@@ -1,0 +1,9 @@
+Region,Symbol,Price,Score,RVol,RSI,Setup
+US,WBD,25.5,100,2.27,72,"Trend: Perfect Order, Vol: Squeeze, Mom: Power Zone (72), Vol: Explosive (x2.3), Pat: Near ATH"
+US,ULTA,609.0,80,2.69,72,"Trend: Perfect Order, Mom: Power Zone (72), Vol: Explosive (x2.7), Pat: Near ATH"
+ASIA,6954.T,5931.0,80,3.4,70,"Trend: Perfect Order, Mom: Power Zone (70), Vol: Explosive (x3.4), Pat: Near ATH"
+US,EA,203.76,75,0.11,75,"Trend: Perfect Order, Vol: Squeeze, Mom: Power Zone (75), Pat: Near ATH"
+US,HOLX,74.96,75,0.08,73,"Trend: Perfect Order, Vol: Squeeze, Mom: Power Zone (73), Pat: Near ATH"
+US,FOXA,68.85,75,0.23,75,"Trend: Perfect Order, Vol: Squeeze, Mom: Power Zone (75), Pat: Near ATH"
+US,FOX,61.06,75,0.11,68,"Trend: Perfect Order, Vol: Squeeze, Mom: Power Zone (68), Pat: Near ATH"
+ASIA,6920.T,32600.0,75,0.62,67,"Trend: Perfect Order, Vol: Squeeze, Mom: Power Zone (67), Pat: Near ATH"
