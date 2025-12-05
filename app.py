@@ -277,28 +277,29 @@ def get_details(symbol):
         if row and row.get("Reason"):
             pros.append(str(row["Reason"]))
 
-        # 2) Automatische Stärken
+        # 2) Automatic Strengths (ENGLISH)
         if pe is not None and pe < 16:
-            pros.append(f"Günstiges KGV ({pe:.1f})")
+            pros.append(f"Attractive valuation (P/E {pe:.1f})")
         if peg is not None and peg < 1.5:
-            pros.append(f"Gutes Wachstum relativ zur Bewertung (PEG {peg:.2f})")
+            pros.append(f"Healthy growth relative to valuation (PEG {peg:.2f})")
         if revenue_growth is not None and revenue_growth > 0:
-            pros.append(f"Stabiles Umsatzwachstum ({revenue_growth*100:.1f}%)")
+            pros.append(f"Stable revenue growth ({revenue_growth*100:.1f}%)")
         if perf_1y is not None and perf_1y > 0:
-            pros.append(f"Positive 1J-Performance ({perf_1y:.1f}%)")
+            pros.append(f"Strong 1-year performance ({perf_1y:.1f}%)")
 
-        # 3) Automatische Risiken
+        # 3) Automatic Risks (ENGLISH)
         if pe is not None and pe > 25:
-            risks.append(f"Hohe Bewertung (KGV {pe:.1f})")
+            risks.append(f"High valuation (P/E {pe:.1f})")
         if revenue_growth is not None and revenue_growth < 0:
-            risks.append(f"Rückläufiger Umsatz ({revenue_growth*100:.1f}%)")
+            risks.append(f"Declining revenue ({revenue_growth*100:.1f}%)")
         if perf_1y is not None and perf_1y < 0:
-            risks.append(f"Schwache 1J-Performance ({perf_1y:.1f}%)")
+            risks.append(f"Weak 1-year performance ({perf_1y:.1f}%)")
         if profit_margin is not None and profit_margin < 0:
-            risks.append("Negative Gewinnmarge")
+            risks.append("Negative profit margin")
 
         if not risks:
-            risks.append("-- Keine weiteren Warnungen")
+            risks.append("-- No further warnings")
+
 
         return jsonify({
             "symbol": symbol,

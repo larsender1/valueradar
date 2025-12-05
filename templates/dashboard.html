@@ -2353,6 +2353,10 @@
 
                 document.getElementById('kpi-payout').innerText =
                     d.payout_ratio != null ? (d.payout_ratio * 100).toFixed(1) + "%" : "N/A";
+                // Lists & News
+                updateList('strengths-list', d.pros);
+                updateList('risks-list', d.risks);
+                renderNews(d.news);
 
                 // ------ RIGHT-SIDE INDUSTRY BAR VALUES ------
                 if (d.beta != null) barWidth("bar-beta", d.beta * 100);
@@ -2365,12 +2369,6 @@
                 if (d.quick_ratio != null) barWidth("bar-quick", Math.min(d.quick_ratio * 33.3, 100));
                 if (d.free_cash_flow != null) barWidth("bar-fcf", 100);
                 if (d.payout_ratio != null) barWidth("bar-payout", Math.min(d.payout_ratio * 100, 100));
-
-
-                // Lists & News
-                updateList('strengths-list', d.pros);
-                updateList('risks-list', d.risks);
-                renderNews(d.news);
 
 
                 // VR Score (simple heuristic)
