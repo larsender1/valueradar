@@ -2354,23 +2354,9 @@
                 document.getElementById('header-sector').innerText = d.sector || '-';
                 document.getElementById('header-industry').innerText = d.industry || '-';
 
-                // Company description & Titel Update
-
-                // 1. Titel oben in der Box setzen (Suche nach der neuen ID 'desc-header')
-                if (d.name) {
-                    const headerEl = document.getElementById('desc-header');
-                    // Fallback: Falls du die HTML-ID noch 'desc-box-title' genannt hast
-                    const oldEl = document.getElementById('desc-box-title');
-
-                    if (headerEl) headerEl.innerText = d.name;
-                    else if (oldEl) oldEl.innerText = d.name;
-                }
-
-                // 2. Beschreibung setzen (Name wird durch die Funktion formatCompanyDescription entfernt)
-                const descEl = document.getElementById('company-desc');
-                if (descEl) {
-                    descEl.innerHTML = formatCompanyDescription(d.description, d.name);
-                }
+                // Company description
+                document.getElementById('company-desc').innerHTML =
+                    formatCompanyDescription(d.description, d.name, d.symbol);
 
 
 
