@@ -341,7 +341,7 @@
                 </section>
 
                 <div class="w-full mt-16 mb-6 flex items-center gap-4">
-                    <div class="h-[1px] bg-gray-700 w-10"></div>
+                    <div class="h-[1px] bg-gray-700 flex-1"></div>
                     <h2 class="text-gray-300 tracking-widest uppercase text-sm font-semibold">
                         Company Overview
                     </h2>
@@ -372,8 +372,9 @@
                                 <div class="p-3 rounded-xl bg-teal-500/10 border border-teal-500/20 shadow-inner">
                                     <i data-lucide="info" class="w-6 h-6 text-teal-400"></i>
                                 </div>
-                                <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em]">
-                                    Company Description
+                                <h3 id="desc-box-title"
+                                    class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+                                    Loading...
                                 </h3>
                             </div>
 
@@ -393,7 +394,7 @@
                     <!-- ============================ -->
 
                     <div class="w-full mt-16 mb-6 flex items-center gap-4">
-                        <div class="h-[1px] bg-gray-700 w-10"></div>
+                        <div class="h-[1px] bg-gray-700 flex-1"></div>
                         <h2 class="text-gray-300 tracking-widest uppercase text-sm font-semibold">
                             Key Performance Indicators
                         </h2>
@@ -2342,6 +2343,10 @@
                 const r = await fetch(`/api/details/${sym}`);
                 const d = await r.json();
                 if (d.error) return;
+
+                // --- NEUE ZEILE HIER EINFÜGEN: ---
+                // Setzt den Titel der Box auf den Firmennamen
+                if (d.name) document.getElementById('desc-box-title').innerText = d.name;
 
                 if (d.price_now) {
                     currentPrice = d.price_now;
