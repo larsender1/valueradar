@@ -491,164 +491,152 @@
                     </div>
                 </section>
 
-                <!-- Extra Fundamentalkennzahlen -->
+                <!-- Extra Fundamentalkennzahlen – Layout wie Market Cap / Profit Margin (Wert links, Balken rechts) -->
                 <section class="grid grid-cols-1 gap-4 mt-4">
 
                     <!-- Beta -->
                     <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
-                        <!-- Icon + Titel -->
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <i data-lucide="activity" class="w-5 h-5"></i>
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="md:w-1/2">
+                            <div class="flex items-center justify-between mb-2">
+                                <div
+                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                    <i data-lucide="activity" class="w-5 h-5"></i>
+                                </div>
                             </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Beta</div>
-                                <div class="text-[10px] text-slate-500">Volatility vs Market</div>
-                            </div>
-                        </div>
-                        <!-- Wert + Balken -->
-                        <div class="flex items-center justify-between gap-4">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Beta</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Volatility vs Market</div>
                             <div id="kpi-beta" class="text-2xl font-bold text-white tracking-tight">--</div>
-                            <div class="flex-1">
-                                <div class="text-[10px] text-slate-500 mb-1">Volatility comparison</div>
-                                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-beta" class="bg-teal-500 h-full w-0 transition-all duration-700"></div>
-                                </div>
-                                <div class="flex justify-between text-[9px] text-slate-500 mt-1">
-                                    <span>Low</span><span>High</span>
-                                </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Volatility comparison</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-beta" class="bg-teal-500 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                            <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                                <span>Low</span><span>High</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Debt / Equity -->
                     <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Debt / Equity
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="md:w-1/2">
+                            <div class="flex items-center justify-between mb-2">
+                                <div
+                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
                                 </div>
-                                <div class="text-[10px] text-slate-500">Verschuldungsgrad</div>
                             </div>
-                        </div>
-                        <div class="flex items-center justify-between gap-4">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Debt / Equity</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Verschuldungsgrad</div>
                             <div id="kpi-de" class="text-2xl font-bold text-white tracking-tight">--</div>
-                            <div class="flex-1">
-                                <div class="text-[10px] text-slate-500 mb-1">Leverage comparison</div>
-                                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-de" class="bg-yellow-400 h-full w-0 transition-all duration-700"></div>
-                                </div>
-                                <div class="flex justify-between text-[9px] text-slate-500 mt-1">
-                                    <span>Low</span><span>High</span>
-                                </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Leverage comparison</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-de" class="bg-yellow-400 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                            <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                                <span>Low</span><span>High</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- ROE -->
                     <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="md:w-1/2">
+                            <div class="flex items-center justify-between mb-2">
+                                <div
+                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                    <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                                </div>
                             </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">ROE</div>
-                                <div class="text-[10px] text-slate-500">Eigenkapitalrendite</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between gap-4">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">ROE</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Eigenkapitalrendite</div>
                             <div id="kpi-roe" class="text-2xl font-bold text-white tracking-tight">--</div>
-                            <div class="flex-1">
-                                <div class="text-[10px] text-slate-500 mb-1">Return vs Industry</div>
-                                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-roe" class="bg-green-500 h-full w-0 transition-all duration-700"></div>
-                                </div>
-                                <div class="flex justify-between text-[9px] text-slate-500 mt-1">
-                                    <span>Low</span><span>High</span>
-                                </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Return vs Industry</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-roe" class="bg-green-500 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                            <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                                <span>Low</span><span>High</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- ROIC -->
                     <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <i data-lucide="trending-up" class="w-5 h-5"></i>
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="md:w-1/2">
+                            <div class="flex items-center justify-between mb-2">
+                                <div
+                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                    <i data-lucide="trending-up" class="w-5 h-5"></i>
+                                </div>
                             </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">ROIC</div>
-                                <div class="text-[10px] text-slate-500">Rendite auf Kapital</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between gap-4">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">ROIC</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Rendite auf Kapital</div>
                             <div id="kpi-roic" class="text-2xl font-bold text-white tracking-tight">--</div>
-                            <div class="flex-1">
-                                <div class="text-[10px] text-slate-500 mb-1">Capital return</div>
-                                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-roic" class="bg-green-400 h-full w-0 transition-all duration-700">
-                                    </div>
-                                </div>
-                                <div class="flex justify-between text-[9px] text-slate-500 mt-1">
-                                    <span>Low</span><span>High</span>
-                                </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Capital return</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-roic" class="bg-green-400 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                            <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                                <span>Low</span><span>High</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- EV / EBITDA -->
                     <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">EV / EBITDA
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="md:w-1/2">
+                            <div class="flex items-center justify-between mb-2">
+                                <div
+                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
                                 </div>
-                                <div class="text-[10px] text-slate-500">Industry valuation</div>
                             </div>
-                        </div>
-                        <div class="flex items-center justify-between gap-4">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">EV / EBITDA</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Industry valuation</div>
                             <div id="kpi-ev-ebitda" class="text-2xl font-bold text-white tracking-tight">--</div>
-                            <div class="flex-1">
-                                <div class="text-[10px] text-slate-500 mb-1">Cheap → Expensive</div>
-                                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-ev-ebitda" class="bg-red-400 h-full w-0 transition-all duration-700">
-                                    </div>
-                                </div>
-                                <div class="flex justify-between text-[9px] text-slate-500 mt-1">
-                                    <span>Cheap</span><span>Expensive</span>
-                                </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Cheap → Expensive</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-ev-ebitda" class="bg-red-400 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                            <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                                <span>Cheap</span><span>Expensive</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- EV / Sales -->
                     <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <i data-lucide="bar-chart" class="w-5 h-5"></i>
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="md:w-1/2">
+                            <div class="flex items-center justify-between mb-2">
+                                <div
+                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                    <i data-lucide="bar-chart" class="w-5 h-5"></i>
+                                </div>
                             </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">EV / Sales</div>
-                                <div class="text-[10px] text-slate-500">Revenue valuation</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between gap-4">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">EV / Sales</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Revenue valuation</div>
                             <div id="kpi-ev-sales" class="text-2xl font-bold text-white tracking-tight">--</div>
-                            <div class="flex-1">
-                                <div class="text-[10px] text-slate-500 mb-1">Low → High</div>
-                                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-ev-sales" class="bg-purple-400 h-full w-0 transition-all duration-700">
-                                    </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Low → High</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-ev-sales" class="bg-purple-400 h-full w-0 transition-all duration-700">
                                 </div>
                             </div>
                         </div>
@@ -656,104 +644,94 @@
 
                     <!-- Current Ratio -->
                     <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <i data-lucide="shield" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Current Ratio
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="md:w-1/2">
+                            <div class="flex items-center justify-between mb-2">
+                                <div
+                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                    <i data-lucide="shield" class="w-5 h-5"></i>
                                 </div>
-                                <div class="text-[10px] text-slate-500">Liquidität</div>
                             </div>
-                        </div>
-                        <div class="flex items-center justify-between gap-4">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Current Ratio</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Liquidität</div>
                             <div id="kpi-current" class="text-2xl font-bold text-white tracking-tight">--</div>
-                            <div class="flex-1">
-                                <div class="text-[10px] text-slate-500 mb-1">Liquidity strength</div>
-                                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-current" class="bg-blue-400 h-full w-0 transition-all duration-700">
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Liquidity strength</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-current" class="bg-blue-400 h-full w-0 transition-all duration-700"></div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Quick Ratio -->
                     <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <i data-lucide="zap" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Quick Ratio
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="md:w-1/2">
+                            <div class="flex items-center justify-between mb-2">
+                                <div
+                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                    <i data-lucide="zap" class="w-5 h-5"></i>
                                 </div>
-                                <div class="text-[10px] text-slate-500">Strenge Liquidität</div>
                             </div>
-                        </div>
-                        <div class="flex items-center justify-between gap-4">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Quick Ratio</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Strenge Liquidität</div>
                             <div id="kpi-quick" class="text-2xl font-bold text-white tracking-tight">--</div>
-                            <div class="flex-1">
-                                <div class="text-[10px] text-slate-500 mb-1">Immediate liquidity</div>
-                                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-quick" class="bg-blue-300 h-full w-0 transition-all duration-700">
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Immediate liquidity</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-quick" class="bg-blue-300 h-full w-0 transition-all duration-700"></div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Free Cash Flow -->
                     <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Free Cash Flow
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="md:w-1/2">
+                            <div class="flex items-center justify-between mb-2">
+                                <div
+                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                    <i data-lucide="dollar-sign" class="w-5 h-5"></i>
                                 </div>
-                                <div class="text-[10px] text-slate-500">Nach Investitionen</div>
                             </div>
-                        </div>
-                        <div class="flex items-center justify-between gap-4">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Free Cash Flow</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Nach Investitionen</div>
                             <div id="kpi-fcf" class="text-2xl font-bold text-white tracking-tight">--</div>
-                            <div class="flex-1">
-                                <div class="text-[10px] text-slate-500 mb-1">Cash strength</div>
-                                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-fcf" class="bg-teal-300 h-full w-0 transition-all duration-700"></div>
-                                </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Cash strength</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-fcf" class="bg-teal-300 h-full w-0 transition-all duration-700"></div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Payout Ratio -->
                     <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                <i data-lucide="percent" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Payout Ratio
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="md:w-1/2">
+                            <div class="flex items-center justify-between mb-2">
+                                <div
+                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                    <i data-lucide="percent" class="w-5 h-5"></i>
                                 </div>
-                                <div class="text-[10px] text-slate-500">Dividendenausschüttung</div>
                             </div>
-                        </div>
-                        <div class="flex items-center justify-between gap-4">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Payout Ratio</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Dividendenausschüttung</div>
                             <div id="kpi-payout" class="text-2xl font-bold text-white tracking-tight">--</div>
-                            <div class="flex-1">
-                                <div class="text-[10px] text-slate-500 mb-1">Distribution level</div>
-                                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-payout" class="bg-red-300 h-full w-0 transition-all duration-700">
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Distribution level</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-payout" class="bg-red-300 h-full w-0 transition-all duration-700"></div>
                             </div>
                         </div>
                     </div>
 
                 </section>
+
 
 
                 <div class="text-center text-[10px] text-slate-600 pb-4">
