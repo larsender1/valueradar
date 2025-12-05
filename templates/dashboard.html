@@ -2257,31 +2257,34 @@
             }
         }
         // Beschreibung automatisch formatieren (global)
-        function formatCompanyDescription(text, name) {
+        function formatCompanyDescription(text, name, symbol) {
             if (!text) return "No description available.";
 
             let formatted = text;
 
-            // 1. Versuche, den Firmennamen am Anfang zu entfernen (damit er nicht doppelt steht)
+            // 1) Firmenname am Anfang fett + Ticker in Klammern
             if (name) {
-                // Erstelle Regex für "Name" am Satzanfang (case insensitive)
-                const safeName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                // Matches: Name am Anfang + optionales Komma/Punkt + Leerzeichen
-                const nameRegex = new RegExp("^" + safeName + "[,.]?\\s*", "i");
+                const safeName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Regex-escape
+                const nameRegex = new RegExp("^" + safeName);                // nur ganz am Anfang matchen
 
-                // Entfernen
-                formatted = formatted.replace(nameRegex, "");
-
-                // Falls der Satz jetzt klein beginnt (z.B. "provides..."), mache den ersten Buchstaben groß
-                if (formatted.length > 0) {
-                    formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+                if (nameRegex.test(formatted)) {
+                    formatted = formatted.replace(
+                        nameRegex,
+                        `<span class="font-semibold text-slate-100">${name}${symbol ? " (" + symbol + ")" : ""}</span>`
+                    );
                 }
             }
 
-            // 2. Sub-Überschriften hervorheben (wie vorher)
+            // 2) Sub-Überschriften hervorheben
             const subtitles = [
-                "The company operates", "The company provides", "The company offers",
-                "Its segments include", "Segments:", "Products:", "Services:", "Operations:"
+                "The company operates",
+                "The company provides",
+                "The company offers",
+                "Its segments include",
+                "Segments:",
+                "Products:",
+                "Services:",
+                "Operations:"
             ];
 
             subtitles.forEach(keyword => {
@@ -2292,7 +2295,7 @@
                 );
             });
 
-            // 3. Sätze umbrechen
+            // 3) Sätze umbrechen
             formatted = formatted.replace(/\. /g, ".<br>");
 
             return formatted;
