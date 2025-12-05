@@ -4,912 +4,579 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ValueRadar Pro Terminal</title>
-    <meta name="description"
-        content="ValueRadar Pro Terminal – interaktives Dashboard für Fundamentalanalyse, Kennzahlen, Charts und Watchlists.">
-    <meta name="robots" content="noindex, nofollow">
+    <title>ValueRadar Pro - Dashboard</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'ui-sans-serif', 'system-ui'],
-                    },
                     colors: {
-                        radar: {
-                            50: '#f0fdfa',
-                            100: '#ccfbf1',
-                            500: '#14b8a6',
-                            600: '#0d9488',
-                            700: '#0f766e'
-                        }
+                        teal: { 400: '#2dd4bf', 500: '#14b8a6', 600: '#0d9488', 900: '#134e4a' },
+                        slate: { 800: '#1e293b', 900: '#0f172a' }
                     },
-                    boxShadow: {
-                        'soft': '0 18px 45px rgba(15,23,42,0.55)',
-                        'innerGlow': '0 0 0 1px rgba(148,163,184,0.25)'
-                    },
-                    backgroundImage: {
-                        'radar-grid': 'radial-gradient(circle at 1px 1px, rgba(51,65,85,0.7) 1px, transparent 0)',
-                        'radar-fade': 'linear-gradient(to bottom right, rgba(20,184,166,0.18), transparent)',
-                        'vr-gradient': 'linear-gradient(135deg, #22c55e 0%, #22c55e 35%, #eab308 60%, #ef4444 100%)'
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     }
                 }
             }
         }
     </script>
 
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
     <style>
-        html,
         body {
-            height: 100%;
+            background-color: #0b0f19;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
         }
 
-        body {
-            font-feature-settings: "ss01" 1, "ss02" 1, "cv11" 1;
-        }
-
-        .scroll-thin::-webkit-scrollbar {
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
             width: 6px;
+            height: 6px;
         }
 
-        .scroll-thin::-webkit-scrollbar-track {
+        ::-webkit-scrollbar-track {
             background: transparent;
         }
 
-        .scroll-thin::-webkit-scrollbar-thumb {
-            background: rgba(148, 163, 184, 0.3);
-            border-radius: 999px;
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
         }
 
-        .scroll-thin:hover::-webkit-scrollbar-thumb {
-            background: rgba(148, 163, 184, 0.6);
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
         }
 
+        /* Glass Card Effects */
         .glass-card {
-            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
-            border-radius: 1.25rem;
-            border: 1px solid rgba(148, 163, 184, 0.16);
-            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.65);
+            background: rgba(17, 24, 39, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
 
-        .side-card {
-            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.97));
-            border-radius: 1.1rem;
-            border: 1px solid rgba(30, 64, 175, 0.45);
-            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
+        .glass-card:hover {
+            border-color: rgba(20, 184, 166, 0.3);
+            background: rgba(17, 24, 39, 0.6);
+            transform: translateY(-1px);
         }
 
-        .border-soft {
-            border-radius: 0.9rem;
-            border: 1px solid rgba(15, 23, 42, 0.95);
+        .glass-header {
+            background: rgba(11, 15, 25, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Background Grid */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        /* Watchlist Items */
+        .wl-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: background 0.2s;
+        }
+
+        .wl-item:hover {
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .wl-item.active {
-            background: radial-gradient(circle at 0 0, rgba(45, 212, 191, 0.12), rgba(15, 23, 42, 0.95));
-            border-radius: 0.9rem;
-            box-shadow: 0 14px 40px rgba(15, 23, 42, 0.85);
-            position: relative;
+            background: rgba(20, 184, 166, 0.05);
+            border-left: 3px solid #14b8a6;
         }
 
-        .wl-item.active::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 0.9rem;
-            border: 1px solid rgba(45, 212, 191, 0.4);
-            pointer-events: none;
+        .wl-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 10px;
+            padding: 1px 4px;
+            border-radius: 3px;
         }
 
-        .wl-item.active .wl-badge {
-            background: rgba(13, 148, 136, 0.25);
-            color: #a5f3fc;
-        }
-
-        .badge-soft {
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.4);
-            background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95));
-        }
-
+        /* Chart Buttons */
         .chart-btn {
-            border-radius: 999px;
-            border: 1px solid transparent;
-            padding: 0.15rem 0.55rem;
-            font-size: 0.65rem;
+            padding: 4px 10px;
+            font-size: 11px;
             font-weight: 600;
-            color: #9ca3af;
-            background: rgba(15, 23, 42, 0.8);
+            color: #94a3b8;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .chart-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .chart-btn.active {
-            background: radial-gradient(circle at 0% 0%, rgba(45, 212, 191, 0.4), rgba(8, 47, 73, 1));
-            border-color: rgba(45, 212, 191, 0.6);
-            color: #ecfeff;
-            box-shadow: 0 0 0 1px rgba(8, 47, 73, 0.7), 0 10px 30px rgba(8, 47, 73, 0.9);
+            background: #0d9488;
+            color: white;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
-        .stat-label {
-            font-size: 0.7rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: rgba(148, 163, 184, 0.7);
+        /* ApexCharts Tooltip Override */
+        .apexcharts-tooltip {
+            background: #1e293b !important;
+            border-color: #334155 !important;
+            color: #fff;
         }
 
-        .stat-value {
-            font-feature-settings: "tnum" 1, "cv11" 1;
-        }
-
-        .kpi-divider {
-            border-left: 1px dashed rgba(51, 65, 85, 0.85);
-            height: 2rem;
-        }
-
-        .radar-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 999px;
-            background: radial-gradient(circle, #22c55e 0, #22c55e 45%, transparent 60%);
-            box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4), 0 0 25px rgba(22, 163, 74, 0.85);
-        }
-
-        .metric-pill {
-            border-radius: 999px;
-            border: 1px solid rgba(51, 65, 85, 0.95);
-            background: radial-gradient(circle at 0 0, rgba(30, 64, 175, 0.4), rgba(15, 23, 42, 0.95));
-        }
-
-        .news-item {
-            border-radius: 0.9rem;
-            border: 1px solid rgba(15, 23, 42, 0.95);
-        }
-
-        .news-item:hover {
-            border-color: rgba(56, 189, 248, 0.45);
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 1));
-        }
-
-        .qlink {
-            border-radius: 999px;
-            border: 1px solid rgba(15, 23, 42, 0.9);
-        }
-
-        .progress-bar {
-            border-radius: 999px;
-            overflow: hidden;
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 1));
-        }
-
-        .progress-inner {
-            height: 100%;
-            background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
-            background-size: 200% 100%;
-            animation: progressGlow 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes progressGlow {
-            0% {
-                background-position: 0 0;
-            }
-
-            100% {
-                background-position: 100% 0;
-            }
-        }
-
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 999px;
-            background: rgba(34, 197, 94, 1);
-            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-            animation: pulseDot 2.2s infinite;
-        }
-
-        @keyframes pulseDot {
-            0% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-            }
-
-            70% {
-                box-shadow: 0 0 0 12px rgba(34, 197, 94, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-            }
-        }
-
-        .vr-score-pill {
-            background: radial-gradient(circle at 0 0, rgba(16, 185, 129, 0.35), rgba(15, 23, 42, 0.98));
-            border-radius: 999px;
-            border: 1px solid rgba(34, 197, 94, 0.7);
-            box-shadow: 0 0 0 1px rgba(17, 24, 39, 0.9), 0 0 40px rgba(16, 185, 129, 0.35);
-        }
-
-        .vr-score-background {
-            background-image: linear-gradient(to right,
-                    rgba(22, 163, 74, 0.2),
-                    rgba(234, 179, 8, 0.15),
-                    rgba(248, 113, 113, 0.1));
-        }
-
-        .vr-score-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 999px;
-            background: #22c55e;
-            box-shadow: 0 0 18px rgba(22, 163, 74, 0.9);
-        }
-
-        .pill-soft {
-            background: rgba(15, 23, 42, 1);
-            border-radius: 999px;
-            border: 1px solid rgba(30, 64, 175, 0.85);
+        .apexcharts-tooltip-title {
+            background: #0f172a !important;
+            border-bottom-color: #1e293b !important;
         }
     </style>
 </head>
 
-<body class="h-full bg-slate-950 text-slate-100 antialiased">
-    <div
-        class="min-h-screen flex flex-col bg-[radial-gradient(circle_at_top,_rgba(15,23,42,1)_0,_rgba(2,6,23,1)_60%,_#020617_100%)]">
+<body class="h-screen flex overflow-hidden selection:bg-teal-500/30 selection:text-white">
 
-        <!-- TOP NAV -->
-        <header
-            class="h-14 border-b border-slate-900/90 backdrop-blur flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30 bg-slate-950/80">
-            <div class="flex items-center gap-3">
-                <div
-                    class="w-8 h-8 rounded-xl bg-[radial-gradient(circle_at_0_0,_rgba(45,212,191,0.6),_rgba(8,47,73,1))] flex items-center justify-center shadow-[0_0_25px_rgba(45,212,191,0.75)] border border-cyan-500/60">
-                    <span
-                        class="font-black text-xs tracking-widest text-cyan-50 drop-shadow-[0_0_8px_rgba(8,47,73,0.9)]">
-                        VR
-                    </span>
-                </div>
-                <div class="flex flex-col leading-tight">
-                    <span class="text-xs uppercase tracking-[0.2em] text-slate-500 font-semibold">ValueRadar
-                        Pro</span>
-                    <span class="text-[10px] text-slate-500">Fundamentalanalyse &amp; Terminal</span>
-                </div>
+    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
 
-                <span
-                    class="hidden lg:inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 ml-5 px-2 py-1 rounded-full border border-slate-800 bg-slate-950/80">
-                    <span class="pulse-dot"></span>
-                    <span class="uppercase tracking-[0.2em]">Market Live</span>
-                    <span class="text-slate-600 mx-1">•</span>
-                    <span id="header-ticker-mini" class="text-slate-400">-</span>
-                    <span id="header-price-mini" class="text-slate-300 font-semibold"></span>
-                </span>
+    <aside class="w-80 border-r border-slate-800/50 bg-[#080b14] flex flex-col z-20 relative h-full">
+        <div class="h-16 flex items-center px-6 gap-3 shrink-0">
+            <div class="bg-teal-600 text-white font-bold px-2 py-0.5 rounded text-xs shadow-lg shadow-teal-900/50">VR
+            </div>
+            <span class="font-bold text-lg tracking-tight text-white">ValueRadar <span
+                    class="text-teal-500 text-xs">PRO</span></span>
+        </div>
+
+        <div class="px-5 pt-4 shrink-0">
+            <div class="flex bg-[#111621] rounded-lg p-1 border border-slate-800 w-full justify-between">
+                <button onclick="filterStocks('ALL')"
+                    class="region-btn flex-1 py-1 text-[10px] font-bold rounded hover:text-white transition text-slate-400 active-region"
+                    data-reg="ALL">Alle</button>
+                <button onclick="filterStocks('US')"
+                    class="region-btn flex-1 py-1 text-[10px] font-bold text-slate-400 hover:text-white transition"
+                    data-reg="US">US</button>
+                <button onclick="filterStocks('DE')"
+                    class="region-btn flex-1 py-1 text-[10px] font-bold text-slate-400 hover:text-white transition"
+                    data-reg="DE">DE</button>
+                <button onclick="filterStocks('FAV')"
+                    class="region-btn flex-1 py-1 text-[10px] font-bold text-slate-400 hover:text-white transition border-l border-white/5 ml-1"
+                    data-reg="FAV">List</button>
+            </div>
+        </div>
+
+        <div class="px-5 pt-4 pb-2 shrink-0">
+            <div class="flex justify-between items-center mb-1">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
+                    id="watchlist-count">Watchlist</span>
+                <div class="flex gap-2">
+                    <button
+                        class="text-[9px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded hover:text-white transition"
+                        onclick="toggleTheme()" title="Theme Toggle">Theme</button>
+                    <button class="text-slate-400 hover:text-white" onclick="addSymbolToWatchlist()"
+                        title="Add Symbol">+</button>
+                </div>
+            </div>
+            <div class="relative mt-2">
+                <input type="text" id="watchlist-search" onkeyup="filterStocksByName(this.value)"
+                    placeholder="Filtere nach Name oder Ticker..."
+                    class="w-full bg-[#111621] text-xs rounded border border-slate-800 px-3 py-2 text-slate-300 focus:outline-none focus:border-slate-600 transition placeholder-slate-600">
+            </div>
+        </div>
+
+        <div id="watchlist-container" class="flex-1 overflow-y-auto mt-2">
+            <div class="p-4 text-center text-xs text-slate-500">Lade Aktien...</div>
+        </div>
+
+        <div class="p-3 text-[10px] text-slate-600 text-center border-t border-slate-800 shrink-0">
+            User: <span class="text-teal-500">{{ username }}</span> • Powered by Python Scan
+            <a href="/logout" class="ml-2 text-red-400 hover:text-red-300">Logout</a>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col relative overflow-hidden z-10 w-full h-full">
+
+        <header class="h-20 glass-header flex items-center justify-between px-6 lg:px-10 sticky top-0 z-30 shrink-0">
+            <div class="min-w-0">
+                <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight flex items-center gap-3 truncate">
+                    <span id="header-name">Lade Daten...</span>
+                    <span id="header-ticker"
+                        class="text-sm font-medium text-slate-400 bg-slate-800/50 px-2 py-1 rounded border border-slate-700/50">---</span>
+                </h1>
+                <div class="flex items-center gap-2 mt-1 text-xs text-slate-400">
+                    <span id="header-sector">Sector</span><span class="text-slate-600">•</span>
+                    <span id="header-industry">Industry</span><span class="text-slate-600">•</span>
+                    <a id="yahoo-link" href="#" target="_blank"
+                        class="text-teal-500 hover:text-teal-400 flex items-center gap-1">Yahoo Finance ↗</a>
+                </div>
             </div>
 
-            <div class="flex items-center gap-2">
-                <button
-                    class="hidden md:inline-flex items-center gap-1 px-2 py-1 text-[11px] rounded-full border border-slate-800 bg-slate-950/80 text-slate-400 hover:text-slate-100 hover:border-slate-600 transition">
-                    <i data-lucide="sparkles" class="w-3 h-3 text-cyan-400"></i>
-                    <span>AI Insights</span>
-                </button>
-
-                <div class="h-8 w-[1px] bg-slate-800/80 mx-1"></div>
-
-                <div
-                    class="hidden sm:flex items-center gap-2 px-2 py-1 rounded-full border border-slate-800 bg-slate-950/80">
-                    <div
-                        class="w-6 h-6 rounded-full bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-[10px] font-semibold text-slate-100 border border-slate-500/80">
-                        L
+            <div class="flex items-center gap-6 md:gap-8 shrink-0">
+                <div class="flex flex-col items-end hidden sm:flex">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">VR Score</span>
+                        <div
+                            class="flex items-center justify-center bg-teal-500/10 border border-teal-500/50 rounded px-2 py-0.5">
+                            <span id="header-score" class="text-lg font-bold text-teal-400">--</span>
+                        </div>
                     </div>
-                    <div class="flex flex-col leading-tight pr-1">
-                        <span class="text-[10px] text-slate-400">Account</span>
-                        <span class="text-[11px] text-slate-200 font-semibold" id="account-name">Lars</span>
-                    </div>
+                    <span id="header-score-text"
+                        class="text-[9px] text-teal-600 font-bold uppercase tracking-widest mt-0.5">Checking</span>
                 </div>
 
-                <button
-                    class="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 px-2.5 py-1.5 text-[11px] font-medium text-slate-100 shadow-[0_0_0_1px_rgba(15,23,42,1)]">
-                    <i data-lucide="log-out" class="w-3 h-3 mr-1.5 text-slate-400"></i>
-                    Logout
-                </button>
+                <div class="text-right border-l border-white/10 pl-6">
+                    <div id="header-price" class="text-3xl md:text-4xl font-bold text-white tracking-tight">--</div>
+                    <div class="text-sm text-teal-400 font-medium flex items-center justify-end gap-1">
+                        <span class="relative flex h-2 w-2 mr-1">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+                        </span>
+                        Live Price
+                    </div>
+                </div>
             </div>
         </header>
 
-        <!-- MAIN CONTENT -->
-        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        <div class="flex-1 overflow-y-auto p-4 lg:p-10 scroll-smooth pb-32">
+            <div class="max-w-7xl mx-auto space-y-6">
 
-            <!-- SIDEBAR (Watchlist) -->
-            <aside
-                class="w-full lg:w-[21rem] border-r border-slate-900 bg-[radial-gradient(circle_at_top,_#020617,_#020617_40%,_#020617_100%)] flex flex-col z-20 relative">
-                <div class="h-14 flex items-center px-5 gap-3 border-b border-slate-900/80">
-                    <div
-                        class="w-7 h-7 rounded-xl bg-[radial-gradient(circle_at_0_0,_rgba(45,212,191,0.6),_rgba(8,47,73,1))] flex items-center justify-center shadow-[0_0_20px_rgba(45,212,191,0.75)] border border-cyan-500/60">
-                        <span
-                            class="font-black text-[10px] tracking-[0.2em] text-cyan-50 drop-shadow-[0_0_8px_rgba(8,47,73,0.9)]">
-                            VR
-                        </span>
-                    </div>
-                    <div class="flex flex-col leading-tight">
-                        <span class="text-xs font-semibold tracking-tight text-slate-100">ValueRadar</span>
-                        <span class="text-[10px] text-teal-400 tracking-[0.18em] uppercase">Watchlist</span>
-                    </div>
-                </div>
-
-                <!-- Region Filter & Actions -->
-                <div class="px-5 pt-4 pb-2 shrink-0">
-                    <div class="flex justify-between items-center mb-2">
-                        <div
-                            class="inline-flex bg-slate-900/80 rounded-full p-1 border border-slate-800 shadow-inner shadow-black/60">
-                            <button data-region="ALL"
-                                class="region-btn text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-100 shadow-sm">
-                                All
-                            </button>
-                            <button data-region="US"
-                                class="region-btn text-[10px] font-semibold px-2 py-0.5 rounded-full text-slate-400 hover:text-slate-100">
-                                US
-                            </button>
-                            <button data-region="DE"
-                                class="region-btn text-[10px] font-semibold px-2 py-0.5 rounded-full text-slate-400 hover:text-slate-100">
-                                DE
-                            </button>
-                            <button data-region="FAV"
-                                class="region-btn text-[10px] font-semibold px-2 py-0.5 rounded-full text-amber-300 hover:text-amber-100 flex items-center gap-1">
-                                <i data-lucide="star" class="w-3 h-3"></i>
-                                Fav
-                            </button>
+                <section class="glass-card rounded-xl p-4 md:p-6">
+                    <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i data-lucide="activity" class="w-5 h-5 text-teal-500"></i>
+                                Price Action
+                            </h2>
+                            <span id="tf-perf"
+                                class="text-xs text-teal-400 font-bold bg-teal-500/10 px-2 py-0.5 rounded">---</span>
                         </div>
 
-                        <button onclick="addSymbolToWatchlist()"
-                            class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-teal-600 hover:bg-teal-500 text-slate-900 shadow-lg shadow-teal-900/60 border border-emerald-300/80">
-                            <i data-lucide="plus" class="w-3 h-3"></i>
-                        </button>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5">
+                                <button onclick="updateTimeframe('1W')" data-tf="1W"
+                                    class="tf-btn chart-btn">1W</button>
+                                <button onclick="updateTimeframe('1M')" data-tf="1M"
+                                    class="tf-btn chart-btn">1M</button>
+                                <button onclick="updateTimeframe('1Y')" data-tf="1Y"
+                                    class="tf-btn chart-btn">1Y</button>
+                                <button onclick="updateTimeframe('5Y')" data-tf="5Y"
+                                    class="tf-btn chart-btn">5Y</button>
+                                <button onclick="updateTimeframe('MAX')" data-tf="MAX"
+                                    class="tf-btn chart-btn active">MAX</button>
+                            </div>
+
+                            <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5 hidden sm:flex">
+                                <button onclick="toggleMA('20')" data-ma="20" class="ma-btn chart-btn active">MA
+                                    20</button>
+                                <button onclick="toggleMA('50')" data-ma="50" class="ma-btn chart-btn">MA 50</button>
+                                <button onclick="toggleMA('200')" data-ma="200" class="ma-btn chart-btn">MA 200</button>
+                            </div>
+
+                            <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5 hidden sm:flex">
+                                <button onclick="setChartType('line')" data-ctype="line"
+                                    class="charttype-btn chart-btn active">Line</button>
+                                <button onclick="setChartType('candles')" data-ctype="candles"
+                                    class="charttype-btn chart-btn">Candles</button>
+                            </div>
+                        </div>
                     </div>
+                    <div id="chart" class="h-[400px] w-full"></div>
+                </section>
+
+                <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
 
                     <div
-                        class="flex items-center gap-2 px-2 py-1 rounded-full bg-slate-900/80 border border-slate-800 shadow-inner shadow-black/60">
-                        <i data-lucide="search" class="w-3 h-3 text-slate-500"></i>
-                        <input id="search-input" type="text"
-                            class="bg-transparent outline-none border-none text-[11px] placeholder:text-slate-500 text-slate-200 flex-1"
-                            placeholder="Aktie suchen..." onkeyup="filterStocksByName(this.value)">
-                    </div>
-                </div>
-
-                <!-- Watchlist Items -->
-                <div id="watchlist-container" class="flex-1 overflow-y-auto scroll-thin pt-1 pb-3">
-                </div>
-
-                <!-- Watchlist Footer -->
-                <div class="px-5 pt-4 pb-2 shrink-0">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
-                            id="watchlist-count">Watchlist</span>
-                        <div class="flex gap-2">
-                            <button
-                                class="text-[9px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded hover:text-white transition"
-                                onclick="toggleSortByPerf()">
-                                Sort: Perf
-                            </button>
-                            <button
-                                class="text-[9px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded hover:text-white transition"
-                                onclick="resetFilters()">
-                                Reset
-                            </button>
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-teal-500 bg-gradient-to-r from-teal-900/10 to-transparent group">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-teal-500/10 rounded-lg text-teal-400">
+                                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+                            </div>
+                            <span
+                                class="text-[9px] text-teal-300 bg-teal-500/20 px-2 py-0.5 rounded border border-teal-500/30">Value</span>
                         </div>
+                        <div class="text-xs font-bold text-teal-400 uppercase tracking-widest mb-1">Market Cap</div>
+                        <div id="val-mcap" class="text-2xl font-bold text-white tracking-tight">--</div>
                     </div>
-                    <div class="flex gap-2">
-                        <span
-                            class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-[10px] text-slate-500">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400/80"></span>
-                            <span>Unterbewertet</span>
-                        </span>
-                        <span
-                            class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-[10px] text-slate-500">
-                            <span class="w-2 h-2 rounded-full bg-sky-400/80"></span>
-                            <span>Quality</span>
-                        </span>
-                    </div>
-                </div>
-            </aside>
 
-            <!-- MAIN PANEL -->
-            <section class="flex-1 flex flex-col overflow-hidden">
-                <!-- Header / Ticker / VR Score -->
-                <div
-                    class="border-b border-slate-900/90 px-4 lg:px-6 py-3 flex flex-col gap-3 md:flex-row md:items-center md:justify-between bg-[radial-gradient(circle_at_0_0,_rgba(15,23,42,1),_rgba(8,47,73,1)_50%,_#020617_100%)] relative overflow-hidden">
-                    <div class="absolute inset-0 pointer-events-none opacity-80">
-                        <div
-                            class="w-[600px] h-[600px] rounded-full border border-cyan-500/10 absolute -top-64 -left-40">
+                    <div
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                            </div>
+                            <span id="badge-pe-rating"
+                                class="text-[9px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded">--</span>
                         </div>
                         <div
-                            class="w-[420px] h-[420px] rounded-full border border-emerald-400/15 absolute -top-28 -left-14">
-                        </div>
-                        <div class="w-[260px] h-[260px] rounded-full border border-sky-400/30 absolute -top-2 -left-2">
-                        </div>
-                        <div class="radar-dot absolute top-16 left-20"></div>
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            KGV (P/E)</div>
+                        <div id="val-pe" class="text-2xl font-bold text-white tracking-tight">--</div>
+                        <div class="text-[10px] text-slate-500 mt-1" id="sub-pe">PEG: --</div>
                     </div>
 
-                    <div class="relative z-10 flex items-start md:items-center gap-3">
+                    <div
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                            </div>
+                        </div>
                         <div
-                            class="w-9 h-9 rounded-2xl bg-[radial-gradient(circle_at_0_0,_rgba(45,212,191,0.7),_rgba(15,23,42,1))] flex items-center justify-center shadow-[0_0_32px_rgba(45,212,191,0.9)] border border-emerald-300/70">
-                            <i data-lucide="radar" class="w-4 h-4 text-emerald-50"></i>
-                        </div>
-                        <div class="flex flex-col gap-0.5">
-                            <div class="flex items-center gap-2">
-                                <h1 id="header-name"
-                                    class="text-sm md:text-base lg:text-lg font-semibold tracking-tight text-slate-50">
-                                    -
-                                </h1>
-                                <span
-                                    class="wl-badge inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-900/90 border border-slate-700/80 text-slate-200"
-                                    id="header-ticker">-</span>
-                                <span
-                                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-slate-900/80 border border-slate-700/80 text-slate-400">
-                                    <span
-                                        class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.9)]"></span>
-                                    Live
-                                </span>
-                            </div>
-                            <div class="flex items-center gap-3 text-xs text-slate-400">
-                                <span class="flex items-center gap-1">
-                                    <i data-lucide="layers" class="w-3 h-3 text-slate-500"></i>
-                                    <span id="header-sector">-</span>
-                                </span>
-                                <span class="hidden sm:inline-flex items-center gap-1">
-                                    <i data-lucide="grid-3x3" class="w-3 h-3 text-slate-500"></i>
-                                    <span id="header-industry">-</span>
-                                </span>
-                                <span class="hidden md:inline-flex items-center gap-1">
-                                    <i data-lucide="globe-2" class="w-3 h-3 text-slate-500"></i>
-                                    <a href="#" target="_blank" id="yahoo-link"
-                                        class="text-sky-300 hover:text-sky-200 underline-offset-2 hover:underline text-[11px]">auf
-                                        Yahoo Finance öffnen</a>
-                                </span>
-                            </div>
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            Profit Margin</div>
+                        <div id="val-margin" class="text-2xl font-bold text-white tracking-tight">--%</div>
+
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                            <div id="prog-margin" class="bg-teal-500 h-full w-0 transition-all duration-1000"></div>
                         </div>
                     </div>
 
-                    <!-- Price + VR Score -->
-                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-3">
-                        <div class="flex flex-col items-start">
-                            <div class="flex items-baseline gap-2">
-                                <span id="header-price"
-                                    class="text-xl md:text-2xl font-semibold tracking-tight text-slate-50">$0.00</span>
-                                <span id="header-change"
-                                    class="text-xs font-semibold px-1.5 py-0.5 rounded-full bg-slate-900/80 border border-slate-700/80 text-slate-400">-</span>
+                    <div
+                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <i data-lucide="trending-up" class="w-5 h-5"></i>
                             </div>
-                            <div class="flex items-center gap-2 mt-1">
-                                <span
-                                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-900/80 border border-slate-800 text-[10px] text-slate-400">
-                                    <i data-lucide="activity" class="w-3 h-3 text-emerald-400"></i>
-                                    <span id="tf-perf"
-                                        class="text-xs text-teal-400 font-bold bg-teal-500/10 px-2 py-0.5 rounded">---</span>
-                                </span>
-                            </div>
+                            <span class="text-[9px] text-green-400 font-bold" id="val-growth-badge">--</span>
                         </div>
-
                         <div
-                            class="vr-score-pill flex items-center gap-3 px-3 py-2 relative vr-score-background overflow-hidden">
-                            <div
-                                class="absolute inset-0 pointer-events-none opacity-50 bg-[radial-gradient(circle_at_0_0,_rgba(45,212,191,0.5),_transparent_55%)]">
-                            </div>
-                            <div class="relative flex flex-col gap-1">
-                                <div class="flex items-center gap-1">
-                                    <span class="text-[10px] uppercase tracking-[0.18em] text-emerald-200/80">VR
-                                        Score</span>
-                                    <span
-                                        class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-700/80 text-[9px] text-slate-400 gap-1">
-                                        <i data-lucide="gauge" class="w-3 h-3 text-emerald-400"></i>
-                                        <span class="text-[9px] tracking-[0.24em] uppercase">Fundamental</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <div class="flex items-baseline gap-1.5">
-                                        <span id="header-score"
-                                            class="text-lg font-semibold text-emerald-300 drop-shadow-[0_0_10px_rgba(34,197,94,0.55)]">--</span>
-                                        <span id="header-score-text"
-                                            class="text-[11px] text-emerald-100/90 font-medium">Analysiert</span>
-                                    </div>
-                                    <div
-                                        class="h-8 w-[95px] rounded-full bg-slate-950/90 border border-slate-800/80 flex items-center px-1">
-                                        <div class="flex-1 h-[4px] rounded-full bg-slate-900 overflow-hidden">
-                                            <div id="vr-score-bar" class="h-full bg-emerald-400 rounded-full"
-                                                style="width: 0%;"></div>
-                                        </div>
-                                        <div
-                                            class="w-5 h-5 rounded-full bg-slate-950 border border-emerald-300/80 flex items-center justify-center ml-1 shadow-[0_0_0_1px_rgba(15,23,42,0.9)]">
-                                            <span
-                                                class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_9px_rgba(45,212,191,0.9)]"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-2 text-[10px] text-emerald-100/70">
-                                    <i data-lucide="sparkles" class="w-3 h-3"></i>
-                                    <span id="sentiment-text">Wird berechnet...</span>
-                                </div>
-                            </div>
+                            class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
+                            Rev. Growth</div>
+                        <div id="val-growth" class="text-2xl font-bold text-white tracking-tight">--</div>
+                        <div class="text-[10px] text-slate-500 mt-1">Year over Year</div>
+                    </div>
+                </section>
+
+                <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 glass-card rounded-xl p-6 flex flex-col">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3
+                                class="text-sm font-bold text-slate-300 uppercase tracking-widest flex items-center gap-2">
+                                <i data-lucide="newspaper" class="w-4 h-4"></i> Aktuelle News
+                            </h3>
+                        </div>
+                        <div id="news-container" class="space-y-3 overflow-y-auto max-h-[220px] pr-2 scroll-thin">
+                            <span class="text-slate-500 text-xs">Lade Nachrichten...</span>
                         </div>
                     </div>
+
+                    <div class="glass-card rounded-xl p-6 flex flex-col items-center justify-center relative">
+                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-4">VR Sentiment
+                        </div>
+                        <div id="gauge-chart" class="w-full h-40"></div>
+                        <div class="mt-[-20px] text-center">
+                            <div id="sentiment-text" class="text-teal-400 font-bold">Strong Buy</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-card rounded-xl p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="p-1.5 bg-green-500/10 rounded-full text-green-400">
+                                <i data-lucide="thumbs-up" class="w-4 h-4"></i>
+                            </div>
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Stärken</h3>
+                        </div>
+                        <ul id="strengths-list" class="space-y-3">
+                            <li class="text-xs text-slate-500">Lade Daten...</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-card rounded-xl p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="p-1.5 bg-red-500/10 rounded-full text-red-400">
+                                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                            </div>
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Risiken</h3>
+                        </div>
+                        <ul id="risks-list" class="space-y-3">
+                            <li class="text-xs text-slate-500">Lade Daten...</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <div class="text-center text-[10px] text-slate-600 pb-4">
+                    Data provided for informational purposes only. Not financial advice.
                 </div>
+            </div>
+        </div>
+    </main>
 
-                <!-- Main Content Layout -->
-                <div class="flex-1 flex flex-col lg:flex-row gap-3 p-3 lg:p-4 overflow-hidden">
-                    <!-- Left Column: Chart + Quick Metrics -->
-                    <div class="flex-[1.4] flex flex-col gap-3 overflow-hidden">
-                        <!-- Chart Card -->
-                        <div class="glass-card p-3 lg:p-4 flex flex-col gap-3 h-[320px] md:h-[360px] lg:h-[380px]">
-                            <div class="flex items-center justify-between gap-2">
-                                <div class="flex items-center gap-2">
-                                    <span class="stat-label">Price Action</span>
-                                    <span
-                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/80 border border-slate-700/80 text-[9px] text-slate-400">
-                                        <i data-lucide="clock-4" class="w-3 h-3 text-slate-500"></i>
-                                        <span id="chart-range-label">1Y</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <div
-                                        class="flex bg-slate-900/80 rounded-full p-1 border border-slate-800 shadow-inner shadow-black/60">
-                                        <button onclick="updateTimeframe('1W')" data-tf="1W"
-                                            class="tf-btn chart-btn">1W</button>
-                                        <button onclick="updateTimeframe('1M')" data-tf="1M"
-                                            class="tf-btn chart-btn">1M</button>
-                                        <button onclick="updateTimeframe('3M')" data-tf="3M"
-                                            class="tf-btn chart-btn">3M</button>
-                                        <button onclick="updateTimeframe('6M')" data-tf="6M"
-                                            class="tf-btn chart-btn">6M</button>
-                                        <button onclick="updateTimeframe('1Y')" data-tf="1Y"
-                                            class="tf-btn chart-btn active">1Y</button>
-                                        <button onclick="updateTimeframe('5Y')" data-tf="5Y"
-                                            class="tf-btn chart-btn">5Y</button>
-                                    </div>
-                                    <div
-                                        class="flex bg-slate-900/80 rounded-full p-1 border border-slate-800 shadow-inner shadow-black/60">
-                                        <button onclick="setChartType('line')" data-type="line"
-                                            class="charttype-btn chart-btn active">
-                                            <i data-lucide="line-chart" class="w-3 h-3"></i>
-                                        </button>
-                                        <button onclick="setChartType('candles')" data-type="candles"
-                                            class="charttype-btn chart-btn">
-                                            <i data-lucide="candlestick-chart" class="w-3 h-3"></i>
-                                        </button>
-                                    </div>
-                                    <div
-                                        class="flex bg-slate-900/80 rounded-full p-1 border border-slate-800 shadow-inner shadow-black/60">
-                                        <button onclick="toggleMA('20')" data-ma="20"
-                                            class="mabtn chart-btn active text-[10px]">MA 20</button>
-                                        <button onclick="toggleMA('50')" data-ma="50"
-                                            class="mabtn chart-btn text-[10px]">MA 50</button>
-                                        <button onclick="toggleMA('200')" data-ma="200"
-                                            class="mabtn chart-btn text-[10px]">MA 200</button>
-                                    </div>
-                                </div>
-                            </div>
+    <script>
+        lucide.createIcons();
 
-                            <div id="chart" class="flex-1 min-h-[220px]"></div>
-                        </div>
+        /* ---------- GLOBAL STATE ---------- */
+        let fullList = [];
+        let filteredList = [];
+        let currentSymbol = "";
+        let currentPrice = 0;
+        let chart = null;
+        let gaugeChart = null;
+        let abortController = new AbortController();
+        let currentTimeframe = '1Y';
+        let lastHistoryData = null;
+        let showMA20 = true;
+        let showMA50 = false;
+        let showMA200 = false;
+        let currentChartType = 'line';
 
-                        <!-- Quick Metrics Row -->
-                        <div class="flex flex-col md:flex-row gap-3">
-                            <!-- Market Cap -->
-                            <div class="side-card flex-1 p-3 flex flex-col gap-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="stat-label">Market Cap</span>
-                                    <span
-                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
-                                        <i data-lucide="globe-2" class="w-3 h-3 text-slate-500"></i>
-                                        <span>Size</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-baseline gap-1">
-                                    <span id="val-mcap" class="stat-value text-lg font-semibold text-slate-50">$-</span>
-                                </div>
-                                <div class="text-[11px] text-slate-400">
-                                    <span id="sub-mcap">Lade Daten...</span>
-                                </div>
-                            </div>
+        /* ---------- WATCHLIST LOGIC ---------- */
 
-                            <!-- Valuation -->
-                            <div class="side-card flex-1 p-3 flex flex-col gap-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="stat-label">Bewertung</span>
-                                    <span id="badge-pe-rating"
-                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-400/40 text-[9px] text-emerald-200">
-                                        <span
-                                            class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_7px_rgba(52,211,153,0.9)]"></span>
-                                        <span id="val-pe-rating">Analysiert</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-4">
-                                    <div>
-                                        <div class="text-xs text-slate-400 mb-0.5">P/E</div>
-                                        <div id="val-pe"
-                                            class="stat-value text-lg font-semibold text-slate-50 tracking-tight">-
-                                        </div>
-                                        <div id="sub-pe" class="text-[11px] text-slate-500">-</div>
-                                    </div>
-                                    <div>
-                                        <div class="text-xs text-slate-400 mb-0.5">PEG</div>
-                                        <div id="val-peg"
-                                            class="stat-value text-lg font-semibold text-slate-50 tracking-tight">-
-                                        </div>
-                                        <div id="sub-peg" class="text-[11px] text-slate-500">-</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Profitability -->
-                            <div class="side-card flex-1 p-3 flex flex-col gap-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="stat-label">Profitabilität</span>
-                                    <span
-                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
-                                        <i data-lucide="wallet-cards" class="w-3 h-3 text-emerald-400"></i>
-                                        <span>Margin</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <div class="flex flex-col">
-                                        <span id="val-margin"
-                                            class="stat-value text-lg font-semibold text-slate-50">-</span>
-                                        <span id="sub-margin" class="text-[11px] text-slate-500">Lade...</span>
-                                    </div>
-                                    <div class="flex-1">
-                                        <div class="progress-bar h-1.5">
-                                            <div id="prog-margin" class="progress-inner" style="width: 0%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right Column: VR Gauge + Pros/Risks/News -->
-                    <div class="flex-[1] flex flex-col gap-3 overflow-hidden">
-                        <!-- VR Gauge + Growth -->
-                        <div class="glass-card p-3 lg:p-4 flex flex-col gap-3">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <span class="stat-label">Fundamentale Stärke</span>
-                                    <span
-                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
-                                        <i data-lucide="brain-circuit" class="w-3 h-3 text-sky-400"></i>
-                                        <span>Qualität</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <span
-                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
-                                        <i data-lucide="trending-up" class="w-3 h-3 text-emerald-400"></i>
-                                        <span id="val-growth-badge">Growth</span>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="flex gap-3">
-                                <div class="w-[50%] flex flex-col items-center justify-center">
-                                    <div id="gauge" class="w-full h-[160px]"></div>
-                                </div>
-                                <div class="flex-1 flex flex-col gap-2">
-                                    <div class="side-card p-2.5 flex flex-col gap-1.5">
-                                        <div class="flex items-center justify-between">
-                                            <span class="stat-label">Umsatzwachstum</span>
-                                            <span
-                                                class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
-                                                <i data-lucide="sparkles" class="w-3 h-3 text-emerald-400"></i>
-                                                <span>YoY</span>
-                                            </span>
-                                        </div>
-                                        <div class="flex items-baseline gap-1">
-                                            <span id="val-growth"
-                                                class="stat-value text-lg font-semibold text-slate-50">-</span>
-                                        </div>
-                                        <div id="sub-growth" class="text-[11px] text-slate-500">Wird analysiert...</div>
-                                    </div>
-
-                                    <div class="side-card p-2.5 flex items-center justify-between gap-2">
-                                        <div class="flex flex-col gap-0.5">
-                                            <span class="stat-label">Kennzahlen-Summary</span>
-                                            <span id="summary-rating" class="text-[11px] text-slate-300">Wird
-                                                geladen...</span>
-                                        </div>
-                                        <div class="flex flex-col items-end gap-1">
-                                            <span
-                                                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
-                                                <i data-lucide="equal" class="w-3 h-3 text-sky-400"></i>
-                                                <span id="val-risk">Balanced</span>
-                                            </span>
-                                            <span
-                                                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
-                                                <i data-lucide="clock" class="w-3 h-3 text-slate-400"></i>
-                                                <span id="val-timeframe">Mid-Term</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pros / Risks / News -->
-                        <div class="flex-1 flex flex-col gap-3 overflow-hidden">
-                            <div class="flex flex-col lg:flex-row gap-3 h-full">
-                                <!-- Strengths -->
-                                <div class="side-card flex-1 p-3 flex flex-col gap-2 overflow-hidden">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="stat-label">Stärken</span>
-                                            <span
-                                                class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-400/40 text-[9px] text-emerald-200">
-                                                <i data-lucide="shield-check" class="w-3 h-3"></i>
-                                                <span>Qualität</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <ul id="strengths-list"
-                                        class="mt-1 space-y-1.5 text-[11px] text-slate-300 overflow-y-auto scroll-thin">
-                                        <li class="text-slate-500 text-xs">Lade...</li>
-                                    </ul>
-                                </div>
-
-                                <!-- Risks -->
-                                <div class="side-card flex-1 p-3 flex flex-col gap-2 overflow-hidden">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="stat-label">Risiken</span>
-                                            <span
-                                                class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-rose-500/10 border border-rose-400/40 text-[9px] text-rose-200">
-                                                <i data-lucide="alert-triangle" class="w-3 h-3"></i>
-                                                <span>Watch</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <ul id="risks-list"
-                                        class="mt-1 space-y-1.5 text-[11px] text-slate-300 overflow-y-auto scroll-thin">
-                                        <li class="text-slate-500 text-xs">Lade...</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!-- News -->
-                            <div class="side-card p-3 flex flex-col gap-2 h-[180px]">
-                                <div class="flex items-center justify-between">
-                                    <span class="stat-label">Aktuelle News</span>
-                                    <div class="flex items-center gap-2">
-                                        <span
-                                            class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
-                                            <i data-lucide="newspaper" class="w-3 h-3 text-sky-400"></i>
-                                            <span>Feed</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div id="news-list"
-                                    class="flex-1 mt-1 space-y-1.5 text-[11px] text-slate-300 overflow-y-auto scroll-thin">
-                                    <div class="text-slate-500 text-xs">Lade News...</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <script>
-            lucide.createIcons();
-
-            /* ---------- GLOBAL STATE ---------- */
-            let fullList = [];
-            let filteredList = [];
-            let currentSymbol = "";
-            let currentPrice = 0;
-            let chart = null;
-            let gaugeChart = null;
-            let abortController = new AbortController();
-            let currentTimeframe = '1Y';
-            let lastHistoryData = null;
-            let showMA20 = true;
-            let showMA50 = false;
-            let showMA200 = false;
-            let currentChartType = 'line';
-
-            /* ---------- WATCHLIST LOGIC ---------- */
-
-            // Load initial data
-            fetch('/api/stocks')
-                .then(r => r.json())
-                .then(d => {
-                    fullList = d;
-                    filterStocks('ALL');
-                })
-                .catch(e => console.error(e));
-
-            function getFavorites() {
-                try {
-                    const favs = localStorage.getItem('vr_favorites');
-                    return favs ? JSON.parse(favs) : [];
-                } catch (e) {
-                    return [];
-                }
-            }
-
-            function saveFavorites(list) {
-                try {
-                    localStorage.setItem('vr_favorites', JSON.stringify(list));
-                } catch (e) {
-                    console.error(e);
-                }
-            }
-
-            function toggleFavorite(event, symbol) {
-                event.stopPropagation();
-                let favs = getFavorites();
-                if (favs.includes(symbol)) {
-                    favs = favs.filter(x => x !== symbol);
-                } else {
-                    favs.push(symbol);
-                }
-                saveFavorites(favs);
-                renderStockList();
-            }
-
-            function filterStocks(region) {
-                document.querySelectorAll('.region-btn').forEach(b => {
-                    if (b.dataset.region === region) b.classList.add('bg-slate-800', 'text-slate-100');
-                    else b.classList.remove('bg-slate-800', 'text-slate-100');
-                });
-
-                const favs = getFavorites();
-
-                if (region === 'FAV') {
-                    filteredList = fullList.filter(s => favs.includes(s.Symbol || s.symbol));
-                } else if (region === 'ALL') {
-                    filteredList = [...fullList];
-                } else {
-                    filteredList = fullList.filter(s => (s.Region === region || s.region === region));
-                }
-
-                renderStockList();
-            }
-
-            function resetFilters() {
-                document.getElementById('search-input').value = '';
+        // Load initial data
+        fetch('/api/stocks')
+            .then(r => r.json())
+            .then(d => {
+                fullList = d;
                 filterStocks('ALL');
+            })
+            .catch(err => console.error("API Load Error:", err));
+
+        function getFavorites() {
+            try { return JSON.parse(localStorage.getItem('vr_favorites') || '[]'); }
+            catch { return []; }
+        }
+
+        function saveFavorites(list) {
+            localStorage.setItem('vr_favorites', JSON.stringify(list));
+        }
+
+        function toggleFavorite(ev, symbol) {
+            ev.stopPropagation();
+            let favs = getFavorites();
+            if (favs.includes(symbol)) {
+                favs = favs.filter(s => s !== symbol);
+            } else {
+                favs.push(symbol);
+            }
+            saveFavorites(favs);
+            // Re-render only if in FAV view, otherwise just update icon style (optional optimization)
+            renderStockList();
+        }
+
+        async function addSymbolToWatchlist() {
+            let sym = prompt('Gib das Tickersymbol ein (z.B. GM, AAPL):');
+            if (!sym) return;
+            sym = sym.trim().toUpperCase();
+
+            // Quick check if already in list
+            if (fullList.some(s => (s.Symbol || s.symbol || '').toUpperCase() === sym)) {
+                alert('Symbol ist bereits in der Liste.');
+                return;
             }
 
-            function filterStocksByName(query) {
-                query = query.toLowerCase();
-                filteredList = fullList.filter(s =>
-                    (s.Name && s.Name.toLowerCase().includes(query)) ||
-                    (s.Symbol && s.Symbol.toLowerCase().includes(query))
-                );
-                renderStockList();
-            }
+            try {
+                // Fetch details to validate and get name/price
+                const r = await fetch(`/api/details/${sym}`);
+                const d = await r.json();
+                if (d.error) throw new Error(d.error);
 
-            function toggleSortByPerf() {
-                filteredList.sort((a, b) => (b.perf_1y || 0) - (a.perf_1y || 0));
-                renderStockList();
-            }
+                let region = 'US';
+                if ((d.country || '').includes('Germany')) region = 'DE';
 
-            function renderStockList() {
-                const container = document.getElementById('watchlist-container');
-                container.innerHTML = '';
-                const favs = getFavorites();
+                const newItem = {
+                    Symbol: sym,
+                    Name: d.name || sym,
+                    Region: region,
+                    Price: d.price_now || 0,
+                    Reason: 'Manuell hinzugefügt'
+                };
+                fullList.push(newItem);
 
-                if (filteredList.length === 0) {
-                    container.innerHTML = '<div class="p-4 text-xs text-slate-500 text-center">Keine Aktien gefunden.</div>';
-                    return;
+                // Auto-add to favorites
+                let favs = getFavorites();
+                if (!favs.includes(sym)) {
+                    favs.push(sym);
+                    saveFavorites(favs);
                 }
 
-                filteredList.forEach((s, idx) => {
-                    const symbol = s.Symbol || s.symbol;
-                    const isFav = favs.includes(symbol);
-                    const price = parseFloat(s.Price || s.price || 0).toFixed(2);
+                filterStocks('ALL'); // Refresh list
 
-                    const div = document.createElement('div');
-                    div.className = `wl-item px-5 py-3 cursor-pointer group opacity-80 hover:opacity-100 flex flex-col gap-1`;
-                    if (symbol === currentSymbol) div.classList.add('active', 'opacity-100');
+                // Select the new item
+                setTimeout(() => {
+                    const idx = filteredList.findIndex(s => (s.Symbol || s.symbol) === sym);
+                    if (idx >= 0) selectStock(filteredList[idx], idx);
+                }, 100);
 
-                    div.onclick = () => selectStock(s, idx);
+            } catch (e) {
+                alert('Symbol nicht gefunden.');
+            }
+        }
 
-                    div.innerHTML = `
+        function filterStocks(reg) {
+            // Update UI buttons
+            document.querySelectorAll('.region-btn').forEach(b => {
+                b.classList.remove('active-region', 'bg-teal-600', 'text-white', 'shadow-sm');
+                b.classList.add('text-slate-400');
+                if (b.dataset.reg === reg) {
+                    b.classList.add('bg-teal-600', 'text-white', 'shadow-sm');
+                    b.classList.remove('text-slate-400');
+                }
+            });
+
+            if (reg === 'FAV') {
+                const favs = getFavorites();
+                filteredList = fullList.filter(s => favs.includes(s.Symbol || s.symbol));
+            } else if (reg === 'ALL') {
+                filteredList = fullList;
+            } else {
+                filteredList = fullList.filter(s => (s.Region || s.region || "US").toUpperCase() === reg);
+            }
+            renderStockList();
+        }
+
+        function filterStocksByName(query) {
+            query = query.toLowerCase();
+            const activeReg = document.querySelector('.region-btn.bg-teal-600').dataset.reg;
+
+            // Base list on current region filter
+            let baseList = fullList;
+            if (activeReg === 'FAV') {
+                const favs = getFavorites();
+                baseList = fullList.filter(s => favs.includes(s.Symbol || s.symbol));
+            } else if (activeReg !== 'ALL') {
+                baseList = fullList.filter(s => (s.Region || s.region || "US").toUpperCase() === activeReg);
+            }
+
+            filteredList = baseList.filter(s =>
+                (s.Name && s.Name.toLowerCase().includes(query)) ||
+                (s.Symbol && s.Symbol.toLowerCase().includes(query))
+            );
+            renderStockList();
+        }
+
+        function renderStockList() {
+            const container = document.getElementById('watchlist-container');
+            container.innerHTML = '';
+            const favs = getFavorites();
+
+            if (filteredList.length === 0) {
+                container.innerHTML = '<div class="p-4 text-xs text-slate-500 text-center">Keine Aktien gefunden.</div>';
+                return;
+            }
+
+            filteredList.forEach((s, idx) => {
+                const symbol = s.Symbol || s.symbol;
+                const isFav = favs.includes(symbol);
+                const price = parseFloat(s.Price || s.price || 0).toFixed(2);
+
+                const div = document.createElement('div');
+                div.className = `wl-item px-5 py-3 cursor-pointer group opacity-80 hover:opacity-100 flex flex-col gap-1`;
+                if (symbol === currentSymbol) div.classList.add('active', 'opacity-100');
+
+                div.onclick = () => selectStock(s, idx);
+
+                div.innerHTML = `
                     <div class="flex justify-between items-center">
                         <div class="flex items-center gap-2">
                             <button onclick="toggleFavorite(event, '${symbol}')" class="text-slate-600 hover:text-teal-400">
@@ -921,611 +588,357 @@
                         <span class="font-bold text-white text-sm">$${price}</span>
                     </div>
                     <div class="flex justify-between items-center text-[10px]">
-                        <span class="text-slate-500">${s.Region || s.region || ''}</span>
-                        <span class="text-slate-400">${s.Reason ? s.Reason.substring(0, 15) + '...' : 'Underpriced'}</span>
-                        ${(s.peg && s.peg < 1.5) ? '<span class="text-emerald-400 flex items-center gap-1">Underpriced</span>' : ''}
+                        <span class="text-slate-500">${s.Region || 'US'} • ${s.Reason ? s.Reason.substring(0, 15) + '...' : 'Underpriced'}</span>
+                        ${(s.peg && s.peg < 1.5) ? '<span class="text-teal-400 flex items-center gap-1">Underpriced</span>' : ''}
                     </div>
                 `;
-                    container.appendChild(div);
-                });
-                lucide.createIcons();
+                container.appendChild(div);
+            });
+            lucide.createIcons();
 
-                // Watchlist Counter aktualisieren
-                const countEl = document.getElementById('watchlist-count');
-                if (countEl) {
-                    countEl.innerText = `Watchlist (${filteredList.length})`;
+            // Initial Select if none selected
+            if (!currentSymbol && filteredList.length > 0) {
+                selectStock(filteredList[0], 0);
+            }
+        }
+
+        /* ---------- SELECTION & DETAILS ---------- */
+
+        function selectStock(s, idx) {
+            currentSymbol = s.Symbol || s.symbol;
+
+            // Update Watchlist UI Highlight
+            const items = document.querySelectorAll('.wl-item');
+            items.forEach(el => el.classList.remove('active', 'opacity-100'));
+            if (items[idx]) items[idx].classList.add('active', 'opacity-100');
+
+            // Set Basic Info
+            document.getElementById('header-name').innerText = s.Name || s.name;
+            document.getElementById('header-ticker').innerText = currentSymbol;
+            document.getElementById('header-price').innerText = "$" + parseFloat(s.Price || 0).toFixed(2);
+            document.getElementById('yahoo-link').href = `https://finance.yahoo.com/quote/${currentSymbol}`;
+
+            // Reset Charts/Data while loading
+            document.getElementById('val-mcap').innerText = "...";
+            document.getElementById('val-pe').innerText = "...";
+            document.getElementById('val-margin').innerText = "...";
+            document.getElementById('strengths-list').innerHTML = '<li class="text-xs text-slate-500">Lade...</li>';
+
+            // Trigger Loads
+            updateChart(currentTimeframe);
+            loadDetails(currentSymbol);
+        }
+
+        async function loadDetails(sym) {
+            try {
+                const r = await fetch(`/api/details/${sym}`);
+                const d = await r.json();
+                if (d.error) return;
+
+                // --- Price Update ---
+                if (d.price_now) {
+                    currentPrice = d.price_now;
+                    document.getElementById('header-price').innerText = "$" + Number(d.price_now).toFixed(2);
                 }
 
-                // Initial Select if none selected
-                if (!currentSymbol && filteredList.length > 0) {
-                    selectStock(filteredList[0], 0);
-                }
-            }
+                // --- Header Info ---
+                document.getElementById('header-sector').innerText = d.sector || '-';
+                document.getElementById('header-industry').innerText = d.industry || '-';
 
-            async function addSymbolToWatchlist() {
-                const ticker = prompt("Welches Ticker-Symbol möchtest du hinzufügen? (z.B. AAPL)");
-                if (!ticker) return;
+                // --- KPIs ---
 
-                try {
-                    const r = await fetch(`/api/details/${ticker.toUpperCase()}`);
-                    const d = await r.json();
-                    if (d.error) {
-                        alert("Ticker konnte nicht gefunden werden.");
-                        return;
-                    }
+                // Market Cap
+                document.getElementById('val-mcap').innerText = formatNumber(d.market_cap);
 
-                    const region = d.country === 'United States' ? 'US' : 'DE';
-                    const newItem = {
-                        Symbol: d.ticker,
-                        Name: d.name,
-                        Region: region,
-                        Price: d.price_now || 0,
-                        Reason: 'Manual add'
-                    };
+                // PE / PEG
+                if (d.pe) {
+                    document.getElementById('val-pe').innerText = d.pe.toFixed(2);
+                    let pegText = d.peg ? `PEG: ${d.peg.toFixed(2)}` : 'PEG: N/A';
+                    document.getElementById('sub-pe').innerText = pegText;
 
-                    // In Watchlist übernehmen
-                    fullList.push(newItem);
-
-                    // Direkt als Favorit markieren
-                    const favs = getFavorites();
-                    if (!favs.includes(d.ticker)) {
-                        favs.push(d.ticker);
-                        saveFavorites(favs);
-                    }
-
-                    filterStocks('ALL'); // aktualisiert auch die Liste
-
-                    const idx = fullList.findIndex(x => (x.Symbol || x.symbol) === d.ticker);
-                    if (idx >= 0) {
-                        selectStock(fullList[idx], idx);
-                    }
-
-                } catch (e) {
-                    console.error(e);
-                    alert("Es gab ein Problem beim Hinzufügen des Tickers.");
-                }
-            }
-
-            /* ---------- SELECTION + HEADER ---------- */
-
-            function selectStock(s, idx) {
-                const symbol = s.Symbol || s.symbol;
-                currentSymbol = symbol;
-
-                document.querySelectorAll('.wl-item').forEach((el) => {
-                    el.classList.remove('active', 'opacity-100');
-                });
-                const wlItems = document.querySelectorAll('.wl-item');
-                if (wlItems[idx]) wlItems[idx].classList.add('active', 'opacity-100');
-
-                document.getElementById('header-name').innerText = s.Name || s.name || symbol;
-                document.getElementById('header-ticker').innerText = symbol;
-                document.getElementById('header-ticker-mini').innerText = symbol;
-                document.getElementById('yahoo-link').href = `https://finance.yahoo.com/quote/${symbol}`;
-                document.getElementById('header-sector').innerText = '-';
-                document.getElementById('header-industry').innerText = '-';
-
-                document.getElementById('header-price').innerText = "$" + (s.Price || s.price || 0).toFixed(2);
-                document.getElementById('header-price-mini').innerText = "$" + (s.Price || s.price || 0).toFixed(2);
-
-                document.getElementById('val-mcap').innerText = '$-';
-                document.getElementById('sub-mcap').innerText = 'Lade...';
-                document.getElementById('val-pe').innerText = '-';
-                document.getElementById('sub-pe').innerText = 'Lade...';
-                document.getElementById('val-peg').innerText = '-';
-                document.getElementById('sub-peg').innerText = 'Lade...';
-                document.getElementById('val-margin').innerText = '-';
-                document.getElementById('sub-margin').innerText = 'Lade...';
-                document.getElementById('val-growth').innerText = '-';
-                document.getElementById('sub-growth').innerText = 'Lade...';
-                document.getElementById('summary-rating').innerText = 'Berechne...';
-
-                const strengthsList = document.getElementById('strengths-list');
-                strengthsList.innerHTML = '<li class="text-xs text-slate-500">Lade...</li>';
-                const risksList = document.getElementById('risks-list');
-                risksList.innerHTML = '<li class="text-xs text-slate-500">Lade...</li>';
-                const newsList = document.getElementById('news-list');
-                newsList.innerHTML = '<div class="text-xs text-slate-500">Lade News...</div>';
-
-                document.getElementById('header-score').innerText = '--';
-                document.getElementById('header-score-text').innerText = 'Analysiert';
-                document.getElementById('sentiment-text').innerText = 'Wird berechnet...';
-                document.getElementById('vr-score-bar').style.width = '0%';
-
-                updateChart(currentTimeframe);
-                loadDetails(currentSymbol);
-            }
-
-            async function loadDetails(sym) {
-                try {
-                    const r = await fetch(`/api/details/${sym}`);
-                    const d = await r.json();
-                    if (d.error) return;
-
-                    if (d.price_now) {
-                        currentPrice = d.price_now;
-                        document.getElementById('header-price').innerText = "$" + Number(d.price_now).toFixed(2);
-                        document.getElementById('header-price-mini').innerText = "$" + Number(d.price_now).toFixed(2);
-                    }
-
-                    document.getElementById('header-sector').innerText = d.sector || '-';
-                    document.getElementById('header-industry').innerText = d.industry || '-';
-
-                    if (d.market_cap) {
-                        document.getElementById('val-mcap').innerText = formatNumber(d.market_cap);
-                        document.getElementById('sub-mcap').innerText = d.market_cap_text || '-';
-                    } else {
-                        document.getElementById('val-mcap').innerText = '$-';
-                        document.getElementById('sub-mcap').innerText = 'Keine Daten';
-                    }
-
-                    const pe = d.pe_ttm || d.pe || null;
-                    const peg = d.peg_ratio || d.peg || null;
-                    const margin = d.net_margin || d.margin || null;
-                    const growth = d.revenue_growth || d.growth || null;
-
-                    if (pe) {
-                        document.getElementById('val-pe').innerText = pe.toFixed(1);
-                        document.getElementById('sub-pe').innerText = "P/E (TTM)";
-                    } else {
-                        document.getElementById('val-pe').innerText = '-';
-                        document.getElementById('sub-pe').innerText = "Keine Daten";
-                    }
-
-                    if (peg) {
-                        document.getElementById('val-peg').innerText = peg.toFixed(2);
-                        document.getElementById('sub-peg').innerText = "PEG Ratio";
-                    } else {
-                        document.getElementById('val-peg').innerText = '-';
-                        document.getElementById('sub-peg').innerText = "Keine Daten";
-                    }
-
-                    let rating = 'Neutral';
-                    let ratingClass = 'bg-slate-900/80 border border-slate-700/80 text-slate-200';
-
-                    if (pe && pe < 15 && (!peg || peg < 1.5)) {
-                        rating = 'Günstig bewertet';
-                        ratingClass = 'bg-emerald-500/10 border border-emerald-400/50 text-emerald-200';
-                    } else if (pe && pe > 35) {
-                        rating = 'Teuer bewertet';
-                        ratingClass = 'bg-rose-500/10 border border-rose-400/50 text-rose-200';
-                    }
-
-                    const badgeEl = document.getElementById('badge-pe-rating');
-                    badgeEl.className = 'inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] ' + ratingClass;
-                    document.getElementById('val-pe-rating').innerText = rating;
-
-                    if (margin != null) {
-                        const m = Math.round(margin);
-                        document.getElementById('val-margin').innerText = m + '%';
-                        document.getElementById('sub-margin').innerText = "Net Margin";
-                        const width = Math.min(100, Math.max(0, m));
-                        document.getElementById('prog-margin').style.width = width + '%';
-                    } else {
-                        document.getElementById('val-margin').innerText = '-';
-                        document.getElementById('sub-margin').innerText = "Keine Daten";
-                        document.getElementById('prog-margin').style.width = '0%';
-                    }
-
-                    if (growth != null) {
-                        const g = Math.round(growth);
-                        document.getElementById('val-growth').innerText = g + '%';
-                        document.getElementById('sub-growth').innerText = "Revenue YoY";
-                        const badge = document.getElementById('val-growth-badge');
-                        if (g > 15) {
-                            badge.innerText = 'Strong Growth';
-                        } else if (g > 5) {
-                            badge.innerText = 'Solid Growth';
-                        } else if (g < 0) {
-                            badge.innerText = 'Shrinking';
-                        } else {
-                            badge.innerText = 'Moderate';
-                        }
-                    } else {
-                        document.getElementById('val-growth').innerText = '-';
-                        document.getElementById('sub-growth').innerText = "Keine Daten";
-                        document.getElementById('val-growth-badge').innerText = 'n/a';
-                    }
-
-                    updateList('strengths-list', d.pros, 'Stärken aktuell nicht verfügbar.');
-                    updateList('risks-list', d.risks, 'Risiken aktuell nicht verfügbar.');
-
-                    renderNews(d.news);
-
-                    const score = computeVRScore({ pe, peg, growth, margin, perf_1y: d.perf_1y });
-                    renderGauge(score);
-
-                    let scoreText = document.getElementById('header-score-text');
-                    let sentimentText = document.getElementById('sentiment-text');
-
-                    if (score >= 80) {
-                        scoreText.innerText = 'High Conviction';
-                        sentimentText.innerText = 'Sehr starke Fundamentaldaten bei Bewertung & Wachstum.';
-                    } else if (score >= 60) {
-                        scoreText.innerText = 'Attractive';
-                        sentimentText.innerText = 'Gute Kombination aus Bewertung, Wachstum und Profitabilität.';
-                    } else if (score >= 40) {
-                        scoreText.innerText = 'Neutral';
-                        sentimentText.innerText = 'Solide, aber mit einzelnen Schwachstellen.';
-                    } else {
-                        scoreText.innerText = 'Speculative';
-                        sentimentText.innerText = 'Hohe Risiken oder schwächere Fundamentaldaten.';
-                    }
-
-                    document.getElementById('header-score').innerText = score;
-                    const bar = document.getElementById('vr-score-bar');
-                    bar.style.width = score + '%';
-
-                    let col = '#22c55e';
-                    if (score < 40) col = '#ef4444';
-                    else if (score < 60) col = '#eab308';
-                    else if (score < 80) col = '#22c55e';
-
-                    bar.style.background = col;
-
-                } catch (e) {
-                    console.error(e);
-                }
-            }
-
-            function formatNumber(num) {
-                if (!num) return '$-';
-                if (Math.abs(num) >= 1_000_000_000_000) {
-                    return '$' + (num / 1_000_000_000_000).toFixed(2) + 'T';
-                } else if (Math.abs(num) >= 1_000_000_000) {
-                    return '$' + (num / 1_000_000_000).toFixed(2) + 'B';
-                } else if (Math.abs(num) >= 1_000_000) {
-                    return '$' + (num / 1_000_000).toFixed(2) + 'M';
-                } else if (Math.abs(num) >= 1_000) {
-                    return '$' + (num / 1_000).toFixed(2) + 'K';
-                }
-                return '$' + num.toFixed(0);
-            }
-
-            function updateList(elementId, items, fallbackText) {
-                const container = document.getElementById(elementId);
-                if (!items || items.length === 0) {
-                    container.innerHTML = `<li class="text-xs text-slate-500">${fallbackText}</li>`;
-                    return;
+                    const badge = document.getElementById('badge-pe-rating');
+                    if (d.pe < 15) { badge.innerText = "Cheap"; badge.className = "text-[9px] text-teal-300 bg-teal-500/20 px-2 py-0.5 rounded"; }
+                    else if (d.pe > 25) { badge.innerText = "Exp."; badge.className = "text-[9px] text-red-300 bg-red-500/20 px-2 py-0.5 rounded"; }
+                    else { badge.innerText = "Fair"; badge.className = "text-[9px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded"; }
                 }
 
-                container.innerHTML = '';
-                items.slice(0, 5).forEach(text => {
-                    const li = document.createElement('li');
-                    li.className = "flex items-start gap-1.5";
-                    li.innerHTML = `
-                    <span class="mt-1 w-1.5 h-1.5 rounded-full bg-emerald-400/70 shadow-[0_0_6px_rgba(52,211,153,0.9)]"></span>
-                    <span>${text}</span>
-                `;
-                    container.appendChild(li);
-                });
-            }
-
-            function renderNews(news) {
-                const container = document.getElementById('news-list');
-                if (!news || news.length === 0) {
-                    container.innerHTML = '<div class="text-xs text-slate-500">Keine News verfügbar.</div>';
-                    return;
+                // Margin
+                if (d.profit_margin) {
+                    const margin = (d.profit_margin * 100).toFixed(1);
+                    document.getElementById('val-margin').innerText = margin + "%";
+                    // Visual bar cap at 30% for scaling
+                    let barW = Math.min((d.profit_margin * 100) * 3, 100);
+                    document.getElementById('prog-margin').style.width = barW + "%";
                 }
 
-                container.innerHTML = '';
-                news.slice(0, 4).forEach(n => {
-                    const link = document.createElement('a');
-                    link.href = n.url;
-                    link.target = '_blank';
-                    link.className = 'block p-2.5 news-item bg-slate-950/90 hover:bg-slate-900/90 transition-all';
-                    link.innerHTML = `
-                    <div class="flex items-center justify-between gap-2 mb-1">
-                        <span class="text-[11px] text-slate-300 truncate">${n.title}</span>
-                        <span class="text-[9px] text-slate-500">${n.source || ''}</span>
-                    </div>
-                    <div class="flex items-center justify-between text-[10px] text-slate-500">
-                        <span>${n.time_ago || ''}</span>
-                        <span class="inline-flex items-center gap-1 text-sky-400">
-                            <span>Lesen</span>
-                            <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-                        </span>
-                    </div>
-                `;
-                    container.appendChild(link);
-                });
-                lucide.createIcons();
-            }
+                // Growth
+                if (d.revenue_growth) {
+                    const growth = (d.revenue_growth * 100).toFixed(1);
+                    const el = document.getElementById('val-growth');
+                    el.innerText = (growth > 0 ? "+" : "") + growth + "%";
+                    el.className = growth > 0 ? "text-2xl font-bold text-white tracking-tight" : "text-2xl font-bold text-red-400 tracking-tight";
 
-            function computeVRScore({ pe, peg, growth, margin, perf_1y }) {
+                    const badge = document.getElementById('val-growth-badge');
+                    badge.innerText = growth > 0 ? "Growing" : "Declining";
+                    badge.className = growth > 0 ? "text-[9px] text-green-400 font-bold" : "text-[9px] text-red-400 font-bold";
+                }
+
+                // --- Lists (Pros/Risks/News) ---
+                updateList('strengths-list', d.pros, 'thumbs-up', 'text-green-400');
+                updateList('risks-list', d.risks, 'alert-triangle', 'text-red-400');
+                renderNews(d.news);
+
+                // --- VR Score Simulation (Weighted Average) ---
                 let score = 50;
+                if (d.pe && d.pe < 20) score += 10;
+                if (d.peg && d.peg < 1.5) score += 10;
+                if (d.revenue_growth > 0) score += 10;
+                if (d.profit_margin > 0.1) score += 10;
+                if (d.perf_1y > 0) score += 10;
 
-                if (pe) {
-                    if (pe < 15) score += 15;
-                    else if (pe < 25) score += 5;
-                    else if (pe > 40) score -= 10;
+                // Visual Updates for Score
+                document.getElementById('header-score').innerText = score;
+                renderGauge(score);
+                const scoreText = document.getElementById('header-score-text');
+                const sentimentText = document.getElementById('sentiment-text');
+
+                let rating = "Hold";
+                if (score > 75) rating = "Strong Buy";
+                else if (score > 60) rating = "Buy";
+                else if (score < 40) rating = "Sell";
+
+                scoreText.innerText = rating;
+                sentimentText.innerText = rating;
+
+            } catch (e) { console.error(e); }
+        }
+
+        /* ---------- CHARTING ---------- */
+
+        async function updateChart(tf) {
+            currentTimeframe = tf;
+            // Update UI Buttons
+            document.querySelectorAll('.tf-btn').forEach(b => {
+                if (b.dataset.tf === tf) b.classList.add('active');
+                else b.classList.remove('active');
+            });
+
+            if (abortController) abortController.abort();
+            abortController = new AbortController();
+
+            try {
+                const r = await fetch(`/api/history/${currentSymbol}/${tf}`, { signal: abortController.signal });
+                const json = await r.json();
+
+                if (!json.error && json.candle && json.candle.length > 0) {
+                    lastHistoryData = json;
+                    renderApexChart(json);
+                    updatePerfLabel(tf, json.candle);
                 }
+            } catch (e) {
+                if (e.name !== 'AbortError') console.warn(e);
+            }
+        }
 
-                if (peg) {
-                    if (peg < 1) score += 15;
-                    else if (peg < 1.5) score += 5;
-                    else if (peg > 2.5) score -= 10;
-                }
+        function renderApexChart(d) {
+            if (!d || !d.candle) return;
 
-                if (growth != null) {
-                    if (growth > 20) score += 15;
-                    else if (growth > 10) score += 8;
-                    else if (growth < 0) score -= 10;
-                }
+            // Prepare Series based on Chart Type
+            let series = [];
 
-                if (margin != null) {
-                    if (margin > 25) score += 10;
-                    else if (margin > 10) score += 5;
-                    else if (margin < 0) score -= 10;
-                }
-
-                if (perf_1y != null) {
-                    if (perf_1y > 30) score += 5;
-                    else if (perf_1y < -30) score -= 8;
-                }
-
-                return Math.max(0, Math.min(100, Math.round(score)));
+            if (currentChartType === 'candles') {
+                const candleData = d.candle.map(x => ({ x: x[0], y: [x[1], x[2], x[3], x[4]] }));
+                series.push({ name: 'Price', type: 'candlestick', data: candleData });
+            } else {
+                const lineData = d.candle.map(x => ({ x: x[0], y: x[4] }));
+                series.push({ name: 'Price', type: 'area', data: lineData });
             }
 
-            /* ---------- CHARTING ---------- */
+            // MAs
+            if (showMA20 && d.ma20) series.push({ name: 'MA 20', type: 'line', data: d.ma20 });
+            if (showMA50 && d.ma50) series.push({ name: 'MA 50', type: 'line', data: d.ma50 });
+            if (showMA200 && d.ma200) series.push({ name: 'MA 200', type: 'line', data: d.ma200 });
 
-            function updateTimeframe(tf) {
-                updateChart(tf);
-            }
+            // Styling variables for "Chart.js look" in Apex
+            const isLine = currentChartType === 'line';
 
-            async function updateChart(tf) {
-                currentTimeframe = tf;
-                document.getElementById('chart-range-label').innerText = tf;
-
-                document.querySelectorAll('.tf-btn').forEach(b => {
-                    if (b.dataset.tf === tf) b.classList.add('active');
-                    else b.classList.remove('active');
-                });
-
-                if (abortController) abortController.abort();
-                abortController = new AbortController();
-
-                try {
-                    const r = await fetch(`/api/history/${currentSymbol}/${tf}`, { signal: abortController.signal });
-                    const json = await r.json();
-
-                    if (!json.error && json.candle && json.candle.length > 0) {
-                        lastHistoryData = json;
-                        renderApexChart(json);
-                        updatePerfLabel(tf, json.candle);
+            const options = {
+                chart: {
+                    height: '100%',
+                    type: isLine ? 'area' : 'candlestick',
+                    fontFamily: 'Inter, sans-serif',
+                    toolbar: { show: false },
+                    animations: { enabled: false },
+                    background: 'transparent'
+                },
+                theme: { mode: 'dark' },
+                colors: ['#2dd4bf', '#fbbf24', '#f87171', '#60a5fa'], // Teal primary
+                stroke: {
+                    curve: 'straight',
+                    width: isLine ? 2 : 1,
+                },
+                fill: {
+                    type: isLine ? 'gradient' : 'solid',
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.4,
+                        opacityTo: 0.05,
+                        stops: [0, 100]
                     }
-                } catch (e) {
-                    if (e.name !== 'AbortError') {
-                        console.warn(e);
-                        const fallback = generateFallbackData(tf, currentPrice || 100);
-                        lastHistoryData = fallback;
-                        renderApexChart(fallback);
-                        updatePerfLabel(tf, fallback.candle);
+                },
+                series: series,
+                xaxis: {
+                    type: 'datetime',
+                    tooltip: { enabled: false },
+                    axisBorder: { show: false },
+                    axisTicks: { show: false },
+                    labels: { style: { colors: '#64748b', fontSize: '10px' } }
+                },
+                yaxis: {
+                    labels: {
+                        formatter: (v) => v.toFixed(1),
+                        style: { colors: '#64748b', fontSize: '10px' }
+                    },
+                    opposite: true
+                },
+                grid: {
+                    borderColor: 'rgba(255,255,255,0.05)',
+                    strokeDashArray: 4,
+                },
+                plotOptions: {
+                    candlestick: {
+                        colors: { upward: '#2dd4bf', downward: '#ef4444' }
                     }
-                }
-            }
+                },
+                dataLabels: { enabled: false },
+                legend: { show: false }
+            };
 
-            function updatePerfLabel(tf, candles) {
-                if (!candles || candles.length < 2) return;
-                const start = candles[0][4];
-                const end = candles[candles.length - 1][4];
-                const perf = ((end - start) / start) * 100;
+            if (chart) chart.destroy();
+            chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+        }
 
-                const el = document.getElementById('tf-perf');
-                el.innerText = (perf >= 0 ? '+' : '') + perf.toFixed(1) + '%';
-
-                if (perf > 0) {
-                    el.classList.remove('text-rose-400');
-                    el.classList.add('text-emerald-400');
-                } else if (perf < 0) {
-                    el.classList.remove('text-emerald-400');
-                    el.classList.add('text-rose-400');
-                } else {
-                    el.classList.remove('text-emerald-400', 'text-rose-400');
-                    el.classList.add('text-slate-400');
-                }
-            }
-
-            function renderApexChart(d) {
-                if (!d || !d.candle) return;
-
-                let series = [];
-
-                if (currentChartType === 'candles') {
-                    const candleData = d.candle.map(x => ({ x: x[0], y: [x[1], x[2], x[3], x[4]] }));
-                    series.push({ name: 'Price', type: 'candlestick', data: candleData });
-                } else {
-                    const lineData = d.candle.map(x => ({ x: x[0], y: x[4] }));
-                    series.push({ name: 'Price', type: 'area', data: lineData });
-                }
-
-                if (showMA20 && d.ma20) series.push({ name: 'MA 20', type: 'line', data: d.ma20 });
-                if (showMA50 && d.ma50) series.push({ name: 'MA 50', type: 'line', data: d.ma50 });
-                if (showMA200 && d.ma200) series.push({ name: 'MA 200', type: 'line', data: d.ma200 });
-
-                const isLine = currentChartType === 'line';
-
-                const options = {
-                    chart: {
-                        type: isLine ? 'area' : 'candlestick',
-                        height: '100%',
-                        foreColor: '#94a3b8',
-                        fontFamily: 'Inter, system-ui, sans-serif',
-                        toolbar: {
-                            show: false
-                        },
-                        animations: {
-                            enabled: true,
-                            easing: 'easeinout',
-                            speed: 600,
-                        },
-                        background: 'transparent'
-                    },
-                    stroke: {
-                        curve: 'straight',
-                        width: isLine ? 2 : 1,
-                    },
-                    fill: {
-                        type: isLine ? 'gradient' : 'solid',
-                        gradient: {
-                            shadeIntensity: 1,
-                            opacityFrom: 0.4,
-                            opacityTo: 0.05,
-                            stops: [0, 100]
-                        }
-                    },
-                    series: series,
-                    xaxis: {
-                        type: 'datetime',
-                        tooltip: { enabled: false },
-                        axisBorder: { show: false },
-                        axisTicks: { show: false },
-                        labels: { style: { colors: '#64748b', fontSize: '10px' } }
-                    },
-                    yaxis: {
-                        labels: {
-                            formatter: (v) => v.toFixed(1),
-                            style: { colors: '#64748b', fontSize: '10px' }
-                        },
-                        tooltip: { enabled: true }
-                    },
-                    grid: {
-                        borderColor: 'rgba(15,23,42,0.85)',
-                        strokeDashArray: 4,
-                        padding: {
-                            left: 10,
-                            right: 0,
-                            top: 0,
-                            bottom: 0
-                        }
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    tooltip: {
-                        theme: 'dark',
-                        x: { show: true },
-                        y: {
-                            formatter: (v) => '$' + v.toFixed(2)
-                        }
-                    },
-                    colors: ['#22c55e', '#60a5fa', '#f97316', '#a855f7'],
-                    legend: {
-                        show: false
-                    }
-                };
-
-                if (chart) chart.destroy();
-                chart = new ApexCharts(document.querySelector("#chart"), options);
-                chart.render();
-            }
-
-            function generateFallbackData(tf, price) {
-                let points = 50;
-                let now = new Date().getTime();
-                let candles = [];
-                let p = price || 100;
-
-                for (let i = 0; i < points; i++) {
-                    candles.unshift([now - (i * 86400000), p, p * 1.01, p * 0.99, p]);
-                    p = p * (1 + (Math.random() - 0.5) * 0.02);
-                }
-
-                return {
-                    candle: candles
-                };
-            }
-
-            function renderGauge(score) {
-                const options = {
-                    series: [score],
-                    chart: { height: 180, type: 'radialBar', fontFamily: 'Inter' },
-                    plotOptions: {
-                        radialBar: {
-                            startAngle: -135, endAngle: 135,
-                            hollow: { size: '60%', background: 'transparent' },
-                            track: { background: 'rgba(15,23,42,1)', strokeWidth: '100%' },
-                            dataLabels: {
-                                show: true,
-                                name: {
-                                    show: true,
-                                    color: '#64748b',
-                                    fontSize: '11px',
-                                    offsetY: 32
-                                },
-                                value: {
-                                    show: true,
-                                    fontSize: '22px',
-                                    fontWeight: 600,
-                                    color: '#e5e7eb',
-                                    offsetY: -8
-                                }
+        function renderGauge(score) {
+            const options = {
+                series: [score],
+                chart: { height: 180, type: 'radialBar', fontFamily: 'Inter' },
+                plotOptions: {
+                    radialBar: {
+                        startAngle: -135, endAngle: 135,
+                        hollow: { size: '60%', background: 'transparent' },
+                        track: { background: 'rgba(255,255,255,0.05)', strokeWidth: '100%' },
+                        dataLabels: {
+                            show: true,
+                            name: { show: false },
+                            value: {
+                                offsetY: 10,
+                                fontSize: '24px',
+                                fontWeight: '700',
+                                color: '#fff',
+                                formatter: (v) => v
                             }
                         }
-                    },
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            shade: 'dark',
-                            gradientToColors: ['#22c55e'],
-                            stops: [0, 50, 100],
-                            inverseColors: false,
-                        }
-                    },
-                    stroke: {
-                        lineCap: 'round'
-                    },
-                    labels: ['VR Score']
-                };
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'dark',
+                        type: 'horizontal',
+                        gradientToColors: ['#2dd4bf'],
+                        stops: [0, 100]
+                    }
+                },
+                stroke: { lineCap: 'round' },
+                colors: ['#14b8a6']
+            };
 
-                if (gaugeChart) gaugeChart.destroy();
-                gaugeChart = new ApexCharts(document.querySelector("#gauge"), options);
-                gaugeChart.render();
+            if (gaugeChart) gaugeChart.destroy();
+            gaugeChart = new ApexCharts(document.querySelector("#gauge-chart"), options);
+            gaugeChart.render();
+        }
+
+        /* ---------- HELPERS ---------- */
+
+        function updatePerfLabel(tf, candles) {
+            if (!candles || candles.length < 2) return;
+            const start = candles[0][4];
+            const end = candles[candles.length - 1][4];
+            const perf = ((end / start) - 1) * 100;
+            const el = document.getElementById('tf-perf');
+
+            el.innerText = (perf > 0 ? "+" : "") + perf.toFixed(2) + "% (" + tf + ")";
+            if (perf >= 0) el.className = "text-xs text-teal-400 font-bold bg-teal-500/10 px-2 py-0.5 rounded";
+            else el.className = "text-xs text-red-400 font-bold bg-red-500/10 px-2 py-0.5 rounded";
+        }
+
+        function updateList(id, items, icon, colorClass) {
+            const list = document.getElementById(id);
+            if (!items || items.length === 0) {
+                list.innerHTML = '<li class="text-xs text-slate-500">Keine Daten verfügbar.</li>';
+                return;
             }
+            list.innerHTML = items.map(item => `
+                <li class="flex items-start gap-2 text-xs text-slate-300">
+                    <span class="${colorClass} font-bold mt-0.5">•</span>
+                    ${item}
+                </li>
+            `).join('');
+        }
 
-            function toggleMA(val) {
-                if (val === '20') showMA20 = !showMA20;
-                if (val === '50') showMA50 = !showMA50;
-                if (val === '200') showMA200 = !showMA200;
-
-                document.querySelectorAll('.mabtn').forEach(btn => {
-                    const ma = btn.dataset.ma;
-                    let active = false;
-                    if (ma === '20') active = showMA20;
-                    if (ma === '50') active = showMA50;
-                    if (ma === '200') active = showMA200;
-
-                    if (active) btn.classList.add('active');
-                    else btn.classList.remove('active');
-                });
-
-                if (lastHistoryData) renderApexChart(lastHistoryData);
+        function renderNews(news) {
+            const container = document.getElementById('news-container');
+            if (!news || news.length === 0) {
+                container.innerHTML = '<div class="text-slate-500 text-xs">Keine aktuellen Nachrichten.</div>';
+                return;
             }
+            container.innerHTML = news.map(n => `
+                <a href="${n.link}" target="_blank" class="block bg-slate-800/30 p-3 rounded border border-white/5 hover:border-teal-500/30 hover:bg-slate-800/50 transition group">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] text-teal-500 font-bold bg-teal-500/10 px-1.5 py-0.5 rounded">${n.publisher}</span>
+                        <span class="text-[10px] text-slate-600">${n.date}</span>
+                    </div>
+                    <h4 class="text-xs font-medium text-slate-300 group-hover:text-white leading-relaxed line-clamp-2">${n.title}</h4>
+                </a>
+            `).join('');
+        }
 
-            function setChartType(type) {
-                currentChartType = type;
-                document.querySelectorAll('.charttype-btn').forEach(btn => {
-                    if (btn.dataset.type === type) btn.classList.add('active');
-                    else btn.classList.remove('active');
-                });
-                if (lastHistoryData) renderApexChart(lastHistoryData);
-            }
+        function formatNumber(num) {
+            if (num == null) return 'N/A';
+            if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
+            if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+            if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+            return num.toLocaleString();
+        }
 
-            document.addEventListener('DOMContentLoaded', () => {
-                filterStocks('ALL');
+        function toggleMA(val) {
+            if (val === '20') showMA20 = !showMA20;
+            if (val === '50') showMA50 = !showMA50;
+            if (val === '200') showMA200 = !showMA200;
 
-                document.querySelectorAll('.region-btn').forEach(btn => {
-                    btn.addEventListener('click', () => filterStocks(btn.dataset.region));
-                });
+            // Toggle visual state of buttons
+            const btn = document.querySelector(`.ma-btn[data-ma="${val}"]`);
+            if (btn) btn.classList.toggle('active');
 
-                updateChart('1Y');
-                document.querySelectorAll('.tf-btn').forEach(btn => {
-                    if (btn.dataset.tf === '1Y') btn.classList.add('active');
-                });
+            // Redraw
+            if (lastHistoryData) renderApexChart(lastHistoryData);
+        }
 
-                toggleMA('20');
+        function setChartType(type) {
+            currentChartType = type;
+            document.querySelectorAll('.charttype-btn').forEach(b => {
+                if (b.dataset.ctype === type) b.classList.add('active');
+                else b.classList.remove('active');
             });
-        </script>
+            if (lastHistoryData) renderApexChart(lastHistoryData);
+        }
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+    </script>
 </body>
 
 </html>
