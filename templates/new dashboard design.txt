@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValueRadar - Final Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #0b0f19; 
+            color: #e2e8f0;
+        }
+        
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+        /* Glass Card Style */
+        .glass-card {
+            background: rgba(17, 24, 39, 0.4); 
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            border-color: rgba(20, 184, 166, 0.3);
+            background: rgba(17, 24, 39, 0.6);
+            transform: translateY(-1px);
+        }
+        
+        .glass-header {
+            background: rgba(11, 15, 25, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        /* Watchlist Styles */
+        .wl-item { border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s; }
+        .wl-item:hover { background: rgba(255,255,255,0.03); }
+        .wl-item.active { background: rgba(20, 184, 166, 0.05); border-left: 3px solid #14b8a6; }
+        .wl-badge { background: rgba(255,255,255,0.1); color: #94a3b8; font-size: 10px; padding: 1px 4px; border-radius: 3px; }
+        
+        /* Control Buttons in Chart */
+        .chart-btn {
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .chart-btn:hover { color: white; background: rgba(255,255,255,0.05); }
+        .chart-btn.active { background: #0d9488; color: white; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden selection:bg-teal-500/30 selection:text-white">
+
+    <!-- Background -->
+    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+
+    <!-- SIDEBAR (Watchlist) -->
+    <aside class="w-80 border-r border-slate-800/50 bg-[#080b14] hidden lg:flex flex-col z-20 relative">
+        <div class="h-16 flex items-center px-6 gap-3">
+            <div class="bg-teal-600 text-white font-bold px-2 py-0.5 rounded text-xs shadow-lg shadow-teal-900/50">VR</div>
+            <span class="font-bold text-lg tracking-tight text-white">ValueRadar <span class="text-teal-500 text-xs">PRO</span></span>
+        </div>
+
+        <!-- NEW: Region Filter Buttons (Moved Here) -->
+        <div class="px-5 pt-4">
+            <div class="flex bg-[#111621] rounded-lg p-1 border border-slate-800 w-full justify-between">
+                <button class="flex-1 py-1 text-[10px] font-bold bg-teal-600 text-white rounded shadow-sm">Alle</button>
+                <button class="flex-1 py-1 text-[10px] font-bold text-slate-400 hover:text-white transition">US</button>
+                <button class="flex-1 py-1 text-[10px] font-bold text-slate-400 hover:text-white transition">DE</button>
+                <button class="flex-1 py-1 text-[10px] font-bold text-slate-400 hover:text-white transition border-l border-white/5 ml-1">List</button>
+            </div>
+        </div>
+
+        <div class="px-5 pt-4 pb-2">
+            <div class="flex justify-between items-center mb-1">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Watchlist</span>
+                <div class="flex gap-2">
+                    <button class="text-[9px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded hover:text-white transition">CSV SYNC</button>
+                    <button class="text-slate-400 hover:text-white">+</button>
+                </div>
+            </div>
+            <div class="text-[10px] text-slate-600 mb-3">Global Undervalued Stocks</div>
+            <div class="relative">
+                <input type="text" placeholder="Filtere nach Name oder Ticker..." class="w-full bg-[#111621] text-xs rounded border border-slate-800 px-3 py-2 text-slate-300 focus:outline-none focus:border-slate-600 transition placeholder-slate-600">
+            </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto mt-2">
+            <!-- GM -->
+            <div class="wl-item active px-5 py-3 cursor-pointer group">
+                <div class="flex justify-between items-center mb-1">
+                    <div class="flex items-center gap-2"><span class="font-bold text-white text-sm">General Motors</span><span class="wl-badge group-hover:bg-slate-700 transition">GM</span></div>
+                    <span class="font-bold text-white text-sm">$76.09</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px]">
+                    <span class="text-slate-500">US • KGV 4.8</span>
+                    <div class="flex items-center gap-1 text-teal-400"><span>Underpriced</span></div>
+                </div>
+            </div>
+            <!-- Fox -->
+            <div class="wl-item px-5 py-3 cursor-pointer group opacity-80 hover:opacity-100">
+                <div class="flex justify-between items-center mb-1">
+                    <div class="flex items-center gap-2"><span class="font-medium text-slate-300 text-sm">Fox Corp</span><span class="wl-badge">FOX</span></div>
+                    <span class="font-medium text-slate-300 text-sm">$58.26</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px]"><span class="text-slate-600">US • KGV 13.09</span></div>
+            </div>
+             <!-- Globe -->
+            <div class="wl-item px-5 py-3 cursor-pointer group opacity-80 hover:opacity-100">
+                <div class="flex justify-between items-center mb-1">
+                    <div class="flex items-center gap-2"><span class="font-medium text-slate-300 text-sm">Globe Life</span><span class="wl-badge">GL</span></div>
+                    <span class="font-medium text-slate-300 text-sm">$134.73</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px]"><span class="text-slate-600">US • KGV 9.77</span></div>
+            </div>
+        </div>
+        <div class="p-3 text-[10px] text-slate-600 text-center border-t border-slate-800">Powered by Python Scan</div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 flex flex-col relative overflow-hidden z-10">
+        
+        <!-- HEADER -->
+        <header class="h-20 glass-header flex items-center justify-between px-8 lg:px-10 sticky top-0 z-30 shrink-0">
+            <div>
+                <h1 class="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+                    General Motors Company
+                    <span class="text-sm font-medium text-slate-400 bg-slate-800/50 px-2 py-1 rounded border border-slate-700/50">GM</span>
+                </h1>
+                <div class="flex items-center gap-2 mt-1 text-xs text-slate-400">
+                    <span>Auto Manufacturers</span><span class="text-slate-600">•</span>
+                    <span>Consumer Cyclical</span><span class="text-slate-600">•</span>
+                    <a href="#" class="text-teal-500 hover:text-teal-400">Yahoo Finance ↗</a>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-8">
+                <!-- VR Score (Now alone on the left of price) -->
+                <div class="flex flex-col items-end">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">VR Score</span>
+                        <div class="flex items-center justify-center bg-teal-500/10 border border-teal-500/50 rounded px-2 py-0.5">
+                            <span class="text-lg font-bold text-teal-400">92</span>
+                        </div>
+                    </div>
+                    <span class="text-[9px] text-teal-600 font-bold uppercase tracking-widest mt-0.5">Excellent</span>
+                </div>
+
+                <!-- Price -->
+                <div class="text-right border-l border-white/10 pl-6">
+                    <div class="text-4xl font-bold text-white tracking-tight">$76.09</div>
+                    <div class="text-sm text-teal-400 font-medium flex items-center justify-end gap-1">Live Price</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- SCROLL AREA -->
+        <div class="flex-1 overflow-y-auto p-6 lg:p-10 scroll-smooth pb-32">
+            <div class="max-w-7xl mx-auto space-y-8">
+
+                <!-- 1. CHART SECTION -->
+                <section class="glass-card rounded-xl p-6">
+                    <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
+                        <div class="flex items-center gap-2">
+                             <h2 class="text-lg font-bold text-white flex items-center gap-2">Price Action</h2>
+                             <span class="text-xs text-teal-400 font-bold bg-teal-500/10 px-2 py-0.5 rounded">+197.24% (MAX)</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <!-- Timeframes -->
+                            <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5">
+                                <button class="chart-btn">1W</button>
+                                <button class="chart-btn">1M</button>
+                                <button class="chart-btn">1Y</button>
+                                <button class="chart-btn">5Y</button>
+                                <button class="chart-btn active">MAX</button>
+                            </div>
+                            
+                            <!-- Moving Averages -->
+                            <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5">
+                                <button class="chart-btn">MA 20</button>
+                                <button class="chart-btn">MA 50</button>
+                                <button class="chart-btn">MA 200</button>
+                            </div>
+
+                            <!-- Chart Type -->
+                            <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5">
+                                <button class="chart-btn active">Line</button>
+                                <button class="chart-btn">Candles</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="h-[450px] w-full"><canvas id="mainChart"></canvas></div>
+                </section>
+
+                <!-- 2. PROFILE SECTION -->
+                <section class="px-2">
+                    <h3 class="text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Unternehmensprofil</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed max-w-5xl">
+                        <span class="text-white font-bold">General Motors Company (GM)</span> entwirft, baut und verkauft weltweit Lastkraftwagen, Crossover, Autos und Automobilteile. Das Unternehmen treibt den Wandel zur Elektromobilität mit seiner Ultium-Plattform voran und investiert massiv in autonome Fahrtechnologien durch seine Tochtergesellschaft Cruise. Zu den Kernmarken gehören Chevrolet, Buick, GMC und Cadillac. GM positioniert sich als Value-Play im Automobilsektor mit starkem Fokus auf Cash-Flow und Dividendenrendite.
+                    </p>
+                </section>
+
+                <!-- 3. KPI STACK -->
+                <section class="flex flex-col gap-3">
+                    
+                    <!-- Market Cap -->
+                    <div class="glass-card rounded-lg p-5 flex items-center justify-between border-l-4 border-l-teal-500 bg-gradient-to-r from-teal-900/20 to-transparent group cursor-default">
+                        <div class="flex items-center gap-6 w-1/4">
+                            <div class="p-3 bg-teal-500/10 rounded-lg text-teal-400">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-teal-400 uppercase tracking-widest mb-1">Market Cap</div>
+                                <div class="text-xs text-slate-500">Unternehmenswert</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 px-8 flex items-center">
+                             <div class="h-1 w-full bg-slate-800 rounded-full relative overflow-hidden">
+                                 <div class="h-full bg-teal-500 w-[25%] rounded-full opacity-50"></div>
+                             </div>
+                             <span class="text-[9px] text-slate-500 ml-2">vs. Sector Leader</span>
+                        </div>
+                        <div class="flex items-center gap-12 w-1/4 justify-end">
+                            <div class="text-right">
+                                <div class="text-xs text-green-400 font-medium mb-0.5 flex items-center justify-end gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> +8.2%</div>
+                                <div class="text-[10px] text-slate-600">vs. Vorjahr</div>
+                            </div>
+                            <div class="text-right min-w-[120px]">
+                                <div class="text-3xl font-bold text-white tracking-tight">72.4B</div>
+                                <span class="bg-teal-500/20 text-teal-300 text-[10px] px-2 py-0.5 rounded font-bold border border-teal-500/30">Large Cap</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KGV -->
+                    <div class="glass-card rounded-lg p-5 flex items-center justify-between border-l-4 border-l-slate-700 hover:border-l-teal-500 bg-gradient-to-r from-transparent to-transparent hover:from-white/5 transition group">
+                        <div class="flex items-center gap-6 w-1/4">
+                            <div class="p-3 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">KGV (P/E)</div>
+                                <div class="text-xs text-slate-500">Bewertung</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 px-8 flex flex-col justify-center">
+                            <div class="flex justify-between text-[9px] text-slate-500 mb-1"><span>Low: 4.2</span><span>High: 18.5</span></div>
+                            <div class="h-2 w-full bg-slate-800 rounded-full relative">
+                                <div class="absolute left-0 top-0 bottom-0 right-0 rounded-full bg-gradient-to-r from-teal-900/50 to-slate-800"></div>
+                                <div class="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-teal-400 rounded-full shadow-[0_0_10px_#2dd4bf]" style="left: 70%;"></div>
+                            </div>
+                            <div class="text-center text-[9px] text-teal-500 mt-1 font-bold">Historisch Günstig</div>
+                        </div>
+                        <div class="flex items-center gap-12 w-1/4 justify-end">
+                            <div class="text-right">
+                                <div class="text-xs text-green-400 font-medium mb-0.5 flex items-center justify-end gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg> -12.4%</div>
+                                <div class="text-[10px] text-slate-600">vs. Vorjahr (Besser)</div>
+                            </div>
+                            <div class="text-right min-w-[120px]">
+                                <div class="text-3xl font-bold text-white tracking-tight">14.52</div>
+                                <span class="text-teal-400 text-[10px] font-bold">Günstig</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Margins -->
+                    <div class="glass-card rounded-lg p-5 flex items-center justify-between border-l-4 border-l-slate-700 hover:border-l-teal-500 bg-gradient-to-r from-transparent to-transparent hover:from-white/5 transition group">
+                        <div class="flex items-center gap-6 w-1/4">
+                            <div class="p-3 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">Profit Margin</div>
+                                <div class="text-xs text-slate-500">Profitabilität</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 px-8 flex flex-col justify-center gap-2">
+                             <div class="flex items-center gap-2"><span class="text-[9px] text-slate-500 w-12 text-right">GM</span><div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-white w-[20%]"></div></div><span class="text-[9px] text-white w-8">1.6%</span></div>
+                             <div class="flex items-center gap-2"><span class="text-[9px] text-slate-500 w-12 text-right">Sektor</span><div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-slate-600 w-[60%]"></div></div><span class="text-[9px] text-slate-400 w-8">5.2%</span></div>
+                        </div>
+                        <div class="flex items-center gap-12 w-1/4 justify-end">
+                            <div class="text-right">
+                                <div class="text-xs text-red-400 font-medium mb-0.5 flex items-center justify-end gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg> -2.1%</div>
+                                <div class="text-[10px] text-slate-600">vs. Vorjahr</div>
+                            </div>
+                            <div class="text-right min-w-[120px]">
+                                <div class="text-3xl font-bold text-white tracking-tight">1.6%</div>
+                                <span class="text-red-400 text-[10px] font-bold">Low Profitability</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dividend -->
+                    <div class="glass-card rounded-lg p-5 flex items-center justify-between border-l-4 border-l-slate-700 hover:border-l-teal-500 bg-gradient-to-r from-transparent to-transparent hover:from-white/5 transition group">
+                        <div class="flex items-center gap-6 w-1/4">
+                            <div class="p-3 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">Dividend Yield</div>
+                                <div class="text-xs text-slate-500">Rendite</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 px-8 flex flex-col justify-center">
+                            <div class="flex justify-between text-[9px] text-slate-500 mb-1"><span>Payout Ratio: 18%</span><span>Safe Limit: 60%</span></div>
+                            <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden flex"><div class="h-full bg-teal-500 w-[18%]"></div><div class="h-full bg-slate-700 w-[42%] opacity-30"></div></div>
+                            <div class="text-center text-[9px] text-teal-500 mt-1 font-bold">Sehr sicher gedeckt</div>
+                        </div>
+                        <div class="flex items-center gap-12 w-1/4 justify-end">
+                            <div class="text-right">
+                                <div class="text-xs text-green-400 font-medium mb-0.5 flex items-center justify-end gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> +5.2%</div>
+                                <div class="text-[10px] text-slate-600">Growth (5Y)</div>
+                            </div>
+                            <div class="text-right min-w-[120px]">
+                                <div class="text-3xl font-bold text-white tracking-tight">4.1%</div>
+                                <span class="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded border border-slate-700">18% Payout</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analyst Rating -->
+                    <div class="glass-card rounded-lg p-5 flex items-center justify-between border-l-4 border-l-slate-700 hover:border-l-teal-500 bg-gradient-to-r from-transparent to-transparent hover:from-white/5 transition group">
+                        <div class="flex items-center gap-6 w-1/4">
+                            <div class="p-3 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">Analyst Rating</div>
+                                <div class="text-xs text-slate-500">Consensus</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 px-8 flex flex-col justify-center">
+                             <div class="flex h-2 w-full rounded-full overflow-hidden">
+                                 <div class="bg-teal-500 w-[65%]"></div><div class="bg-slate-600 w-[25%]"></div><div class="bg-red-800 w-[10%]"></div>
+                             </div>
+                             <div class="flex justify-between text-[9px] text-slate-500 mt-1"><span>14 Buy</span><span>5 Hold</span><span>2 Sell</span></div>
+                        </div>
+                        <div class="flex items-center gap-12 w-1/4 justify-end">
+                            <div class="text-right">
+                                <div class="text-xs text-slate-400 font-medium mb-0.5">21 Analysten</div>
+                                <div class="text-[10px] text-slate-600">High Confidence</div>
+                            </div>
+                            <div class="text-right min-w-[120px]">
+                                <div class="text-3xl font-bold text-teal-400 tracking-tight">BUY</div>
+                                <span class="text-[10px] text-teal-500/80">Outperform</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- 4. DEEP DIVE -->
+                <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 glass-card rounded-xl p-6">
+                         <div class="flex justify-between items-center mb-6">
+                             <h3 class="text-sm font-bold text-slate-300">Financials (Est.)</h3>
+                             <div class="flex gap-4 text-xs">
+                                 <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-teal-500"></span> Revenue</div>
+                                 <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-500"></span> Net Income</div>
+                             </div>
+                         </div>
+                         <div class="h-56 flex items-end justify-between gap-4 px-4">
+                             <div class="flex-1 flex flex-col justify-end gap-1 h-full"><div class="w-full bg-teal-500/20 h-[40%] rounded-t"><div class="w-full bg-blue-500 h-[20%] rounded-b opacity-80"></div></div><span class="text-[10px] text-center text-slate-500">2020</span></div>
+                             <div class="flex-1 flex flex-col justify-end gap-1 h-full"><div class="w-full bg-teal-500/20 h-[50%] rounded-t"><div class="w-full bg-blue-500 h-[25%] rounded-b opacity-80"></div></div><span class="text-[10px] text-center text-slate-500">2021</span></div>
+                             <div class="flex-1 flex flex-col justify-end gap-1 h-full"><div class="w-full bg-teal-500/20 h-[60%] rounded-t"><div class="w-full bg-blue-500 h-[30%] rounded-b opacity-80"></div></div><span class="text-[10px] text-center text-slate-500">2022</span></div>
+                             <div class="flex-1 flex flex-col justify-end gap-1 h-full"><div class="w-full bg-teal-500/20 h-[70%] rounded-t"><div class="w-full bg-blue-500 h-[35%] rounded-b opacity-80"></div></div><span class="text-[10px] text-center text-white font-bold">2023</span></div>
+                             <div class="flex-1 flex flex-col justify-end gap-1 h-full"><div class="w-full bg-teal-500/10 h-[80%] rounded-t border-t border-dashed border-teal-500/50"><div class="w-full bg-blue-500/50 h-[40%] rounded-b"></div></div><span class="text-[10px] text-center text-slate-500">2024E</span></div>
+                         </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl p-6 flex flex-col items-center justify-center relative">
+                         <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-4">Sentiment</div>
+                         <div class="relative w-32 h-32 flex items-center justify-center">
+                             <svg class="w-full h-full transform -rotate-90">
+                                 <circle cx="64" cy="64" r="56" stroke="#1e293b" stroke-width="10" fill="none"/>
+                                 <circle cx="64" cy="64" r="56" stroke="#2dd4bf" stroke-width="10" fill="none" stroke-dasharray="351" stroke-dashoffset="90" stroke-linecap="round"/>
+                             </svg>
+                             <div class="absolute text-center">
+                                 <div class="text-2xl font-bold text-white">74%</div>
+                             </div>
+                         </div>
+                         <div class="mt-4 text-center"><div class="text-teal-400 font-bold">Strong Buy</div></div>
+                    </div>
+                </section>
+
+                <!-- 5. STRENGTHS & RISKS -->
+                <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-card rounded-xl p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="p-1.5 bg-green-500/10 rounded-full text-green-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg></div>
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Stärken</h3>
+                        </div>
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-2 text-xs text-slate-300"><span class="text-green-400 font-bold">•</span> KGV 14.030535 (Kein PEG)</li>
+                            <li class="flex items-start gap-2 text-xs text-slate-300"><span class="text-green-400 font-bold">•</span> Positive 1J-Performance (43.3%)</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card rounded-xl p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="p-1.5 bg-red-500/10 rounded-full text-red-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg></div>
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Risiken</h3>
+                        </div>
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-2 text-xs text-slate-300"><span class="text-red-400 font-bold">•</span> Rückläufiger Umsatz (-0.3%)</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(20, 184, 166, 0.1)'); 
+        gradient.addColorStop(1, 'rgba(20, 184, 166, 0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
+                datasets: [{
+                    label: 'Price',
+                    data: [25, 20, 28, 32, 30, 28, 35, 33, 38, 20, 55, 35, 40, 50, 76],
+                    borderColor: '#2dd4bf', 
+                    backgroundColor: gradient,
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10 } } },
+                    y: { grid: { color: 'rgba(255, 255, 255, 0.03)', borderDash: [4, 4] }, ticks: { color: '#64748b', font: { size: 10 }, callback: v => v } }
+                },
+                interaction: { intersect: false, mode: 'index' }
+            }
+        });
+    </script>
+</body>
+</html>

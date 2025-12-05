@@ -142,6 +142,14 @@ def get_details(symbol):
 
         # Name fallback
         name = info.get("longName") or info.get("shortName") or symbol
+# ... (in der Funktion get_details) ...
+
+        # --- NEU: Beschreibung und 52-Wochen Range ---
+        description = info.get("longBusinessSummary", "Keine Beschreibung verfügbar.")
+        year_high = info.get("fiftyTwoWeekHigh")
+        year_low = info.get("fiftyTwoWeekLow")
+        # ---------------------------------------------
+
 
         # Land, Branche, Sektor
         country = info.get("country", "Unknown")
