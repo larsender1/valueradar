@@ -529,7 +529,7 @@
             de: {
                 "label-vr-score": "VR Score",
                 "label-price-action": "Kursverlauf",
-                "label-company-desc": "UNTERNEHMENSBESCHREIBUNG",
+                "label-company-desc": "UNTERNEHMENSPROFIL",
                 "label-kpi-size": "Größe",
                 "label-market-cap": "Marktkapitalisierung",
                 "hint-market-cap": "Indikative Unternehmensgröße (nur visuell).",
@@ -751,11 +751,25 @@
             }
         }
         // Beschreibung automatisch formatieren (global)
-        function formatCompanyDescription(text) {
+        function formatCompanyDescription(text, name, symbol) {
             if (!text) return "No description available.";
 
             let formatted = text;
 
+            // 1) Firmenname am Anfang fett + Ticker in Klammern
+            if (name) {
+                const safeName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Regex-escape
+                const nameRegex = new RegExp("^" + safeName);                // nur ganz am Anfang matchen
+
+                if (nameRegex.test(formatted)) {
+                    formatted = formatted.replace(
+                        nameRegex,
+                        `<span class="font-semibold text-slate-100">${name}${symbol ? " (" + symbol + ")" : ""}</span>`
+                    );
+                }
+            }
+
+            // 2) Sub-Überschriften hervorheben
             const subtitles = [
                 "The company operates",
                 "The company provides",
@@ -775,10 +789,12 @@
                 );
             });
 
+            // 3) Sätze umbrechen
             formatted = formatted.replace(/\. /g, ".<br>");
 
             return formatted;
         }
+
 
         /* ---------- SELECTION & DETAILS ---------- */
 
@@ -821,7 +837,8 @@
 
                 // Company description
                 document.getElementById('company-desc').innerHTML =
-                    formatCompanyDescription(d.description);
+                    formatCompanyDescription(d.description, d.name, d.symbol);
+
 
 
                 // Market Cap
