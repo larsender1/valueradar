@@ -15,48 +15,43 @@
             darkMode: 'class',
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'ui-sans-serif', 'system-ui'],
+                    },
                     colors: {
-                        dark: {
-                            bg: '#020617',
-                            card: '#020617'
+                        radar: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
                         }
                     },
                     boxShadow: {
-                        'glow': '0 0 40px rgba(16,185,129,0.25)'
+                        'soft': '0 18px 45px rgba(15,23,42,0.55)',
+                        'innerGlow': '0 0 0 1px rgba(148,163,184,0.25)'
+                    },
+                    backgroundImage: {
+                        'radar-grid': 'radial-gradient(circle at 1px 1px, rgba(51,65,85,0.7) 1px, transparent 0)',
+                        'radar-fade': 'linear-gradient(to bottom right, rgba(20,184,166,0.18), transparent)',
+                        'vr-gradient': 'linear-gradient(135deg, #22c55e 0%, #22c55e 35%, #eab308 60%, #ef4444 100%)'
                     }
                 }
             }
         }
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <style>
+        html,
         body {
-            background-color: #020617;
-            min-height: 100vh;
-            color: #cbd5e1;
+            height: 100%;
         }
 
-        body.light h1,
-        body.light h2,
-        body.light h3,
-        body.light .text-slate-100 {
-            color: #0f172a !important;
-        }
-
-        .bg-dark-gradient {
-            background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.10) 0, transparent 55%),
-                radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.10) 0, transparent 55%);
-        }
-
-        .bg-dark-card {
-            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95) 0, rgba(15, 23, 42, 0.98) 40%, #020617 100%);
-        }
-
-        .border-dark-border {
-            border-color: rgba(30, 64, 175, 0.3);
+        body {
+            font-feature-settings: "ss01" 1, "ss02" 1, "cv11" 1;
         }
 
         .scroll-thin::-webkit-scrollbar {
@@ -68,1528 +63,1469 @@
         }
 
         .scroll-thin::-webkit-scrollbar-thumb {
-            background: rgba(30, 64, 175, 0.6);
-            border-radius: 9999px;
-        }
-
-        .region-btn.active-region {
-            background-color: #10b981;
-            color: white !important;
-            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
-        }
-
-        .tf-btn {
-            transition: all 0.15s ease-in-out;
-        }
-
-        .active-tf {
-            background-color: #10b981;
-            color: white !important;
-            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
-        }
-
-        .watch-row-active {
-            background-color: #0f172a !important;
-            border-color: #10b981 !important;
-        }
-
-        body.light {
-            background-color: #f9fafb;
-            color: #0f172a;
-        }
-
-        body.light .bg-dark-card {
-            background-color: #ffffff;
-        }
-
-        body.light .border-dark-border {
-            border-color: #e5e7eb;
-        }
-
-        .apexcharts-tooltip {
-            background: #1e293b !important;
-            border-color: #334155 !important;
-            color: #fff;
-        }
-
-        .apexcharts-tooltip-title {
-            background: #0f172a !important;
-            border-bottom-color: #1e293b !important;
-        }
-
-        .glass {
-            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98) 0, rgba(15, 23, 42, 1) 45%, rgba(15, 23, 42, 1) 100%);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            backdrop-filter: blur(18px);
-        }
-
-        .ticker-dot {
-            width: 6px;
-            height: 6px;
+            background: rgba(148, 163, 184, 0.3);
             border-radius: 999px;
-            background: radial-gradient(circle, #22c55e 0, #16a34a 40%, #166534 100%);
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
         }
 
-        .scrollbar-none::-webkit-scrollbar {
-            display: none;
+        .scroll-thin:hover::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.6);
         }
 
-        .scrollbar-none {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .glass-card {
+            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
+            border-radius: 1.25rem;
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.65);
+        }
+
+        .side-card {
+            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.97));
+            border-radius: 1.1rem;
+            border: 1px solid rgba(30, 64, 175, 0.45);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
+        }
+
+        .border-soft {
+            border-radius: 0.9rem;
+            border: 1px solid rgba(15, 23, 42, 0.95);
+        }
+
+        .wl-item.active {
+            background: radial-gradient(circle at 0 0, rgba(45, 212, 191, 0.12), rgba(15, 23, 42, 0.95));
+            border-radius: 0.9rem;
+            box-shadow: 0 14px 40px rgba(15, 23, 42, 0.85);
+            position: relative;
+        }
+
+        .wl-item.active::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 0.9rem;
+            border: 1px solid rgba(45, 212, 191, 0.4);
+            pointer-events: none;
+        }
+
+        .wl-item.active .wl-badge {
+            background: rgba(13, 148, 136, 0.25);
+            color: #a5f3fc;
+        }
+
+        .badge-soft {
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95));
+        }
+
+        .chart-btn {
+            border-radius: 999px;
+            border: 1px solid transparent;
+            padding: 0.15rem 0.55rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #9ca3af;
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .chart-btn.active {
+            background: radial-gradient(circle at 0% 0%, rgba(45, 212, 191, 0.4), rgba(8, 47, 73, 1));
+            border-color: rgba(45, 212, 191, 0.6);
+            color: #ecfeff;
+            box-shadow: 0 0 0 1px rgba(8, 47, 73, 0.7), 0 10px 30px rgba(8, 47, 73, 0.9);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(148, 163, 184, 0.7);
+        }
+
+        .stat-value {
+            font-feature-settings: "tnum" 1, "cv11" 1;
+        }
+
+        .kpi-divider {
+            border-left: 1px dashed rgba(51, 65, 85, 0.85);
+            height: 2rem;
+        }
+
+        .radar-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: radial-gradient(circle, #22c55e 0, #22c55e 45%, transparent 60%);
+            box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4), 0 0 25px rgba(22, 163, 74, 0.85);
+        }
+
+        .metric-pill {
+            border-radius: 999px;
+            border: 1px solid rgba(51, 65, 85, 0.95);
+            background: radial-gradient(circle at 0 0, rgba(30, 64, 175, 0.4), rgba(15, 23, 42, 0.95));
+        }
+
+        .news-item {
+            border-radius: 0.9rem;
+            border: 1px solid rgba(15, 23, 42, 0.95);
+        }
+
+        .news-item:hover {
+            border-color: rgba(56, 189, 248, 0.45);
+            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 1));
+        }
+
+        .qlink {
+            border-radius: 999px;
+            border: 1px solid rgba(15, 23, 42, 0.9);
+        }
+
+        .progress-bar {
+            border-radius: 999px;
+            overflow: hidden;
+            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 1));
+        }
+
+        .progress-inner {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+            background-size: 200% 100%;
+            animation: progressGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes progressGlow {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 100% 0;
+            }
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(34, 197, 94, 1);
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            animation: pulseDot 2.2s infinite;
+        }
+
+        @keyframes pulseDot {
+            0% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 12px rgba(34, 197, 94, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+            }
+        }
+
+        .vr-score-pill {
+            background: radial-gradient(circle at 0 0, rgba(16, 185, 129, 0.35), rgba(15, 23, 42, 0.98));
+            border-radius: 999px;
+            border: 1px solid rgba(34, 197, 94, 0.7);
+            box-shadow: 0 0 0 1px rgba(17, 24, 39, 0.9), 0 0 40px rgba(16, 185, 129, 0.35);
+        }
+
+        .vr-score-background {
+            background-image: linear-gradient(to right,
+                    rgba(22, 163, 74, 0.2),
+                    rgba(234, 179, 8, 0.15),
+                    rgba(248, 113, 113, 0.1));
+        }
+
+        .vr-score-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: #22c55e;
+            box-shadow: 0 0 18px rgba(22, 163, 74, 0.9);
+        }
+
+        .pill-soft {
+            background: rgba(15, 23, 42, 1);
+            border-radius: 999px;
+            border: 1px solid rgba(30, 64, 175, 0.85);
         }
     </style>
 </head>
 
-<body class="text-slate-100">
-    <header class="border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-lg sticky top-0 z-50">
-        <div class="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between gap-2">
+<body class="h-full bg-slate-950 text-slate-100 antialiased">
+    <div
+        class="min-h-screen flex flex-col bg-[radial-gradient(circle_at_top,_rgba(15,23,42,1)_0,_rgba(2,6,23,1)_60%,_#020617_100%)]">
 
+        <!-- TOP NAV -->
+        <header
+            class="h-14 border-b border-slate-900/90 backdrop-blur flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30 bg-slate-950/80">
             <div class="flex items-center gap-3">
-                <button onclick="window.location.href='/'"
-                    class="hidden sm:inline-flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-emerald-400 px-2 py-1 rounded-lg border border-slate-700 hover:border-emerald-500 bg-slate-950/60 transition">
-                    <i data-lucide="arrow-left" class="w-3 h-3"></i>
-                </button>
-
-                <a href="#" class="flex items-center gap-2 group">
-                    <div
-                        class="bg-emerald-500 text-white font-bold text-xs p-1 rounded group-hover:bg-emerald-400 transition">
+                <div
+                    class="w-8 h-8 rounded-xl bg-[radial-gradient(circle_at_0_0,_rgba(45,212,191,0.6),_rgba(8,47,73,1))] flex items-center justify-center shadow-[0_0_25px_rgba(45,212,191,0.75)] border border-cyan-500/60">
+                    <span
+                        class="font-black text-xs tracking-widest text-cyan-50 drop-shadow-[0_0_8px_rgba(8,47,73,0.9)]">
                         VR
-                    </div>
-                    <div class="flex flex-col leading-none">
-                        <span class="text-lg font-bold text-white tracking-tight">ValueRadar</span>
-                        <span class="text-[10px] text-emerald-500 font-bold tracking-wider">PRO</span>
-                    </div>
-                </a>
+                    </span>
+                </div>
+                <div class="flex flex-col leading-tight">
+                    <span class="text-xs uppercase tracking-[0.2em] text-slate-500 font-semibold">ValueRadar
+                        Pro</span>
+                    <span class="text-[10px] text-slate-500">Fundamentalanalyse &amp; Terminal</span>
+                </div>
+
+                <span
+                    class="hidden lg:inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 ml-5 px-2 py-1 rounded-full border border-slate-800 bg-slate-950/80">
+                    <span class="pulse-dot"></span>
+                    <span class="uppercase tracking-[0.2em]">Market Live</span>
+                    <span class="text-slate-600 mx-1">•</span>
+                    <span id="header-ticker-mini" class="text-slate-400">-</span>
+                    <span id="header-price-mini" class="text-slate-300 font-semibold"></span>
+                </span>
             </div>
 
             <div class="flex items-center gap-2">
+                <button
+                    class="hidden md:inline-flex items-center gap-1 px-2 py-1 text-[11px] rounded-full border border-slate-800 bg-slate-950/80 text-slate-400 hover:text-slate-100 hover:border-slate-600 transition">
+                    <i data-lucide="sparkles" class="w-3 h-3 text-cyan-400"></i>
+                    <span>AI Insights</span>
+                </button>
 
-                <div class="md:hidden">
-                    <select
-                        class="bg-slate-900 border border-slate-800 text-xs text-slate-300 rounded-lg px-2 py-1 focus:outline-none focus:border-emerald-500"
-                        onchange="filterStocks(this.value)">
-                        <option value="ALL">Alle</option>
-                        <option value="US">US</option>
-                        <option value="DE">DE</option>
-                        <option value="FAV">Watchlist</option>
-                    </select>
-                </div>
-
-                <div class="hidden md:flex bg-slate-900 rounded-lg p-1 border border-slate-800">
-                    <button onclick="filterStocks('ALL')"
-                        class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
-                        data-reg="ALL" data-i18n="region.all">Alle</button>
-                    <button onclick="filterStocks('US')"
-                        class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
-                        data-reg="US" data-i18n="region.us">US</button>
-                    <button onclick="filterStocks('DE')"
-                        class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
-                        data-reg="DE" data-i18n="region.de">DE</button>
-                    <button onclick="filterStocks('FAV')"
-                        class="region-btn text-xs px-3 py-1 rounded-lg text-slate-400 hover:bg-slate-800 border border-transparent"
-                        data-reg="FAV" data-i18n="region.fav">Watchlist</button>
-                </div>
-
-                <div class="hidden md:flex items-center gap-2">
-                    <div class="h-4 w-px bg-slate-800 mx-1"></div>
-                    <button onclick="toggleTheme()"
-                        class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition"
-                        title="Design wechseln">
-                        <i id="theme-icon-desktop" data-lucide="moon" class="w-4 h-4"></i>
-                    </button>
-                    <a href="/logout"
-                        class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-slate-700 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition"
-                        title="Logout">
-                        <i data-lucide="log-out" class="w-4 h-4"></i>
-                    </a>
-                </div>
-
-                <div class="relative md:hidden">
-                    <button onclick="toggleMobileSettings()"
-                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-emerald-400 transition">
-                        <i data-lucide="settings" class="w-4 h-4"></i>
-                    </button>
-
-                    <div id="mobile-settings-menu"
-                        class="hidden absolute right-0 top-full mt-2 w-48 bg-slate-900 border border-slate-800 rounded-xl shadow-xl z-50 p-2">
-                        <div class="text-[10px] text-slate-500 font-bold uppercase px-2 py-1 mb-1">Einstellungen</div>
-
-                        <button onclick="toggleTheme()"
-                            class="w-full flex items-center justify-between px-2 py-2 text-xs text-slate-300 hover:bg-slate-800 rounded-lg mb-1">
-                            <span>Design wechseln</span>
-                            <i id="theme-icon-mobile" data-lucide="moon" class="w-3 h-3"></i>
-                        </button>
-
-                        <div class="flex gap-1 p-1 bg-slate-950 rounded-lg border border-slate-800 mb-2">
-                            <button id="btn-lang-de" onclick="setLang('de')"
-                                class="flex-1 py-1 text-xs text-center rounded text-emerald-400 bg-slate-800">DE</button>
-                            <button id="btn-lang-en" onclick="setLang('en')"
-                                class="flex-1 py-1 text-xs text-center rounded text-slate-400">EN</button>
-                        </div>
-
-                        <div class="h-px bg-slate-800 my-1"></div>
-                        <a href="/logout"
-                            class="flex items-center gap-2 px-2 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-lg">
-                            <i data-lucide="log-out" class="w-3 h-3"></i>
-                            <span>Logout</span>
-                        </a>
-                    </div>
-                </div>
+                <div class="h-8 w-[1px] bg-slate-800/80 mx-1"></div>
 
                 <div
-                    class="hidden sm:flex w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-sky-500 items-center justify-center text-xs font-bold shadow-lg shadow-emerald-500/20">
-                    VR
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 space-y-6">
-        <section id="view-dashboard" class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-
-            <aside
-                class="lg:col-span-1 order-1 overflow-hidden rounded-2xl glass shadow-glow flex flex-col max-h-[380px] lg:max-h-[650px]">
-                <div class="px-3 py-2 md:px-4 md:py-3 border-b border-slate-800/80 flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="ticker-dot"></span>
-                        <div>
-                            <div class="text-[11px] text-slate-500 uppercase tracking-[0.2em] font-bold"
-                                data-i18n="watchlist.title">Watchlist</div>
-                            <div class="text-xs text-slate-400" data-i18n="watchlist.subtitle">Global Undervalued Stocks
-                            </div>
-                        </div>
+                    class="hidden sm:flex items-center gap-2 px-2 py-1 rounded-full border border-slate-800 bg-slate-950/80">
+                    <div
+                        class="w-6 h-6 rounded-full bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-[10px] font-semibold text-slate-100 border border-slate-500/80">
+                        L
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex flex-col leading-tight pr-1">
+                        <span class="text-[10px] text-slate-400">Account</span>
+                        <span class="text-[11px] text-slate-200 font-semibold" id="account-name">Lars</span>
+                    </div>
+                </div>
+
+                <button
+                    class="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 px-2.5 py-1.5 text-[11px] font-medium text-slate-100 shadow-[0_0_0_1px_rgba(15,23,42,1)]">
+                    <i data-lucide="log-out" class="w-3 h-3 mr-1.5 text-slate-400"></i>
+                    Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+
+            <!-- SIDEBAR (Watchlist) -->
+            <aside
+                class="w-full lg:w-[21rem] border-r border-slate-900 bg-[radial-gradient(circle_at_top,_#020617,_#020617_40%,_#020617_100%)] flex flex-col z-20 relative">
+                <div class="h-14 flex items-center px-5 gap-3 border-b border-slate-900/80">
+                    <div
+                        class="w-7 h-7 rounded-xl bg-[radial-gradient(circle_at_0_0,_rgba(45,212,191,0.6),_rgba(8,47,73,1))] flex items-center justify-center shadow-[0_0_20px_rgba(45,212,191,0.75)] border border-cyan-500/60">
                         <span
-                            class="text-[10px] text-slate-500 uppercase tracking-wide bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800">CSV
-                            Sync</span>
+                            class="font-black text-[10px] tracking-[0.2em] text-cyan-50 drop-shadow-[0_0_8px_rgba(8,47,73,0.9)]">
+                            VR
+                        </span>
+                    </div>
+                    <div class="flex flex-col leading-tight">
+                        <span class="text-xs font-semibold tracking-tight text-slate-100">ValueRadar</span>
+                        <span class="text-[10px] text-teal-400 tracking-[0.18em] uppercase">Watchlist</span>
+                    </div>
+                </div>
+
+                <!-- Region Filter & Actions -->
+                <div class="px-5 pt-4 pb-2 shrink-0">
+                    <div class="flex justify-between items-center mb-2">
+                        <div
+                            class="inline-flex bg-slate-900/80 rounded-full p-1 border border-slate-800 shadow-inner shadow-black/60">
+                            <button data-region="ALL"
+                                class="region-btn text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-100 shadow-sm">
+                                All
+                            </button>
+                            <button data-region="US"
+                                class="region-btn text-[10px] font-semibold px-2 py-0.5 rounded-full text-slate-400 hover:text-slate-100">
+                                US
+                            </button>
+                            <button data-region="DE"
+                                class="region-btn text-[10px] font-semibold px-2 py-0.5 rounded-full text-slate-400 hover:text-slate-100">
+                                DE
+                            </button>
+                            <button data-region="FAV"
+                                class="region-btn text-[10px] font-semibold px-2 py-0.5 rounded-full text-amber-300 hover:text-amber-100 flex items-center gap-1">
+                                <i data-lucide="star" class="w-3 h-3"></i>
+                                Fav
+                            </button>
+                        </div>
+
                         <button onclick="addSymbolToWatchlist()"
-                            class="w-7 h-7 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-emerald-400 hover:border-emerald-500 transition"
-                            title="Symbol hinzufügen">
+                            class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-teal-600 hover:bg-teal-500 text-slate-900 shadow-lg shadow-teal-900/60 border border-emerald-300/80">
                             <i data-lucide="plus" class="w-3 h-3"></i>
                         </button>
                     </div>
-                </div>
 
-                <div class="px-2 pt-2 pb-1 border-b border-slate-800/80 bg-slate-950/60 md:px-3 md:pt-3 md:pb-2">
                     <div
-                        class="flex items-center bg-slate-900/90 border border-slate-800 rounded-xl px-2 py-1.5 text-xs text-slate-400 shadow-inner shadow-slate-950">
-                        <i data-lucide="list-filter" class="w-3.5 h-3.5 text-slate-500 mr-2"></i>
-                        <input type="text" id="watchlist-search" placeholder="Filtere nach Name oder Ticker..."
-                            class="bg-transparent border-none outline-none text-xs w-full text-slate-100 placeholder-slate-600"
-                            onkeyup="filterStocksByName(this.value)">
+                        class="flex items-center gap-2 px-2 py-1 rounded-full bg-slate-900/80 border border-slate-800 shadow-inner shadow-black/60">
+                        <i data-lucide="search" class="w-3 h-3 text-slate-500"></i>
+                        <input id="search-input" type="text"
+                            class="bg-transparent outline-none border-none text-[11px] placeholder:text-slate-500 text-slate-200 flex-1"
+                            placeholder="Aktie suchen..." onkeyup="filterStocksByName(this.value)">
                     </div>
                 </div>
 
-                <div id="watchlist-container"
-                    class="flex-1 overflow-y-auto scroll-thin divide-y divide-slate-800/70 bg-slate-950/60"></div>
+                <!-- Watchlist Items -->
+                <div id="watchlist-container" class="flex-1 overflow-y-auto scroll-thin pt-1 pb-3">
+                </div>
 
-                <div
-                    class="px-3 py-2 border-t border-slate-800/80 bg-slate-950/80 flex items-center justify-between text-[11px] text-slate-500">
-                    <span id="watchlist-count">0 Aktien</span>
-                    <span class="flex items-center gap-1">
-                        <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
-                        <span>Powered by Python Scan</span>
-                    </span>
+                <!-- Watchlist Footer -->
+                <div class="px-5 pt-4 pb-2 shrink-0">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
+                            id="watchlist-count">Watchlist</span>
+                        <div class="flex gap-2">
+                            <button
+                                class="text-[9px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded hover:text-white transition"
+                                onclick="toggleSortByPerf()">
+                                Sort: Perf
+                            </button>
+                            <button
+                                class="text-[9px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded hover:text-white transition"
+                                onclick="resetFilters()">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <span
+                            class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-[10px] text-slate-500">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400/80"></span>
+                            <span>Unterbewertet</span>
+                        </span>
+                        <span
+                            class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-[10px] text-slate-500">
+                            <span class="w-2 h-2 rounded-full bg-sky-400/80"></span>
+                            <span>Quality</span>
+                        </span>
+                    </div>
                 </div>
             </aside>
 
-            <section class="lg:col-span-3 order-2 flex flex-col gap-6">
-                <div class="flex flex-col md:flex-row justify-between items-end gap-4">
-                    <div>
-                        <div class="flex items-center gap-3 mb-1">
-                            <h1 id="header-name" class="text-3xl font-bold tracking-tight text-slate-100">Lade Daten...
-                            </h1>
-                            <span id="badge-ticker"
-                                class="bg-slate-900/80 text-xs px-2 py-0.5 rounded border border-slate-700 font-mono">---</span>
-                            <span id="badge-region"
-                                class="bg-slate-900/80 text-xs px-2 py-0.5 rounded border border-slate-700 font-bold">--</span>
-                        </div>
-                        <div class="text-sm text-slate-500 flex gap-4">
-                            <span id="header-industry">Technology</span> •
-                            <span id="header-sector">Consumer Electronics</span>
-                            <a id="yahoo-link" href="#" target="_blank"
-                                class="text-xs text-blue-500 hover:underline flex items-center gap-1">Yahoo Finance
-                                ↗</a>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div id="header-price" class="text-4xl font-bold tracking-tight text-slate-100">--</div>
-                        <div class="text-emerald-400 text-sm font-medium flex items-center justify-end gap-1">
-                            <i data-lucide="trending-up" class="w-4 h-4"></i>
-                            <span data-i18n="header.liveprice">Live Price</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    <div
-                        class="bg-dark-card border border-dark-border rounded-xl p-4 relative overflow-hidden group hover:border-slate-600 transition">
+            <!-- MAIN PANEL -->
+            <section class="flex-1 flex flex-col overflow-hidden">
+                <!-- Header / Ticker / VR Score -->
+                <div
+                    class="border-b border-slate-900/90 px-4 lg:px-6 py-3 flex flex-col gap-3 md:flex-row md:items-center md:justify-between bg-[radial-gradient(circle_at_0_0,_rgba(15,23,42,1),_rgba(8,47,73,1)_50%,_#020617_100%)] relative overflow-hidden">
+                    <div class="absolute inset-0 pointer-events-none opacity-80">
                         <div
-                            class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition text-emerald-500">
-                            <i data-lucide="bar-chart-2" class="w-8 h-8"></i>
+                            class="w-[600px] h-[600px] rounded-full border border-cyan-500/10 absolute -top-64 -left-40">
                         </div>
-                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1" data-i18n="kpi.pe">
-                            KGV (PE)</div>
-                        <div id="kpi-pe" class="text-xl font-bold text-white">--</div>
+                        <div
+                            class="w-[420px] h-[420px] rounded-full border border-emerald-400/15 absolute -top-28 -left-14">
+                        </div>
+                        <div class="w-[260px] h-[260px] rounded-full border border-sky-400/30 absolute -top-2 -left-2">
+                        </div>
+                        <div class="radar-dot absolute top-16 left-20"></div>
                     </div>
-                    <div
-                        class="bg-dark-card border border-dark-border rounded-xl p-4 hover:border-slate-600 transition">
-                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1" data-i18n="kpi.peg">
-                            PEG Ratio</div>
-                        <div id="kpi-peg" class="text-xl font-bold text-white">--</div>
-                    </div>
-                    <div class="bg-dark-card border border-dark-border rounded-xl p-4 opacity-70">
-                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1"
-                            data-i18n="kpi.mcap">Market Cap</div>
-                        <div id="kpi-mcap" class="text-xl font-bold text-white">N/A</div>
-                    </div>
-                    <div class="bg-dark-card border border-dark-border rounded-xl p-4 opacity-70">
-                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1"
-                            data-i18n="kpi.margin">Margins</div>
-                        <div id="kpi-margin" class="text-xl font-bold text-white">N/A</div>
-                    </div>
-                    <div class="bg-dark-card border border-dark-border rounded-xl p-4">
-                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1"
-                            data-i18n="kpi.analyst">Analyst Rating</div>
-                        <div class="text-xl font-bold text-emerald-400">BUY</div>
-                    </div>
-                    <div class="bg-dark-card border border-dark-border rounded-xl p-4 relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent"></div>
-                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1 relative z-10"
-                            data-i18n="kpi.vrscore">VR Score</div>
-                        <div class="text-xl font-bold text-emerald-400 relative z-10">92</div>
-                    </div>
-                </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div
-                        class="lg:col-span-2 bg-dark-card border border-dark-border rounded-2xl p-1 flex flex-col shadow-xl min-h-[360px] md:min-h-[500px] relative">
-                        <div class="absolute top-4 right-4 z-10 hidden md:flex gap-2">
-                            <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
-                                <button onclick="updateTimeframe('1W')" data-tf="1W"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1W</button>
-                                <button onclick="updateTimeframe('1M')" data-tf="1M"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1M</button>
-                                <button onclick="updateTimeframe('1Y')" data-tf="1Y"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">1Y</button>
-                                <!-- NEU -->
-                                <button onclick="updateTimeframe('5Y')" data-tf="5Y"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">5Y</button>
-                                <!-- /NEU -->
-                                <button onclick="updateTimeframe('MAX')" data-tf="MAX"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">MAX</button>
+                    <div class="relative z-10 flex items-start md:items-center gap-3">
+                        <div
+                            class="w-9 h-9 rounded-2xl bg-[radial-gradient(circle_at_0_0,_rgba(45,212,191,0.7),_rgba(15,23,42,1))] flex items-center justify-center shadow-[0_0_32px_rgba(45,212,191,0.9)] border border-emerald-300/70">
+                            <i data-lucide="radar" class="w-4 h-4 text-emerald-50"></i>
+                        </div>
+                        <div class="flex flex-col gap-0.5">
+                            <div class="flex items-center gap-2">
+                                <h1 id="header-name"
+                                    class="text-sm md:text-base lg:text-lg font-semibold tracking-tight text-slate-50">
+                                    -
+                                </h1>
+                                <span
+                                    class="wl-badge inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-900/90 border border-slate-700/80 text-slate-200"
+                                    id="header-ticker">-</span>
+                                <span
+                                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-slate-900/80 border border-slate-700/80 text-slate-400">
+                                    <span
+                                        class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.9)]"></span>
+                                    Live
+                                </span>
                             </div>
-
-                            <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
-                                <button onclick="toggleMA('20')" data-ma="20"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
-                                    20</button>
-                                <button onclick="toggleMA('50')" data-ma="50"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
-                                    50</button>
-                                <button onclick="toggleMA('200')" data-ma="200"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
-                                    200</button>
+                            <div class="flex items-center gap-3 text-xs text-slate-400">
+                                <span class="flex items-center gap-1">
+                                    <i data-lucide="layers" class="w-3 h-3 text-slate-500"></i>
+                                    <span id="header-sector">-</span>
+                                </span>
+                                <span class="hidden sm:inline-flex items-center gap-1">
+                                    <i data-lucide="grid-3x3" class="w-3 h-3 text-slate-500"></i>
+                                    <span id="header-industry">-</span>
+                                </span>
+                                <span class="hidden md:inline-flex items-center gap-1">
+                                    <i data-lucide="globe-2" class="w-3 h-3 text-slate-500"></i>
+                                    <a href="#" target="_blank" id="yahoo-link"
+                                        class="text-sky-300 hover:text-sky-200 underline-offset-2 hover:underline text-[11px]">auf
+                                        Yahoo Finance öffnen</a>
+                                </span>
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-800">
-                                <button onclick="setChartType('line')" data-ctype="line"
-                                    class="charttype-btn px-3 py-1 text-xs font-bold rounded text-slate-400 hover:bg-slate-800 transition">
-                                    Line
-                                </button>
-                                <button onclick="setChartType('candles')" data-ctype="candles"
-                                    class="charttype-btn px-3 py-1 text-xs font-bold rounded text-slate-400 hover:bg-slate-800 transition">
-                                    Candles
-                                </button>
+                    <!-- Price + VR Score -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-3">
+                        <div class="flex flex-col items-start">
+                            <div class="flex items-baseline gap-2">
+                                <span id="header-price"
+                                    class="text-xl md:text-2xl font-semibold tracking-tight text-slate-50">$0.00</span>
+                                <span id="header-change"
+                                    class="text-xs font-semibold px-1.5 py-0.5 rounded-full bg-slate-900/80 border border-slate-700/80 text-slate-400">-</span>
                             </div>
-
+                            <div class="flex items-center gap-2 mt-1">
+                                <span
+                                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-900/80 border border-slate-800 text-[10px] text-slate-400">
+                                    <i data-lucide="activity" class="w-3 h-3 text-emerald-400"></i>
+                                    <span id="tf-perf"
+                                        class="text-xs text-teal-400 font-bold bg-teal-500/10 px-2 py-0.5 rounded">---</span>
+                                </span>
+                            </div>
                         </div>
 
-                        <div class="absolute top-4 left-4 z-10">
-                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                                <i data-lucide="activity" class="text-emerald-500 w-5 h-5"></i>
-                                <span data-i18n="chart.title">Price Action</span>
-                            </h3>
-
-                            <!-- Performance im aktuellen Timeframe -->
-                            <p id="tf-perf" class="text-[11px] text-slate-400 mt-1 font-medium"></p>
-                        </div>
-
-
-
-                        <div class="mt-12 px-3 md:hidden flex flex-col gap-2 z-10">
+                        <div
+                            class="vr-score-pill flex items-center gap-3 px-3 py-2 relative vr-score-background overflow-hidden">
                             <div
-                                class="flex bg-slate-900 rounded-lg p-1 border border-slate-800 w-full justify-between">
-                                <button onclick="updateTimeframe('1W')" data-tf="1W" class="tf-btn ...">1W</button>
-                                <button onclick="updateTimeframe('1M')" data-tf="1M" class="tf-btn ...">1M</button>
-                                <button onclick="updateTimeframe('1Y')" data-tf="1Y" class="tf-btn ...">1Y</button>
-                                <!-- NEU -->
-                                <button onclick="updateTimeframe('5Y')" data-tf="5Y"
-                                    class="tf-btn px-3 py-1 text-xs font-bold rounded hover:bg-slate-800 text-slate-400 transition">5Y</button>
-                                <!-- /NEU -->
-                                <button onclick="updateTimeframe('MAX')" data-tf="MAX" class="tf-btn ...">MAX</button>
+                                class="absolute inset-0 pointer-events-none opacity-50 bg-[radial-gradient(circle_at_0_0,_rgba(45,212,191,0.5),_transparent_55%)]">
                             </div>
-
-                            <div
-                                class="flex bg-slate-900 rounded-lg p-1 border border-slate-800 w-full justify-between">
-                                <button onclick="toggleMA('20')" data-ma="20"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
-                                    20</button>
-                                <button onclick="toggleMA('50')" data-ma="50"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
-                                    50</button>
-                                <button onclick="toggleMA('200')" data-ma="200"
-                                    class="ma-btn px-3 py-1 text-xs font-bold rounded transition text-slate-400 hover:bg-slate-800">MA
-                                    200</button>
-                            </div>
-                        </div>
-
-                        <div id="chart" class="w-full h-full pt-4 md:pt-12"></div>
-                    </div>
-
-                    <div class="bg-dark-card border border-dark-border rounded-2xl p-4 flex flex-col min-h-[400px]">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3
-                                class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 flex items-center gap-2">
-                                <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-400"></i>
-                                <span data-i18n="fin.title">Financials (Est.)</span>
-                            </h3>
-                            <span
-                                class="text-[10px] text-slate-500 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full">2020–2024E</span>
-                        </div>
-                        <div id="fin-chart" class="w-full flex-1 min-h-[200px]"></div>
-
-                        <div class="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-800">
-                            <div>
-                                <div class="text-[10px] text-slate-500 font-bold uppercase" data-i18n="fin.revgrowth">
-                                    Revenue Growth</div>
-                                <div id="kpi-revgrowth" class="text-lg font-bold text-emerald-400">+12%</div>
-                            </div>
-                            <div>
-                                <div class="text-[10px] text-slate-500 font-bold uppercase" data-i18n="fin.netmargin">
-                                    Net Margin</div>
-                                <div id="kpi-netmargin" class="text-lg font-bold text-white">18.5%</div>
+                            <div class="relative flex flex-col gap-1">
+                                <div class="flex items-center gap-1">
+                                    <span class="text-[10px] uppercase tracking-[0.18em] text-emerald-200/80">VR
+                                        Score</span>
+                                    <span
+                                        class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-700/80 text-[9px] text-slate-400 gap-1">
+                                        <i data-lucide="gauge" class="w-3 h-3 text-emerald-400"></i>
+                                        <span class="text-[9px] tracking-[0.24em] uppercase">Fundamental</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex items-baseline gap-1.5">
+                                        <span id="header-score"
+                                            class="text-lg font-semibold text-emerald-300 drop-shadow-[0_0_10px_rgba(34,197,94,0.55)]">--</span>
+                                        <span id="header-score-text"
+                                            class="text-[11px] text-emerald-100/90 font-medium">Analysiert</span>
+                                    </div>
+                                    <div
+                                        class="h-8 w-[95px] rounded-full bg-slate-950/90 border border-slate-800/80 flex items-center px-1">
+                                        <div class="flex-1 h-[4px] rounded-full bg-slate-900 overflow-hidden">
+                                            <div id="vr-score-bar" class="h-full bg-emerald-400 rounded-full"
+                                                style="width: 0%;"></div>
+                                        </div>
+                                        <div
+                                            class="w-5 h-5 rounded-full bg-slate-950 border border-emerald-300/80 flex items-center justify-center ml-1 shadow-[0_0_0_1px_rgba(15,23,42,0.9)]">
+                                            <span
+                                                class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_9px_rgba(45,212,191,0.9)]"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 text-[10px] text-emerald-100/70">
+                                    <i data-lucide="sparkles" class="w-3 h-3"></i>
+                                    <span id="sentiment-text">Wird berechnet...</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-                    <div
-                        class="md:col-span-4 bg-dark-card border border-dark-border rounded-2xl p-5 flex flex-col items-center justify-center relative shadow-lg min-h-[300px]">
-                        <div class="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-emerald-500/10 to-transparent">
-                        </div>
-                        <div class="relative flex flex-col items-center gap-4 w-full">
-                            <h3
-                                class="text-sm font-bold text-slate-400 uppercase tracking-[0.25em] flex items-center gap-2">
-                                <i data-lucide="gauge" class="w-4 h-4 text-emerald-400"></i>
-                                <span data-i18n="sentiment.title">Sentiment</span>
-                            </h3>
-                            <div id="gauge-chart" class="w-full h-40"></div>
-                            <div class="relative text-center space-y-1">
-                                <div class="text-xs text-emerald-400 font-semibold tracking-wide"
-                                    data-i18n="sentiment.label">Strong Buy</div>
-                                <div class="text-[11px] text-slate-500" data-i18n="sentiment.subtitle">Based on
-                                    technical & valuation factors</div>
+                <!-- Main Content Layout -->
+                <div class="flex-1 flex flex-col lg:flex-row gap-3 p-3 lg:p-4 overflow-hidden">
+                    <!-- Left Column: Chart + Quick Metrics -->
+                    <div class="flex-[1.4] flex flex-col gap-3 overflow-hidden">
+                        <!-- Chart Card -->
+                        <div class="glass-card p-3 lg:p-4 flex flex-col gap-3 h-[320px] md:h-[360px] lg:h-[380px]">
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="stat-label">Price Action</span>
+                                    <span
+                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/80 border border-slate-700/80 text-[9px] text-slate-400">
+                                        <i data-lucide="clock-4" class="w-3 h-3 text-slate-500"></i>
+                                        <span id="chart-range-label">1Y</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <div
+                                        class="flex bg-slate-900/80 rounded-full p-1 border border-slate-800 shadow-inner shadow-black/60">
+                                        <button onclick="updateTimeframe('1W')" data-tf="1W"
+                                            class="tf-btn chart-btn">1W</button>
+                                        <button onclick="updateTimeframe('1M')" data-tf="1M"
+                                            class="tf-btn chart-btn">1M</button>
+                                        <button onclick="updateTimeframe('3M')" data-tf="3M"
+                                            class="tf-btn chart-btn">3M</button>
+                                        <button onclick="updateTimeframe('6M')" data-tf="6M"
+                                            class="tf-btn chart-btn">6M</button>
+                                        <button onclick="updateTimeframe('1Y')" data-tf="1Y"
+                                            class="tf-btn chart-btn active">1Y</button>
+                                        <button onclick="updateTimeframe('5Y')" data-tf="5Y"
+                                            class="tf-btn chart-btn">5Y</button>
+                                    </div>
+                                    <div
+                                        class="flex bg-slate-900/80 rounded-full p-1 border border-slate-800 shadow-inner shadow-black/60">
+                                        <button onclick="setChartType('line')" data-type="line"
+                                            class="charttype-btn chart-btn active">
+                                            <i data-lucide="line-chart" class="w-3 h-3"></i>
+                                        </button>
+                                        <button onclick="setChartType('candles')" data-type="candles"
+                                            class="charttype-btn chart-btn">
+                                            <i data-lucide="candlestick-chart" class="w-3 h-3"></i>
+                                        </button>
+                                    </div>
+                                    <div
+                                        class="flex bg-slate-900/80 rounded-full p-1 border border-slate-800 shadow-inner shadow-black/60">
+                                        <button onclick="toggleMA('20')" data-ma="20"
+                                            class="mabtn chart-btn active text-[10px]">MA 20</button>
+                                        <button onclick="toggleMA('50')" data-ma="50"
+                                            class="mabtn chart-btn text-[10px]">MA 50</button>
+                                        <button onclick="toggleMA('200')" data-ma="200"
+                                            class="mabtn chart-btn text-[10px]">MA 200</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="w-full pt-4 border-t border-slate-800">
-                                <div class="text-xs text-slate-500 text-center mb-2" data-i18n="sentiment.keydrivers">
-                                    Key Drivers</div>
-                                <ul id="mini-pros-list" class="text-xs text-emerald-400 space-y-1 px-4">
-                                    <li>• Lade Analyse...</li>
-                                </ul>
+
+                            <div id="chart" class="flex-1 min-h-[220px]"></div>
+                        </div>
+
+                        <!-- Quick Metrics Row -->
+                        <div class="flex flex-col md:flex-row gap-3">
+                            <!-- Market Cap -->
+                            <div class="side-card flex-1 p-3 flex flex-col gap-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="stat-label">Market Cap</span>
+                                    <span
+                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
+                                        <i data-lucide="globe-2" class="w-3 h-3 text-slate-500"></i>
+                                        <span>Size</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-baseline gap-1">
+                                    <span id="val-mcap" class="stat-value text-lg font-semibold text-slate-50">$-</span>
+                                </div>
+                                <div class="text-[11px] text-slate-400">
+                                    <span id="sub-mcap">Lade Daten...</span>
+                                </div>
+                            </div>
+
+                            <!-- Valuation -->
+                            <div class="side-card flex-1 p-3 flex flex-col gap-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="stat-label">Bewertung</span>
+                                    <span id="badge-pe-rating"
+                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-400/40 text-[9px] text-emerald-200">
+                                        <span
+                                            class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_7px_rgba(52,211,153,0.9)]"></span>
+                                        <span id="val-pe-rating">Analysiert</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div>
+                                        <div class="text-xs text-slate-400 mb-0.5">P/E</div>
+                                        <div id="val-pe"
+                                            class="stat-value text-lg font-semibold text-slate-50 tracking-tight">-
+                                        </div>
+                                        <div id="sub-pe" class="text-[11px] text-slate-500">-</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-slate-400 mb-0.5">PEG</div>
+                                        <div id="val-peg"
+                                            class="stat-value text-lg font-semibold text-slate-50 tracking-tight">-
+                                        </div>
+                                        <div id="sub-peg" class="text-[11px] text-slate-500">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Profitability -->
+                            <div class="side-card flex-1 p-3 flex flex-col gap-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="stat-label">Profitabilität</span>
+                                    <span
+                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
+                                        <i data-lucide="wallet-cards" class="w-3 h-3 text-emerald-400"></i>
+                                        <span>Margin</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex flex-col">
+                                        <span id="val-margin"
+                                            class="stat-value text-lg font-semibold text-slate-50">-</span>
+                                        <span id="sub-margin" class="text-[11px] text-slate-500">Lade...</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="progress-bar h-1.5">
+                                            <div id="prog-margin" class="progress-inner" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div
-                        class="md:col-span-8 bg-dark-card border border-dark-border rounded-2xl p-5 flex flex-col shadow-lg min-h-[300px]">
-                        <h3
-                            class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                            <i data-lucide="newspaper" class="w-4 h-4"></i>
-                            <span data-i18n="news.title">Aktuelle News</span>
-                        </h3>
-                        <div id="news-container" class="space-y-3 overflow-y-auto max-h-[250px] pr-2">
-                            <span class="text-slate-500 text-sm" data-i18n="news.loading">Lade Nachrichten...</span>
-                        </div>
-                    </div>
-                </div>
+                    <!-- Right Column: VR Gauge + Pros/Risks/News -->
+                    <div class="flex-[1] flex flex-col gap-3 overflow-hidden">
+                        <!-- VR Gauge + Growth -->
+                        <div class="glass-card p-3 lg:p-4 flex flex-col gap-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="stat-label">Fundamentale Stärke</span>
+                                    <span
+                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
+                                        <i data-lucide="brain-circuit" class="w-3 h-3 text-sky-400"></i>
+                                        <span>Qualität</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
+                                        <i data-lucide="trending-up" class="w-3 h-3 text-emerald-400"></i>
+                                        <span id="val-growth-badge">Growth</span>
+                                    </span>
+                                </div>
+                            </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-dark-card border border-dark-border rounded-2xl p-5 flex flex-col">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div
-                                class="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/40 flex items-center justify-center">
-                                <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold uppercase tracking-[0.25em] text-emerald-400"
-                                    data-i18n="strengths.title">Stärken</div>
-                                <div class="text-[11px] text-slate-500" data-i18n="strengths.subtitle">Warum die Aktie
-                                    interessant ist</div>
-                            </div>
-                        </div>
-                        <ul id="strengths-list" class="space-y-2 text-sm text-slate-100">
-                            <li class="text-slate-500 text-sm" data-i18n="strengths.loading">Lade Stärken...</li>
-                        </ul>
-                    </div>
+                            <div class="flex gap-3">
+                                <div class="w-[50%] flex flex-col items-center justify-center">
+                                    <div id="gauge" class="w-full h-[160px]"></div>
+                                </div>
+                                <div class="flex-1 flex flex-col gap-2">
+                                    <div class="side-card p-2.5 flex flex-col gap-1.5">
+                                        <div class="flex items-center justify-between">
+                                            <span class="stat-label">Umsatzwachstum</span>
+                                            <span
+                                                class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
+                                                <i data-lucide="sparkles" class="w-3 h-3 text-emerald-400"></i>
+                                                <span>YoY</span>
+                                            </span>
+                                        </div>
+                                        <div class="flex items-baseline gap-1">
+                                            <span id="val-growth"
+                                                class="stat-value text-lg font-semibold text-slate-50">-</span>
+                                        </div>
+                                        <div id="sub-growth" class="text-[11px] text-slate-500">Wird analysiert...</div>
+                                    </div>
 
-                    <div class="bg-dark-card border border-dark-border rounded-2xl p-5 flex flex-col">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div
-                                class="w-8 h-8 rounded-full bg-rose-500/10 border border-rose-500/40 flex items-center justify-center">
-                                <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold uppercase tracking-[0.25em] text-rose-400"
-                                    data-i18n="risks.title">Risiken</div>
-                                <div class="text-[11px] text-slate-500" data-i18n="risks.subtitle">Worauf du achten
-                                    solltest</div>
+                                    <div class="side-card p-2.5 flex items-center justify-between gap-2">
+                                        <div class="flex flex-col gap-0.5">
+                                            <span class="stat-label">Kennzahlen-Summary</span>
+                                            <span id="summary-rating" class="text-[11px] text-slate-300">Wird
+                                                geladen...</span>
+                                        </div>
+                                        <div class="flex flex-col items-end gap-1">
+                                            <span
+                                                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
+                                                <i data-lucide="equal" class="w-3 h-3 text-sky-400"></i>
+                                                <span id="val-risk">Balanced</span>
+                                            </span>
+                                            <span
+                                                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
+                                                <i data-lucide="clock" class="w-3 h-3 text-slate-400"></i>
+                                                <span id="val-timeframe">Mid-Term</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <ul id="risks-list" class="space-y-2 text-sm text-slate-100">
-                            <li class="text-slate-500 text-sm" data-i18n="risks.loading">Lade Risiken...</li>
-                        </ul>
+
+                        <!-- Pros / Risks / News -->
+                        <div class="flex-1 flex flex-col gap-3 overflow-hidden">
+                            <div class="flex flex-col lg:flex-row gap-3 h-full">
+                                <!-- Strengths -->
+                                <div class="side-card flex-1 p-3 flex flex-col gap-2 overflow-hidden">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span class="stat-label">Stärken</span>
+                                            <span
+                                                class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-400/40 text-[9px] text-emerald-200">
+                                                <i data-lucide="shield-check" class="w-3 h-3"></i>
+                                                <span>Qualität</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <ul id="strengths-list"
+                                        class="mt-1 space-y-1.5 text-[11px] text-slate-300 overflow-y-auto scroll-thin">
+                                        <li class="text-slate-500 text-xs">Lade...</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Risks -->
+                                <div class="side-card flex-1 p-3 flex flex-col gap-2 overflow-hidden">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span class="stat-label">Risiken</span>
+                                            <span
+                                                class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-rose-500/10 border border-rose-400/40 text-[9px] text-rose-200">
+                                                <i data-lucide="alert-triangle" class="w-3 h-3"></i>
+                                                <span>Watch</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <ul id="risks-list"
+                                        class="mt-1 space-y-1.5 text-[11px] text-slate-300 overflow-y-auto scroll-thin">
+                                        <li class="text-slate-500 text-xs">Lade...</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- News -->
+                            <div class="side-card p-3 flex flex-col gap-2 h-[180px]">
+                                <div class="flex items-center justify-between">
+                                    <span class="stat-label">Aktuelle News</span>
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[9px] text-slate-400">
+                                            <i data-lucide="newspaper" class="w-3 h-3 text-sky-400"></i>
+                                            <span>Feed</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div id="news-list"
+                                    class="flex-1 mt-1 space-y-1.5 text-[11px] text-slate-300 overflow-y-auto scroll-thin">
+                                    <div class="text-slate-500 text-xs">Lade News...</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
-        </section>
+        </main>
 
-        <section id="view-glossary" class="hidden">
-            <div class="bg-dark-card border border-dark-border rounded-2xl p-6 space-y-4">
-                <h2 class="text-xl font-bold text-slate-100 mb-2" data-i18n="glossary.heading">Erklärungen der
-                    Kennzahlen</h2>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-slate-200">
-                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
-                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">KGV (PE)</h3>
-                        <p data-i18n="glossary.pe">
-                            Das Kurs-Gewinn-Verhältnis vergleicht den Aktienkurs mit dem Gewinn pro Aktie.
-                            Niedriger ist grundsätzlich günstiger, hängt aber stark vom Sektor ab.
-                        </p>
-                    </div>
-                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
-                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">PEG Ratio</h3>
-                        <p data-i18n="glossary.peg">
-                            Bewertet das KGV im Verhältnis zum Gewinnwachstum. Werte um 1 gelten oft als fair,
-                            unter 1 als attraktiv.
-                        </p>
-                    </div>
-                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
-                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">Market Cap</h3>
-                        <p data-i18n="glossary.mcap">
-                            Marktkapitalisierung = Aktienkurs × Anzahl Aktien. Zeigt, wie groß ein Unternehmen an
-                            der Börse bewertet ist.
-                        </p>
-                    </div>
-                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
-                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">Revenue Growth
-                        </h3>
-                        <p data-i18n="glossary.revgrowth">
-                            Prozentuales Umsatzwachstum im Vergleich zum Vorjahr. Positives Wachstum ist meist ein gutes
-                            Zeichen.
-                        </p>
-                    </div>
-                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
-                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">Net Margin</h3>
-                        <p data-i18n="glossary.netmargin">
-                            Netto-Marge = Gewinn nach allen Kosten im Verhältnis zum Umsatz.
-                            Höhere Margen bedeuten meist höhere Profitabilität.
-                        </p>
-                    </div>
-                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
-                        <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500 mb-1">EPS</h3>
-                        <p data-i18n="glossary.eps">
-                            Earnings per Share – Gewinn je Aktie. Wichtige Basisgröße für Bewertungskennzahlen wie das
-                            KGV.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="text-center text-xs text-slate-500 py-6">
-        ValueRadar Terminal v2.0 • Data provided by Yahoo Finance & Custom API
-    </footer>
-
-    <script>
-        lucide.createIcons();
-
-        /* ---------- MOBILE SETTINGS MENU ---------- */
-        function toggleMobileSettings() {
-            const menu = document.getElementById('mobile-settings-menu');
-            if (menu) menu.classList.toggle('hidden');
-        }
-
-        // Klick außerhalb schließt das Menü
-        document.addEventListener('click', function (event) {
-            const menu = document.getElementById('mobile-settings-menu');
-            const btn = document.querySelector('button[onclick="toggleMobileSettings()"]');
-
-            if (menu && !menu.classList.contains('hidden')) {
-                if (btn && !btn.contains(event.target) && !menu.contains(event.target)) {
-                    menu.classList.add('hidden');
-                }
-            }
-        });
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            const body = document.body;
-            const nowDark = html.classList.toggle('dark');
-            body.classList.toggle('light', !nowDark);
-
-            const iconDesk = document.getElementById('theme-icon-desktop');
-            if (iconDesk) iconDesk.setAttribute('data-lucide', nowDark ? 'moon' : 'sun');
-
-            const iconMob = document.getElementById('theme-icon-mobile');
-            if (iconMob) iconMob.setAttribute('data-lucide', nowDark ? 'moon' : 'sun');
-
+        <script>
             lucide.createIcons();
-        }
 
-        /* ---------- I18N ---------- */
+            /* ---------- GLOBAL STATE ---------- */
+            let fullList = [];
+            let filteredList = [];
+            let currentSymbol = "";
+            let currentPrice = 0;
+            let chart = null;
+            let gaugeChart = null;
+            let abortController = new AbortController();
+            let currentTimeframe = '1Y';
+            let lastHistoryData = null;
+            let showMA20 = true;
+            let showMA50 = false;
+            let showMA200 = false;
+            let currentChartType = 'line';
 
-        let currentLang = localStorage.getItem('vr_lang') || 'de';
+            /* ---------- WATCHLIST LOGIC ---------- */
 
-        const translations = {
-            de: {
-                'header.back': 'Zurück',
-                'header.live': 'Live',
-                'header.scan': 'Scan: Global Undervalued Watchlist',
-                'header.account': 'Account',
-                'header.liveprice': 'Live Price',
-                'region.all': 'Alle',
-                'region.us': 'US',
-                'region.de': 'DE',
-                'region.fav': 'Watchlist',
-                'tab.dashboard': 'Dashboard',
-                'tab.glossary': 'Erklärungen',
-                'watchlist.title': 'Watchlist',
-                'watchlist.subtitle': 'Global Undervalued Stocks',
-                'kpi.pe': 'KGV (PE)',
-                'kpi.peg': 'PEG Ratio',
-                'kpi.mcap': 'Market Cap',
-                'kpi.margin': 'Margins',
-                'kpi.analyst': 'Analyst Rating',
-                'kpi.vrscore': 'VR Score',
-                'chart.title': 'Price Action',
-                'fin.title': 'Financials (Est.)',
-                'fin.revgrowth': 'Revenue Growth',
-                'fin.netmargin': 'Net Margin',
-                'sentiment.title': 'Sentiment',
-                'sentiment.label': 'Strong Buy',
-                'sentiment.subtitle': 'Based on technical & valuation factors',
-                'glossary.title': 'Kennzahlen erklärt',
-                'glossary.pe': 'Kurs-Gewinn-Verhältnis – zeigt, wie viele Jahre der aktuelle Gewinn gebraucht würde, um den Aktienkurs zu „bezahlen“.',
-                'glossary.peg': 'PEG Ratio – PE im Verhältnis zum Gewinnwachstum. Werte unter 1 gelten oft als attraktiv.',
-                'glossary.mcap': 'Marktkapitalisierung = Kurs × Anzahl Aktien. Zeigt die Größe eines Unternehmens an der Börse.',
-                'glossary.revgrowth': 'Revenue Growth – prozentuales Umsatzwachstum zum Vorjahr.',
-                'glossary.netmargin': 'Net Margin – Nettogewinn im Verhältnis zum Umsatz.',
-                'glossary.eps': 'Earnings per Share – Gewinn je Aktie.',
-            },
-            en: {
-                'header.back': 'Back',
-                'header.live': 'Live',
-                'header.scan': 'Scan: Global Undervalued Watchlist',
-                'header.account': 'Account',
-                'header.liveprice': 'Live Price',
-                'region.all': 'All',
-                'region.us': 'US',
-                'region.de': 'DE',
-                'region.fav': 'Watchlist',
-                'tab.dashboard': 'Dashboard',
-                'tab.glossary': 'Glossary',
-                'watchlist.title': 'Watchlist',
-                'watchlist.subtitle': 'Global Undervalued Stocks',
-                'kpi.pe': 'P/E Ratio',
-                'kpi.peg': 'PEG Ratio',
-                'kpi.mcap': 'Market Cap',
-                'kpi.margin': 'Margins',
-                'kpi.analyst': 'Analyst Rating',
-                'kpi.vrscore': 'VR Score',
-                'chart.title': 'Price Action',
-                'fin.title': 'Financials (Est.)',
-                'fin.revgrowth': 'Revenue Growth',
-                'fin.netmargin': 'Net Margin',
-                'sentiment.title': 'Sentiment',
-                'sentiment.label': 'Strong Buy',
-                'sentiment.subtitle': 'Based on technical & valuation factors',
-                'glossary.title': 'Key Metrics Explained',
-                'glossary.pe': 'Price-Earnings ratio – how many years of earnings are “priced in”.',
-                'glossary.peg': 'PEG Ratio – PE relative to earnings growth. Values below 1 are often attractive.',
-                'glossary.mcap': 'Market capitalisation = price × shares outstanding.',
-                'glossary.revgrowth': 'Revenue growth compared to previous year.',
-                'glossary.netmargin': 'Net margin = net income / revenue.',
-                'glossary.eps': 'Earnings per Share – net income per share.',
-            }
-        };
+            // Load initial data
+            fetch('/api/stocks')
+                .then(r => r.json())
+                .then(d => {
+                    fullList = d;
+                    filterStocks('ALL');
+                })
+                .catch(e => console.error(e));
 
-        function applyTranslations() {
-            const t = translations[currentLang] || {};
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (t[key]) el.textContent = t[key];
-            });
-
-            const input = document.getElementById('search-input');
-            if (input) {
-                input.placeholder = currentLang === 'de' ? 'Suche Aktie.' : 'Search stock.';
-            }
-        }
-
-        function setLang(lang) {
-            if (!translations[lang]) return;
-            currentLang = lang;
-            localStorage.setItem('vr_lang', lang);
-
-            const deBtn = document.getElementById('btn-lang-de');
-            const enBtn = document.getElementById('btn-lang-en');
-
-            if (deBtn && enBtn) {
-                deBtn.classList.remove('bg-slate-800', 'text-emerald-400');
-                deBtn.classList.add('text-slate-400');
-
-                enBtn.classList.remove('bg-slate-800', 'text-emerald-400');
-                enBtn.classList.add('text-slate-400');
-
-                if (lang === 'de') {
-                    deBtn.classList.add('bg-slate-800', 'text-emerald-400');
-                    deBtn.classList.remove('text-slate-400');
-                } else {
-                    enBtn.classList.add('bg-slate-800', 'text-emerald-400');
-                    enBtn.classList.remove('text-slate-400');
+            function getFavorites() {
+                try {
+                    const favs = localStorage.getItem('vr_favorites');
+                    return favs ? JSON.parse(favs) : [];
+                } catch (e) {
+                    return [];
                 }
             }
 
-            applyTranslations();
-        }
-
-        /* ---------- VIEW SWITCH ---------- */
-
-        function switchView(view) {
-            const dash = document.getElementById('view-dashboard');
-            const gloss = document.getElementById('view-glossary');
-            const tabDash = document.getElementById('tab-dashboard');
-            const tabGloss = document.getElementById('tab-glossary');
-
-            if (view === 'glossary') {
-                dash.classList.add('hidden');
-                gloss.classList.remove('hidden');
-
-                tabDash.classList.remove('bg-slate-800', 'text-emerald-400');
-                tabDash.classList.add('text-slate-400');
-                tabGloss.classList.add('bg-slate-800', 'text-emerald-400');
-                tabGloss.classList.remove('text-slate-400');
-            } else {
-                gloss.classList.add('hidden');
-                dash.classList.remove('hidden');
-
-                tabGloss.classList.remove('bg-slate-800', 'text-emerald-400');
-                tabGloss.classList.add('text-slate-400');
-                tabDash.classList.add('bg-slate-800', 'text-emerald-400');
-                tabDash.classList.remove('text-slate-400');
+            function saveFavorites(list) {
+                try {
+                    localStorage.setItem('vr_favorites', JSON.stringify(list));
+                } catch (e) {
+                    console.error(e);
+                }
             }
 
-            lucide.createIcons();
-        }
-
-        /* ---------- GLOBAL STATE ---------- */
-
-        let fullList = [];
-        let filteredList = [];
-        let currentSymbol = "";
-        let currentPrice = 100;
-        let chart = null;
-        let finChart = null;
-        let gaugeChart = null;
-        let abortController = new AbortController();
-        let currentTimeframe = '1Y';
-        let lastHistoryData = null;
-        let showMA20 = true;
-        let showMA50 = false;
-        let showMA200 = false;
-        let currentChartType = 'line';  // 'line' oder 'candles'
-
-        /* ---------- WATCHLIST (localStorage) ---------- */
-
-        function getFavorites() {
-            try {
-                return JSON.parse(localStorage.getItem('vr_favorites') || '[]');
-            } catch {
-                return [];
-            }
-        }
-
-        function saveFavorites(list) {
-            localStorage.setItem('vr_favorites', JSON.stringify(list));
-        }
-
-        function toggleFavorite(ev, symbol) {
-            ev.stopPropagation();
-            let favs = getFavorites();
-            if (favs.includes(symbol)) {
-                favs = favs.filter(s => s !== symbol);
-            } else {
-                favs.push(symbol);
-            }
-            saveFavorites(favs);
-            renderStockList();
-        }
-
-        async function addSymbolToWatchlist() {
-            let sym = prompt(currentLang === 'de'
-                ? 'Gib das Tickersymbol ein (z.B. AAPL):'
-                : 'Enter ticker symbol (e.g. AAPL):');
-            if (!sym) return;
-            sym = sym.trim().toUpperCase();
-            if (!sym) return;
-
-            if (fullList.some(s => (s.Symbol || s.symbol || '').toUpperCase() === sym)) {
-                alert(currentLang === 'de'
-                    ? 'Symbol ist bereits in der Liste.'
-                    : 'Symbol is already in the list.');
-                return;
-            }
-
-            try {
-                const r = await fetch(`/api/details/${sym}`);
-                const d = await r.json();
-                if (d.error) throw new Error(d.error);
-
-                let region = 'US';
-                if ((d.country || '').includes('Germany')) region = 'DE';
-
-                const newItem = {
-                    Symbol: sym,
-                    Name: d.name || sym,
-                    Region: region,
-                    Price: d.price_now || 0,
-                    Reason: currentLang === 'de' ? 'Manuell hinzugefügt' : 'Added manually'
-                };
-                fullList.push(newItem);
-
+            function toggleFavorite(event, symbol) {
+                event.stopPropagation();
                 let favs = getFavorites();
-                if (!favs.includes(sym)) {
-                    favs.push(sym);
-                    saveFavorites(favs);
+                if (favs.includes(symbol)) {
+                    favs = favs.filter(x => x !== symbol);
+                } else {
+                    favs.push(symbol);
+                }
+                saveFavorites(favs);
+                renderStockList();
+            }
+
+            function filterStocks(region) {
+                document.querySelectorAll('.region-btn').forEach(b => {
+                    if (b.dataset.region === region) b.classList.add('bg-slate-800', 'text-slate-100');
+                    else b.classList.remove('bg-slate-800', 'text-slate-100');
+                });
+
+                const favs = getFavorites();
+
+                if (region === 'FAV') {
+                    filteredList = fullList.filter(s => favs.includes(s.Symbol || s.symbol));
+                } else if (region === 'ALL') {
+                    filteredList = [...fullList];
+                } else {
+                    filteredList = fullList.filter(s => (s.Region === region || s.region === region));
                 }
 
+                renderStockList();
+            }
+
+            function resetFilters() {
+                document.getElementById('search-input').value = '';
                 filterStocks('ALL');
-                const idx = filteredList.findIndex(s => (s.Symbol || s.symbol) === sym);
-                if (idx >= 0) selectStock(filteredList[idx], idx);
-            } catch (e) {
-                console.error(e);
-                alert(currentLang === 'de'
-                    ? 'Symbol konnte nicht geladen werden. Prüfe den Ticker.'
-                    : 'Could not load symbol. Please check the ticker.');
-            }
-        }
-
-        /* ---------- HELPERS ---------- */
-
-        function formatNumber(num) {
-            if (num == null) return 'N/A';
-            if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
-            if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
-            if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
-            return num.toLocaleString('en-US', { maximumFractionDigits: 0 });
-        }
-
-        /* ---------- INITIAL LOAD ---------- */
-
-        fetch('/api/stocks')
-            .then(r => r.json())
-            .then(d => {
-                fullList = d;
-                if (!fullList || fullList.length === 0) {
-                    fullList = [
-                        { Symbol: 'AAPL', Name: 'Apple Inc.', Region: 'US', Price: 175.50 },
-                        { Symbol: 'SAP', Name: 'SAP SE', Region: 'DE', Price: 140.20 },
-                        { Symbol: 'TSLA', Name: 'Tesla Inc.', Region: 'US', Price: 210.00 }
-                    ];
-                }
-                filterStocks('ALL');
-            });
-
-        /* ---------- FILTER FUNCTIONS ---------- */
-
-        function filterDropdown(query) {
-            const activeRegionBtn = document.querySelector('.region-btn.active-region');
-            const currentReg = activeRegionBtn ? activeRegionBtn.dataset.reg : 'ALL';
-
-            let list = fullList;
-
-            if (currentReg === 'FAV') {
-                const favs = getFavorites();
-                list = list.filter(s => favs.includes(s.Symbol || s.symbol));
-            } else if (currentReg !== 'ALL') {
-                list = list.filter(
-                    s => (s.region || s.Region || "US").toUpperCase() === currentReg
-                );
             }
 
-            if (query) {
-                const lowerQ = query.toLowerCase();
-                list = list.filter(s =>
-                    (s.Name && s.Name.toLowerCase().includes(lowerQ)) ||
-                    (s.Symbol && s.Symbol.toLowerCase().includes(lowerQ))
-                );
-            }
-
-            filteredList = list;
-            renderStockList();
-        }
-
-        function filterStocks(reg) {
-            document.querySelectorAll('.region-btn').forEach(b => {
-                b.classList.remove('active-region');
-            });
-            const btn = document.querySelector(`.region-btn[data-reg="${reg}"]`);
-            if (btn) btn.classList.add('active-region');
-
-            if (reg === 'FAV') {
-                const favs = getFavorites();
-                filteredList = fullList.filter(s => favs.includes(s.Symbol || s.symbol));
-            } else if (reg === 'ALL') {
-                filteredList = fullList;
-            } else {
-                filteredList = fullList.filter(
-                    s => (s.Region || s.region || "US").toUpperCase() === reg
-                );
-            }
-
-            renderStockList();
-        }
-
-        function filterStocksByName(query) {
-            query = (query || "").toLowerCase();
-            const activeRegionBtn = document.querySelector('.region-btn.active-region');
-            const currentReg = activeRegionBtn ? activeRegionBtn.dataset.reg : 'ALL';
-
-            let list = fullList;
-
-            if (currentReg === 'FAV') {
-                const favs = getFavorites();
-                list = list.filter(s => favs.includes(s.Symbol || s.symbol));
-            } else if (currentReg !== 'ALL') {
-                list = list.filter(
-                    s => (s.Region || s.region || "US").toUpperCase() === currentReg
-                );
-            }
-
-            if (query) {
-                list = list.filter(s =>
+            function filterStocksByName(query) {
+                query = query.toLowerCase();
+                filteredList = fullList.filter(s =>
                     (s.Name && s.Name.toLowerCase().includes(query)) ||
                     (s.Symbol && s.Symbol.toLowerCase().includes(query))
                 );
+                renderStockList();
             }
 
-            filteredList = list;
-            renderStockList();
-        }
-
-        /* ---------- WATCHLIST RENDER ---------- */
-
-        function renderStockList() {
-            const container = document.getElementById('watchlist-container');
-            container.innerHTML = '';
-
-            if (!filteredList || filteredList.length === 0) {
-                container.innerHTML = '<div class="p-4 text-xs text-slate-500 text-center">Keine Einträge gefunden.</div>';
-                document.getElementById('watchlist-count').innerText = '0 Aktien';
-                return;
+            function toggleSortByPerf() {
+                filteredList.sort((a, b) => (b.perf_1y || 0) - (a.perf_1y || 0));
+                renderStockList();
             }
 
-            const favs = getFavorites();
+            function renderStockList() {
+                const container = document.getElementById('watchlist-container');
+                container.innerHTML = '';
+                const favs = getFavorites();
 
-            filteredList.forEach((s, idx) => {
-                const symbol = s.Symbol || s.symbol;
-                const isFav = favs.includes(symbol);
-
-                const row = document.createElement('button');
-                row.className = "w-full text-left px-3 py-2.5 hover:bg-slate-900/80 transition flex items-center justify-between gap-3 text-xs border-b border-slate-800/60";
-                row.onclick = () => selectStock(s, idx);
-
-                const left = document.createElement('div');
-                left.className = "min-w-0 flex-1";
-
-                const title = document.createElement('div');
-                title.className = "flex items-center gap-2";
-
-                title.innerHTML = `
-                <button class="p-0.5 rounded-full border border-slate-700 hover:border-emerald-400 transition" onclick="toggleFavorite(event, '${symbol}')">
-                    <i data-lucide="${isFav ? 'star' : 'star'}" class="w-3 h-3 ${isFav ? 'fill-emerald-400 text-emerald-400' : 'text-slate-500'}"></i>
-                </button>
-                <span class="font-semibold text-slate-100 truncate max-w-[150px]">${s.Name || s.name}</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-slate-400">${symbol}</span>
-                `;
-
-                const subtitle = document.createElement('div');
-                subtitle.className = "flex items-center gap-2 mt-0.5 text-[10px] text-slate-500";
-                subtitle.innerHTML = `
-                <span class="uppercase tracking-wide">${s.Region || s.region || "US"}</span>
-                <span class="w-1 h-1 rounded-full bg-slate-600"></span>
-                <span>${s.Reason || 'Underpriced'}</span>
-                `;
-
-                left.appendChild(title);
-                left.appendChild(subtitle);
-
-                const right = document.createElement('div');
-                right.className = "text-right flex flex-col items-end gap-0.5";
-
-                const price = parseFloat(s.Price || s.price || 0).toFixed(2);
-                right.innerHTML = `
-                <div class="text-sm font-semibold text-slate-100">$${price}</div>
-                <div class="text-[10px] text-emerald-400 flex items-center gap-1">
-                    <i data-lucide="sparkles" class="w-3 h-3"></i>
-                    <span>Underpriced</span>
-                </div>
-            `;
-
-                row.appendChild(left);
-                row.appendChild(right);
-                container.appendChild(row);
-            });
-
-            document.getElementById('watchlist-count').innerText = `${filteredList.length} Aktien`;
-
-            if (filteredList.length > 0 && !currentSymbol) {
-                selectStock(filteredList[0], 0);
-            }
-
-            lucide.createIcons();
-        }
-
-        /* ---------- STOCK SELECTION + DETAILS ---------- */
-
-        function selectStock(s, idx) {
-            const rows = document.querySelectorAll('#watchlist-container > button');
-            rows.forEach((r, i) => {
-                r.classList.toggle('watch-row-active', i === idx);
-            });
-
-            currentSymbol = s.Symbol || s.symbol;
-            currentPrice = parseFloat(s.Price || s.price || 0);
-
-            document.getElementById('header-name').innerText = s.Name || s.name;
-            document.getElementById('badge-ticker').innerText = currentSymbol;
-            document.getElementById('badge-region').innerText = s.Region || s.region || "US";
-            document.getElementById('header-price').innerText = "$" + parseFloat(currentPrice).toFixed(2);
-            document.getElementById('yahoo-link').href = `https://finance.yahoo.com/quote/${currentSymbol}`;
-
-            let pe = s.kgv || s.pe || s.trailingpe || "N/A";
-            document.getElementById('kpi-pe').innerText = (typeof pe === 'number') ? pe.toFixed(2) : pe;
-
-            let peg = s.peg || s.pgratio || s.pegratio || "N/A";
-            const pegEl = document.getElementById('kpi-peg');
-            pegEl.innerText = peg;
-            const pegNum = parseFloat(peg);
-            if (!isNaN(pegNum)) {
-                if (pegNum < 1) pegEl.className = "text-xl font-bold text-emerald-400";
-                else if (pegNum > 2) pegEl.className = "text-xl font-bold text-rose-400";
-                else pegEl.className = "text-xl font-bold text-yellow-400";
-            } else {
-                pegEl.className = "text-xl font-bold text-white";
-            }
-
-            updateChart(currentTimeframe);
-            loadDetails(currentSymbol);
-            renderFinancialChart();
-            renderGauge(Math.floor(Math.random() * 40) + 60);
-        }
-
-        async function loadDetails(sym) {
-            try {
-                const r = await fetch(`/api/details/${sym}`);
-                const d = await r.json();
-
-                if (d.error) {
-                    console.log("Details error:", d.error);
+                if (filteredList.length === 0) {
+                    container.innerHTML = '<div class="p-4 text-xs text-slate-500 text-center">Keine Aktien gefunden.</div>';
                     return;
                 }
-                // ⬇️ Live-Preis aus Backend übernehmen
-                if (d.price_now != null) {
-                    currentPrice = d.price_now;
-                    document.getElementById('header-price').innerText =
-                        "$" + Number(d.price_now).toFixed(2);
-                }
 
-                document.getElementById('header-industry').innerText = d.industry || '-';
-                document.getElementById('header-sector').innerText = d.sector || '-';
+                filteredList.forEach((s, idx) => {
+                    const symbol = s.Symbol || s.symbol;
+                    const isFav = favs.includes(symbol);
+                    const price = parseFloat(s.Price || s.price || 0).toFixed(2);
 
-                if (d.pe != null) {
-                    const peEl = document.getElementById('kpi-pe');
-                    peEl.innerText = d.pe.toFixed(2);
-                }
+                    const div = document.createElement('div');
+                    div.className = `wl-item px-5 py-3 cursor-pointer group opacity-80 hover:opacity-100 flex flex-col gap-1`;
+                    if (symbol === currentSymbol) div.classList.add('active', 'opacity-100');
 
-                if (d.peg != null) {
-                    const pegEl = document.getElementById('kpi-peg');
-                    const pegNum = d.peg;
-                    pegEl.innerText = pegNum.toFixed(2);
+                    div.onclick = () => selectStock(s, idx);
 
-                    if (pegNum < 1) pegEl.className = "text-xl font-bold text-emerald-400";
-                    else if (pegNum > 2) pegEl.className = "text-xl font-bold text-rose-400";
-                    else pegEl.className = "text-xl font-bold text-yellow-400";
-                }
-
-                // Market Cap aus Backend (market_cap)
-                if (d.market_cap != null) {
-                    document.getElementById('kpi-mcap').innerText = formatNumber(d.market_cap);
-                }
-
-                // Profit Margin aus Backend (profit_margin, kommt als Dezimalzahl z.B. 0.185)
-                if (d.profit_margin != null) {
-                    document.getElementById('kpi-margin').innerText =
-                        (d.profit_margin * 100).toFixed(1) + "%";
-                }
-
-
-                const newsEl = document.getElementById('news-list');
-                if (newsEl) {
-                    if (d.news && d.news.length) {
-                        newsEl.innerHTML = d.news.map(n => `
-                    <a href="${n.link}" target="_blank"
-                       class="flex flex-col border-b border-slate-800 pb-3 last:border-0
-                              hover:bg-slate-800/50 p-2 rounded transition group">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] text-emerald-400 font-bold
-                                         bg-emerald-500/10 px-2 py-0.5 rounded
-                                         border border-emerald-500/20">
-                                ${n.publisher}
-                            </span>
-                            <span class="text-[10px] text-slate-500">${n.date || ''}</span>
+                    div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <button onclick="toggleFavorite(event, '${symbol}')" class="text-slate-600 hover:text-teal-400">
+                                <i data-lucide="${isFav ? 'star' : 'star'}" class="w-3 h-3 ${isFav ? 'fill-teal-400 text-teal-400' : ''}"></i>
+                            </button>
+                            <span class="font-bold text-slate-200 text-sm truncate max-w-[120px]">${s.Name || s.name}</span>
+                            <span class="wl-badge group-hover:bg-slate-700 transition">${symbol}</span>
                         </div>
-                        <h4 class="text-sm text-slate-200 group-hover:text-emerald-400
-                                   transition font-medium leading-tight">
-                            ${n.title}
-                        </h4>
-                    </a>
-                `).join('');
-                    } else {
-                        newsEl.innerHTML =
-                            `<div class="text-slate-500 text-sm italic p-2">${currentLang === 'de' ? 'Keine aktuellen Nachrichten.' : 'No current news.'}</div>`;
-                    }
-                }
-
-                const miniPros = document.getElementById('mini-pros-list');
-                if (d.pros && d.pros.length) {
-                    miniPros.innerHTML = d.pros.slice(0, 3)
-                        .map(p => `<li>• ${p}</li>`).join('');
-                } else {
-                    miniPros.innerHTML = '<li>--</li>';
-                }
-
-                const strengthsEl = document.getElementById('strengths-list');
-                const risksEl = document.getElementById('risks-list');
-
-                if (strengthsEl) {
-                    if (d.pros && d.pros.length) {
-                        strengthsEl.innerHTML = d.pros
-                            .map(p => `<li>• ${p}</li>`).join('');
-                    } else {
-                        strengthsEl.innerHTML = `<li class="text-slate-500 text-sm">${currentLang === 'de' ? 'Keine Stärken verfügbar.' : 'No strengths available.'}</li>`;
-                    }
-                }
-
-                if (risksEl) {
-                    if (d.risks && d.risks.length) {
-                        risksEl.innerHTML = d.risks
-                            .map(r => `<li>• ${r}</li>`).join('');
-                    } else {
-                        risksEl.innerHTML = `<li class="text-slate-500 text-sm">${currentLang === 'de' ? 'Keine Risiken verfügbar.' : 'No risks available.'}</li>`;
-                    }
-                }
-
-            } catch (e) {
-                console.log("Details fetch error:", e);
-            }
-        }
-
-        /* ---------- CHARTS ---------- */
-
-        async function updateChart(tf) {
-            currentTimeframe = tf;
-
-            document.querySelectorAll('.tf-btn').forEach(b => {
-                b.classList.remove('active-tf');
-                b.classList.add('text-slate-400', 'hover:bg-slate-800');
-                if (b.innerText === tf) {
-                    b.classList.add('active-tf');
-                    b.classList.remove('text-slate-400', 'hover:bg-slate-800');
-                }
-            });
-
-            if (abortController) abortController.abort();
-            abortController = new AbortController();
-
-            let data = null;
-            try {
-                const r = await fetch(`/api/history/${currentSymbol}/${tf}`, { signal: abortController.signal });
-                const json = await r.json();
-                if (!json.error && json.candle && json.candle.length > 0) {
-                    data = json;
-                } else {
-                    throw new Error("Empty Data");
-                }
-            } catch (e) {
-                if (e.name === 'AbortError') return;
-                console.warn("Nutze Fallback-Chart Daten");
-                data = generateFallbackData(tf, currentPrice);
-            }
-
-            lastHistoryData = data;
-            renderMainChart(lastHistoryData);
-            updateTimeframePerformanceLabel(tf, lastHistoryData);
-        }
-
-        function setActiveTimeframe(tf) {
-            const buttons = document.querySelectorAll('.tf-btn');
-            buttons.forEach(btn => {
-                btn.classList.remove('active-tf');
-            });
-            const active = document.querySelectorAll('.tf-btn[data-tf="' + tf + '"]');
-            active.forEach(btn => btn.classList.add('active-tf'));
-        }
-
-        function updateTimeframe(tf) {
-            setActiveTimeframe(tf);
-            updateChart(tf);
-        }
-
-        function updateTimeframePerformanceLabel(tf, data) {
-            const el = document.getElementById('tf-perf');
-            if (!el) return;
-
-            if (!data || !data.candle || data.candle.length < 2) {
-                el.textContent = '';
-                el.className = 'text-[11px] text-slate-400 mt-1 font-medium';
-                return;
-            }
-
-            const candles = data.candle;
-            const firstClose = candles[0][4];
-            const lastClose = candles[candles.length - 1][4];
-
-            if (!firstClose || !lastClose || firstClose <= 0) {
-                el.textContent = '';
-                el.className = 'text-[11px] text-slate-400 mt-1 font-medium';
-                return;
-            }
-
-            const perf = (lastClose / firstClose - 1) * 100;
-            const sign = perf > 0 ? '+' : '';
-            const text = `${sign}${perf.toFixed(2)}% (${tf})`;
-
-            el.className = 'text-[11px] mt-1 font-medium';
-
-            if (perf > 0.05) {
-                el.classList.add('text-emerald-400');
-            } else if (perf < -0.05) {
-                el.classList.add('text-rose-400');
-            } else {
-                el.classList.add('text-slate-400');
-            }
-
-            el.textContent = text;
-        }
-
-        function renderMainChart(d) {
-            if (!d || !d.candle) return;
-
-            const candleSeries = d.candle.map(x => ({
-                x: x[0],
-                y: [x[1], x[2], x[3], x[4]]  // O, H, L, C
-            }));
-
-            const lineSeries = d.candle.map(x => ({
-                x: x[0],
-                y: x[4]  // Close
-            }));
-
-            const series = [];
-
-            if (currentChartType === 'candles') {
-                series.push({
-                    name: 'Price',
-                    type: 'candlestick',
-                    data: candleSeries
+                        <span class="font-bold text-white text-sm">$${price}</span>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px]">
+                        <span class="text-slate-500">${s.Region || s.region || ''}</span>
+                        <span class="text-slate-400">${s.Reason ? s.Reason.substring(0, 15) + '...' : 'Underpriced'}</span>
+                        ${(s.peg && s.peg < 1.5) ? '<span class="text-emerald-400 flex items-center gap-1">Underpriced</span>' : ''}
+                    </div>
+                `;
+                    container.appendChild(div);
                 });
-            } else {
-                series.push({
-                    name: 'Price',
-                    type: 'line',
-                    data: lineSeries
+                lucide.createIcons();
+
+                // Watchlist Counter aktualisieren
+                const countEl = document.getElementById('watchlist-count');
+                if (countEl) {
+                    countEl.innerText = `Watchlist (${filteredList.length})`;
+                }
+
+                // Initial Select if none selected
+                if (!currentSymbol && filteredList.length > 0) {
+                    selectStock(filteredList[0], 0);
+                }
+            }
+
+            async function addSymbolToWatchlist() {
+                const ticker = prompt("Welches Ticker-Symbol möchtest du hinzufügen? (z.B. AAPL)");
+                if (!ticker) return;
+
+                try {
+                    const r = await fetch(`/api/details/${ticker.toUpperCase()}`);
+                    const d = await r.json();
+                    if (d.error) {
+                        alert("Ticker konnte nicht gefunden werden.");
+                        return;
+                    }
+
+                    const region = d.country === 'United States' ? 'US' : 'DE';
+                    const newItem = {
+                        Symbol: d.ticker,
+                        Name: d.name,
+                        Region: region,
+                        Price: d.price_now || 0,
+                        Reason: 'Manual add'
+                    };
+
+                    // In Watchlist übernehmen
+                    fullList.push(newItem);
+
+                    // Direkt als Favorit markieren
+                    const favs = getFavorites();
+                    if (!favs.includes(d.ticker)) {
+                        favs.push(d.ticker);
+                        saveFavorites(favs);
+                    }
+
+                    filterStocks('ALL'); // aktualisiert auch die Liste
+
+                    const idx = fullList.findIndex(x => (x.Symbol || x.symbol) === d.ticker);
+                    if (idx >= 0) {
+                        selectStock(fullList[idx], idx);
+                    }
+
+                } catch (e) {
+                    console.error(e);
+                    alert("Es gab ein Problem beim Hinzufügen des Tickers.");
+                }
+            }
+
+            /* ---------- SELECTION + HEADER ---------- */
+
+            function selectStock(s, idx) {
+                const symbol = s.Symbol || s.symbol;
+                currentSymbol = symbol;
+
+                document.querySelectorAll('.wl-item').forEach((el) => {
+                    el.classList.remove('active', 'opacity-100');
+                });
+                const wlItems = document.querySelectorAll('.wl-item');
+                if (wlItems[idx]) wlItems[idx].classList.add('active', 'opacity-100');
+
+                document.getElementById('header-name').innerText = s.Name || s.name || symbol;
+                document.getElementById('header-ticker').innerText = symbol;
+                document.getElementById('header-ticker-mini').innerText = symbol;
+                document.getElementById('yahoo-link').href = `https://finance.yahoo.com/quote/${symbol}`;
+                document.getElementById('header-sector').innerText = '-';
+                document.getElementById('header-industry').innerText = '-';
+
+                document.getElementById('header-price').innerText = "$" + (s.Price || s.price || 0).toFixed(2);
+                document.getElementById('header-price-mini').innerText = "$" + (s.Price || s.price || 0).toFixed(2);
+
+                document.getElementById('val-mcap').innerText = '$-';
+                document.getElementById('sub-mcap').innerText = 'Lade...';
+                document.getElementById('val-pe').innerText = '-';
+                document.getElementById('sub-pe').innerText = 'Lade...';
+                document.getElementById('val-peg').innerText = '-';
+                document.getElementById('sub-peg').innerText = 'Lade...';
+                document.getElementById('val-margin').innerText = '-';
+                document.getElementById('sub-margin').innerText = 'Lade...';
+                document.getElementById('val-growth').innerText = '-';
+                document.getElementById('sub-growth').innerText = 'Lade...';
+                document.getElementById('summary-rating').innerText = 'Berechne...';
+
+                const strengthsList = document.getElementById('strengths-list');
+                strengthsList.innerHTML = '<li class="text-xs text-slate-500">Lade...</li>';
+                const risksList = document.getElementById('risks-list');
+                risksList.innerHTML = '<li class="text-xs text-slate-500">Lade...</li>';
+                const newsList = document.getElementById('news-list');
+                newsList.innerHTML = '<div class="text-xs text-slate-500">Lade News...</div>';
+
+                document.getElementById('header-score').innerText = '--';
+                document.getElementById('header-score-text').innerText = 'Analysiert';
+                document.getElementById('sentiment-text').innerText = 'Wird berechnet...';
+                document.getElementById('vr-score-bar').style.width = '0%';
+
+                updateChart(currentTimeframe);
+                loadDetails(currentSymbol);
+            }
+
+            async function loadDetails(sym) {
+                try {
+                    const r = await fetch(`/api/details/${sym}`);
+                    const d = await r.json();
+                    if (d.error) return;
+
+                    if (d.price_now) {
+                        currentPrice = d.price_now;
+                        document.getElementById('header-price').innerText = "$" + Number(d.price_now).toFixed(2);
+                        document.getElementById('header-price-mini').innerText = "$" + Number(d.price_now).toFixed(2);
+                    }
+
+                    document.getElementById('header-sector').innerText = d.sector || '-';
+                    document.getElementById('header-industry').innerText = d.industry || '-';
+
+                    if (d.market_cap) {
+                        document.getElementById('val-mcap').innerText = formatNumber(d.market_cap);
+                        document.getElementById('sub-mcap').innerText = d.market_cap_text || '-';
+                    } else {
+                        document.getElementById('val-mcap').innerText = '$-';
+                        document.getElementById('sub-mcap').innerText = 'Keine Daten';
+                    }
+
+                    const pe = d.pe_ttm || d.pe || null;
+                    const peg = d.peg_ratio || d.peg || null;
+                    const margin = d.net_margin || d.margin || null;
+                    const growth = d.revenue_growth || d.growth || null;
+
+                    if (pe) {
+                        document.getElementById('val-pe').innerText = pe.toFixed(1);
+                        document.getElementById('sub-pe').innerText = "P/E (TTM)";
+                    } else {
+                        document.getElementById('val-pe').innerText = '-';
+                        document.getElementById('sub-pe').innerText = "Keine Daten";
+                    }
+
+                    if (peg) {
+                        document.getElementById('val-peg').innerText = peg.toFixed(2);
+                        document.getElementById('sub-peg').innerText = "PEG Ratio";
+                    } else {
+                        document.getElementById('val-peg').innerText = '-';
+                        document.getElementById('sub-peg').innerText = "Keine Daten";
+                    }
+
+                    let rating = 'Neutral';
+                    let ratingClass = 'bg-slate-900/80 border border-slate-700/80 text-slate-200';
+
+                    if (pe && pe < 15 && (!peg || peg < 1.5)) {
+                        rating = 'Günstig bewertet';
+                        ratingClass = 'bg-emerald-500/10 border border-emerald-400/50 text-emerald-200';
+                    } else if (pe && pe > 35) {
+                        rating = 'Teuer bewertet';
+                        ratingClass = 'bg-rose-500/10 border border-rose-400/50 text-rose-200';
+                    }
+
+                    const badgeEl = document.getElementById('badge-pe-rating');
+                    badgeEl.className = 'inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] ' + ratingClass;
+                    document.getElementById('val-pe-rating').innerText = rating;
+
+                    if (margin != null) {
+                        const m = Math.round(margin);
+                        document.getElementById('val-margin').innerText = m + '%';
+                        document.getElementById('sub-margin').innerText = "Net Margin";
+                        const width = Math.min(100, Math.max(0, m));
+                        document.getElementById('prog-margin').style.width = width + '%';
+                    } else {
+                        document.getElementById('val-margin').innerText = '-';
+                        document.getElementById('sub-margin').innerText = "Keine Daten";
+                        document.getElementById('prog-margin').style.width = '0%';
+                    }
+
+                    if (growth != null) {
+                        const g = Math.round(growth);
+                        document.getElementById('val-growth').innerText = g + '%';
+                        document.getElementById('sub-growth').innerText = "Revenue YoY";
+                        const badge = document.getElementById('val-growth-badge');
+                        if (g > 15) {
+                            badge.innerText = 'Strong Growth';
+                        } else if (g > 5) {
+                            badge.innerText = 'Solid Growth';
+                        } else if (g < 0) {
+                            badge.innerText = 'Shrinking';
+                        } else {
+                            badge.innerText = 'Moderate';
+                        }
+                    } else {
+                        document.getElementById('val-growth').innerText = '-';
+                        document.getElementById('sub-growth').innerText = "Keine Daten";
+                        document.getElementById('val-growth-badge').innerText = 'n/a';
+                    }
+
+                    updateList('strengths-list', d.pros, 'Stärken aktuell nicht verfügbar.');
+                    updateList('risks-list', d.risks, 'Risiken aktuell nicht verfügbar.');
+
+                    renderNews(d.news);
+
+                    const score = computeVRScore({ pe, peg, growth, margin, perf_1y: d.perf_1y });
+                    renderGauge(score);
+
+                    let scoreText = document.getElementById('header-score-text');
+                    let sentimentText = document.getElementById('sentiment-text');
+
+                    if (score >= 80) {
+                        scoreText.innerText = 'High Conviction';
+                        sentimentText.innerText = 'Sehr starke Fundamentaldaten bei Bewertung & Wachstum.';
+                    } else if (score >= 60) {
+                        scoreText.innerText = 'Attractive';
+                        sentimentText.innerText = 'Gute Kombination aus Bewertung, Wachstum und Profitabilität.';
+                    } else if (score >= 40) {
+                        scoreText.innerText = 'Neutral';
+                        sentimentText.innerText = 'Solide, aber mit einzelnen Schwachstellen.';
+                    } else {
+                        scoreText.innerText = 'Speculative';
+                        sentimentText.innerText = 'Hohe Risiken oder schwächere Fundamentaldaten.';
+                    }
+
+                    document.getElementById('header-score').innerText = score;
+                    const bar = document.getElementById('vr-score-bar');
+                    bar.style.width = score + '%';
+
+                    let col = '#22c55e';
+                    if (score < 40) col = '#ef4444';
+                    else if (score < 60) col = '#eab308';
+                    else if (score < 80) col = '#22c55e';
+
+                    bar.style.background = col;
+
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            function formatNumber(num) {
+                if (!num) return '$-';
+                if (Math.abs(num) >= 1_000_000_000_000) {
+                    return '$' + (num / 1_000_000_000_000).toFixed(2) + 'T';
+                } else if (Math.abs(num) >= 1_000_000_000) {
+                    return '$' + (num / 1_000_000_000).toFixed(2) + 'B';
+                } else if (Math.abs(num) >= 1_000_000) {
+                    return '$' + (num / 1_000_000).toFixed(2) + 'M';
+                } else if (Math.abs(num) >= 1_000) {
+                    return '$' + (num / 1_000).toFixed(2) + 'K';
+                }
+                return '$' + num.toFixed(0);
+            }
+
+            function updateList(elementId, items, fallbackText) {
+                const container = document.getElementById(elementId);
+                if (!items || items.length === 0) {
+                    container.innerHTML = `<li class="text-xs text-slate-500">${fallbackText}</li>`;
+                    return;
+                }
+
+                container.innerHTML = '';
+                items.slice(0, 5).forEach(text => {
+                    const li = document.createElement('li');
+                    li.className = "flex items-start gap-1.5";
+                    li.innerHTML = `
+                    <span class="mt-1 w-1.5 h-1.5 rounded-full bg-emerald-400/70 shadow-[0_0_6px_rgba(52,211,153,0.9)]"></span>
+                    <span>${text}</span>
+                `;
+                    container.appendChild(li);
                 });
             }
 
-            if (showMA20 && d.ma20 && d.ma20.length) {
-                series.push({ name: 'MA 20', type: 'line', data: d.ma20 });
-            }
-            if (showMA50 && d.ma50 && d.ma50.length) {
-                series.push({ name: 'MA 50', type: 'line', data: d.ma50 });
-            }
-            if (showMA200 && d.ma200 && d.ma200.length) {
-                series.push({ name: 'MA 200', type: 'line', data: d.ma200 });
-            }
-
-            const isCandles = (currentChartType === 'candles');
-
-            const options = {
-                chart: {
-                    type: isCandles ? 'candlestick' : 'line',
-                    height: '100%',
-                    fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont',
-                    toolbar: { show: false },
-                    background: 'transparent',
-                    animations: { enabled: false }
-                },
-                theme: { mode: 'dark' },
-                series: series,
-                colors: ['#10b981', '#3b82f6', '#f97316', '#e11d48'],
-                stroke: {
-                    curve: isCandles ? 'straight' : 'smooth',
-                    width: isCandles ? 1 : 2
-                },
-                plotOptions: isCandles ? {
-                    candlestick: {
-                        colors: {
-                            upward: '#10b981',
-                            downward: '#ef4444'
-                        },
-                        wick: {
-                            useFillColor: true
-                        }
-                    }
-                } : {},
-                dataLabels: { enabled: false },
-                xaxis: {
-                    type: 'datetime',
-                    axisBorder: { show: false },
-                    axisTicks: { show: false },
-                    labels: {
-                        style: {
-                            colors: '#475569',
-                            fontSize: '10px',
-                            fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont'
-                        }
-                    }
-                },
-                yaxis: {
-                    labels: {
-                        formatter: (v) => v.toFixed(2),
-                        style: {
-                            colors: '#475569',
-                            fontSize: '10px',
-                            fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont'
-                        },
-                        offsetX: -6
-                    }
-                },
-                grid: {
-                    borderColor: '#0f172a',
-                    strokeDashArray: 2,
-                    padding: { top: 0, right: 4, bottom: 0, left: 4 }
-                },
-                tooltip: { theme: 'dark' },
-                legend: { show: false }
-            };
-
-
-            if (chart) chart.destroy();
-            chart = new ApexCharts(document.querySelector("#chart"), options);
-            chart.render();
-        }
-
-        function updateMAButtons() {
-            document.querySelectorAll('.ma-btn').forEach(btn => {
-                const ma = btn.dataset.ma;
-                let isActive = false;
-                if (ma === '20') isActive = showMA20;
-                if (ma === '50') isActive = showMA50;
-                if (ma === '200') isActive = showMA200;
-
-                if (isActive) {
-                    btn.classList.add('active-tf');
-                    btn.classList.remove('text-slate-400', 'hover:bg-slate-800');
-                } else {
-                    btn.classList.remove('active-tf');
-                    btn.classList.add('text-slate-400', 'hover:bg-slate-800');
+            function renderNews(news) {
+                const container = document.getElementById('news-list');
+                if (!news || news.length === 0) {
+                    container.innerHTML = '<div class="text-xs text-slate-500">Keine News verfügbar.</div>';
+                    return;
                 }
-            });
-        }
 
-        function toggleMA(len) {
-            if (len === '20') showMA20 = !showMA20;
-            if (len === '50') showMA50 = !showMA50;
-            if (len === '200') showMA200 = !showMA200;
-
-            updateMAButtons();
-
-            if (lastHistoryData) {
-                renderMainChart(lastHistoryData);
+                container.innerHTML = '';
+                news.slice(0, 4).forEach(n => {
+                    const link = document.createElement('a');
+                    link.href = n.url;
+                    link.target = '_blank';
+                    link.className = 'block p-2.5 news-item bg-slate-950/90 hover:bg-slate-900/90 transition-all';
+                    link.innerHTML = `
+                    <div class="flex items-center justify-between gap-2 mb-1">
+                        <span class="text-[11px] text-slate-300 truncate">${n.title}</span>
+                        <span class="text-[9px] text-slate-500">${n.source || ''}</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[10px] text-slate-500">
+                        <span>${n.time_ago || ''}</span>
+                        <span class="inline-flex items-center gap-1 text-sky-400">
+                            <span>Lesen</span>
+                            <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                        </span>
+                    </div>
+                `;
+                    container.appendChild(link);
+                });
+                lucide.createIcons();
             }
-        }
 
-        // NEW: Chart-Type Buttons (Line / Candles)
-        function updateChartTypeButtons() {
-            document.querySelectorAll('.charttype-btn').forEach(btn => {
-                const t = btn.dataset.ctype;
-                if (t === currentChartType) {
-                    btn.classList.add('active-tf');
-                    btn.classList.remove('text-slate-400', 'hover:bg-slate-800');
-                } else {
-                    btn.classList.remove('active-tf');
-                    btn.classList.add('text-slate-400', 'hover:bg-slate-800');
+            function computeVRScore({ pe, peg, growth, margin, perf_1y }) {
+                let score = 50;
+
+                if (pe) {
+                    if (pe < 15) score += 15;
+                    else if (pe < 25) score += 5;
+                    else if (pe > 40) score -= 10;
                 }
-            });
-        }
 
-        function setChartType(type) {
-            currentChartType = type;
-            updateChartTypeButtons();
-            if (lastHistoryData) {
-                renderMainChart(lastHistoryData);
+                if (peg) {
+                    if (peg < 1) score += 15;
+                    else if (peg < 1.5) score += 5;
+                    else if (peg > 2.5) score -= 10;
+                }
+
+                if (growth != null) {
+                    if (growth > 20) score += 15;
+                    else if (growth > 10) score += 8;
+                    else if (growth < 0) score -= 10;
+                }
+
+                if (margin != null) {
+                    if (margin > 25) score += 10;
+                    else if (margin > 10) score += 5;
+                    else if (margin < 0) score -= 10;
+                }
+
+                if (perf_1y != null) {
+                    if (perf_1y > 30) score += 5;
+                    else if (perf_1y < -30) score -= 8;
+                }
+
+                return Math.max(0, Math.min(100, Math.round(score)));
             }
-        }
 
-        function renderFinancialChart() {
-            const options = {
-                chart: {
-                    type: 'bar',
-                    height: 200,
-                    toolbar: { show: false },
-                    background: 'transparent',
-                    stacked: true
-                },
-                theme: { mode: 'dark' },
-                series: [
-                    { name: 'Revenue', data: [10, 12, 14, 13, 15] },
-                    { name: 'Net Income', data: [2, 3, 4, 3, 5] }
-                ],
-                plotOptions: {
-                    bar: {
-                        borderRadius: 4,
-                        columnWidth: '45%'
-                    }
-                },
-                dataLabels: { enabled: false },
-                xaxis: {
-                    categories: ['2020', '2021', '2022', '2023', '2024E'],
-                    labels: {
-                        style: { colors: '#64748b', fontSize: '11px' }
-                    }
-                },
-                yaxis: {
-                    labels: {
-                        style: { colors: '#64748b', fontSize: '11px' }
-                    }
-                },
-                colors: ['#22c55e', '#0ea5e9'],
-                grid: { borderColor: '#1e293b', strokeDashArray: 3 },
-                legend: { show: false },
-                tooltip: { theme: 'dark' }
-            };
+            /* ---------- CHARTING ---------- */
 
-            if (finChart) finChart.destroy();
-            finChart = new ApexCharts(document.querySelector("#fin-chart"), options);
-            finChart.render();
-        }
+            function updateTimeframe(tf) {
+                updateChart(tf);
+            }
 
-        function renderGauge(val) {
-            const options = {
-                chart: {
-                    height: 200,
-                    type: 'radialBar',
-                    toolbar: { show: false },
-                    background: 'transparent'
-                },
-                series: [val],
-                plotOptions: {
-                    radialBar: {
-                        startAngle: -135,
-                        endAngle: 135,
-                        hollow: {
-                            size: '60%',
-                            background: 'transparent'
+            async function updateChart(tf) {
+                currentTimeframe = tf;
+                document.getElementById('chart-range-label').innerText = tf;
+
+                document.querySelectorAll('.tf-btn').forEach(b => {
+                    if (b.dataset.tf === tf) b.classList.add('active');
+                    else b.classList.remove('active');
+                });
+
+                if (abortController) abortController.abort();
+                abortController = new AbortController();
+
+                try {
+                    const r = await fetch(`/api/history/${currentSymbol}/${tf}`, { signal: abortController.signal });
+                    const json = await r.json();
+
+                    if (!json.error && json.candle && json.candle.length > 0) {
+                        lastHistoryData = json;
+                        renderApexChart(json);
+                        updatePerfLabel(tf, json.candle);
+                    }
+                } catch (e) {
+                    if (e.name !== 'AbortError') {
+                        console.warn(e);
+                        const fallback = generateFallbackData(tf, currentPrice || 100);
+                        lastHistoryData = fallback;
+                        renderApexChart(fallback);
+                        updatePerfLabel(tf, fallback.candle);
+                    }
+                }
+            }
+
+            function updatePerfLabel(tf, candles) {
+                if (!candles || candles.length < 2) return;
+                const start = candles[0][4];
+                const end = candles[candles.length - 1][4];
+                const perf = ((end - start) / start) * 100;
+
+                const el = document.getElementById('tf-perf');
+                el.innerText = (perf >= 0 ? '+' : '') + perf.toFixed(1) + '%';
+
+                if (perf > 0) {
+                    el.classList.remove('text-rose-400');
+                    el.classList.add('text-emerald-400');
+                } else if (perf < 0) {
+                    el.classList.remove('text-emerald-400');
+                    el.classList.add('text-rose-400');
+                } else {
+                    el.classList.remove('text-emerald-400', 'text-rose-400');
+                    el.classList.add('text-slate-400');
+                }
+            }
+
+            function renderApexChart(d) {
+                if (!d || !d.candle) return;
+
+                let series = [];
+
+                if (currentChartType === 'candles') {
+                    const candleData = d.candle.map(x => ({ x: x[0], y: [x[1], x[2], x[3], x[4]] }));
+                    series.push({ name: 'Price', type: 'candlestick', data: candleData });
+                } else {
+                    const lineData = d.candle.map(x => ({ x: x[0], y: x[4] }));
+                    series.push({ name: 'Price', type: 'area', data: lineData });
+                }
+
+                if (showMA20 && d.ma20) series.push({ name: 'MA 20', type: 'line', data: d.ma20 });
+                if (showMA50 && d.ma50) series.push({ name: 'MA 50', type: 'line', data: d.ma50 });
+                if (showMA200 && d.ma200) series.push({ name: 'MA 200', type: 'line', data: d.ma200 });
+
+                const isLine = currentChartType === 'line';
+
+                const options = {
+                    chart: {
+                        type: isLine ? 'area' : 'candlestick',
+                        height: '100%',
+                        foreColor: '#94a3b8',
+                        fontFamily: 'Inter, system-ui, sans-serif',
+                        toolbar: {
+                            show: false
                         },
-                        track: {
-                            background: '#020617',
-                            strokeWidth: '100%'
+                        animations: {
+                            enabled: true,
+                            easing: 'easeinout',
+                            speed: 600,
                         },
-                        dataLabels: {
-                            name: {
+                        background: 'transparent'
+                    },
+                    stroke: {
+                        curve: 'straight',
+                        width: isLine ? 2 : 1,
+                    },
+                    fill: {
+                        type: isLine ? 'gradient' : 'solid',
+                        gradient: {
+                            shadeIntensity: 1,
+                            opacityFrom: 0.4,
+                            opacityTo: 0.05,
+                            stops: [0, 100]
+                        }
+                    },
+                    series: series,
+                    xaxis: {
+                        type: 'datetime',
+                        tooltip: { enabled: false },
+                        axisBorder: { show: false },
+                        axisTicks: { show: false },
+                        labels: { style: { colors: '#64748b', fontSize: '10px' } }
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: (v) => v.toFixed(1),
+                            style: { colors: '#64748b', fontSize: '10px' }
+                        },
+                        tooltip: { enabled: true }
+                    },
+                    grid: {
+                        borderColor: 'rgba(15,23,42,0.85)',
+                        strokeDashArray: 4,
+                        padding: {
+                            left: 10,
+                            right: 0,
+                            top: 0,
+                            bottom: 0
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    tooltip: {
+                        theme: 'dark',
+                        x: { show: true },
+                        y: {
+                            formatter: (v) => '$' + v.toFixed(2)
+                        }
+                    },
+                    colors: ['#22c55e', '#60a5fa', '#f97316', '#a855f7'],
+                    legend: {
+                        show: false
+                    }
+                };
+
+                if (chart) chart.destroy();
+                chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+            }
+
+            function generateFallbackData(tf, price) {
+                let points = 50;
+                let now = new Date().getTime();
+                let candles = [];
+                let p = price || 100;
+
+                for (let i = 0; i < points; i++) {
+                    candles.unshift([now - (i * 86400000), p, p * 1.01, p * 0.99, p]);
+                    p = p * (1 + (Math.random() - 0.5) * 0.02);
+                }
+
+                return {
+                    candle: candles
+                };
+            }
+
+            function renderGauge(score) {
+                const options = {
+                    series: [score],
+                    chart: { height: 180, type: 'radialBar', fontFamily: 'Inter' },
+                    plotOptions: {
+                        radialBar: {
+                            startAngle: -135, endAngle: 135,
+                            hollow: { size: '60%', background: 'transparent' },
+                            track: { background: 'rgba(15,23,42,1)', strokeWidth: '100%' },
+                            dataLabels: {
                                 show: true,
-                                color: '#94a3b8',
-                                fontSize: '11px',
-                                offsetY: 40
-                            },
-                            value: {
-                                formatter: function (val) {
-                                    return parseInt(val) + "%";
+                                name: {
+                                    show: true,
+                                    color: '#64748b',
+                                    fontSize: '11px',
+                                    offsetY: 32
                                 },
-                                color: '#e5e7eb',
-                                fontSize: '24px',
-                                fontWeight: 700,
-                                offsetY: -10
+                                value: {
+                                    show: true,
+                                    fontSize: '22px',
+                                    fontWeight: 600,
+                                    color: '#e5e7eb',
+                                    offsetY: -8
+                                }
                             }
                         }
-                    }
-                },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        shade: 'dark',
-                        type: 'horizontal',
-                        shadeIntensity: 0.5,
-                        gradientToColors: ['#22c55e', '#0ea5e9'],
-                        inverseColors: false,
-                        opacityFrom: 1,
-                        opacityTo: 1,
-                        stops: [0, 50, 100]
-                    }
-                },
-                stroke: {
-                    lineCap: 'round'
-                },
-                labels: ['Score']
-            };
-            if (gaugeChart) gaugeChart.destroy();
-            gaugeChart = new ApexCharts(document.querySelector("#gauge-chart"), options);
-            gaugeChart.render();
-        }
+                    },
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            shade: 'dark',
+                            gradientToColors: ['#22c55e'],
+                            stops: [0, 50, 100],
+                            inverseColors: false,
+                        }
+                    },
+                    stroke: {
+                        lineCap: 'round'
+                    },
+                    labels: ['VR Score']
+                };
 
-        function generateFallbackData(tf, price) {
-            let points = 50;
-            let now = new Date().getTime();
-            let candles = [];
-            let p = price;
-
-            for (let i = 0; i < points; i++) {
-                candles.unshift([now - (i * 86400000), p, p * (1.01), p * (0.99), p]);
-                p = p * (1 + (Math.random() - 0.5) * 0.02);
+                if (gaugeChart) gaugeChart.destroy();
+                gaugeChart = new ApexCharts(document.querySelector("#gauge"), options);
+                gaugeChart.render();
             }
 
-            return {
-                candle: candles
-            };
-        }
+            function toggleMA(val) {
+                if (val === '20') showMA20 = !showMA20;
+                if (val === '50') showMA50 = !showMA50;
+                if (val === '200') showMA200 = !showMA200;
 
-        /* ---------- DOM READY ---------- */
+                document.querySelectorAll('.mabtn').forEach(btn => {
+                    const ma = btn.dataset.ma;
+                    let active = false;
+                    if (ma === '20') active = showMA20;
+                    if (ma === '50') active = showMA50;
+                    if (ma === '200') active = showMA200;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            setLang(currentLang);
-            setActiveTimeframe('1Y');
-            updateMAButtons();
-            updateChartTypeButtons();
+                    if (active) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                });
 
-            const nameSpan = document.getElementById('account-name');
-        });
-    </script>
+                if (lastHistoryData) renderApexChart(lastHistoryData);
+            }
+
+            function setChartType(type) {
+                currentChartType = type;
+                document.querySelectorAll('.charttype-btn').forEach(btn => {
+                    if (btn.dataset.type === type) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                });
+                if (lastHistoryData) renderApexChart(lastHistoryData);
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                filterStocks('ALL');
+
+                document.querySelectorAll('.region-btn').forEach(btn => {
+                    btn.addEventListener('click', () => filterStocks(btn.dataset.region));
+                });
+
+                updateChart('1Y');
+                document.querySelectorAll('.tf-btn').forEach(btn => {
+                    if (btn.dataset.tf === '1Y') btn.classList.add('active');
+                });
+
+                toggleMA('20');
+            });
+        </script>
 </body>
 
 </html>
