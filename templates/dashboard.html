@@ -883,6 +883,12 @@
         }
 
         /* ---------- CHART ---------- */
+        /* ---------- CHARTING ---------- */
+
+        function updateTimeframe(tf) {
+            // Wrapper für die Buttons – ruft einfach die eigentliche Chart-Logik auf
+            updateChart(tf);
+        }
 
         async function updateChart(tf) {
             currentTimeframe = tf;
@@ -983,7 +989,7 @@
                     axisTicks: { show: false },
                     labels: {
                         style: { colors: '#64748b', fontSize: '10px' },
-                        offsetY: 8
+                        offsetY: 10
                     }
                 },
                 yaxis: {
@@ -996,8 +1002,15 @@
                 grid: {
                     borderColor: 'rgba(255,255,255,0.05)',
                     strokeDashArray: 4,
-                    padding: { top: 10, bottom: 40, left: 8, right: 4 }
+                    padding: {
+                        top: 10,
+                        bottom: 60,
+                        left: 8,
+                        right: 4
+                    }
                 },
+
+
                 plotOptions: {
                     candlestick: {
                         colors: { upward: '#22c55e', downward: '#ef4444' }

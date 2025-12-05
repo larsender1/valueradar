@@ -144,10 +144,21 @@ def get_details(symbol):
         name = info.get("longName") or info.get("shortName") or symbol
 # ... (in der Funktion get_details) ...
 
-        # --- NEU: Beschreibung und 52-Wochen Range ---
-        description = info.get("longBusinessSummary", "Keine Beschreibung verfügbar.")
+                # Beschreibung und 52-Wochen Range ---
+        full_description = info.get("longBusinessSummary", "Keine Beschreibung verfügbar.")
+
+        # einfache „Pseudo-AI“-Kurzfassung: erste 2–3 Sätze
+        description = full_description
+        if full_description and len(full_description) > 600:
+            parts = full_description.split(". ")
+            short = ". ".join(parts[:3]).strip()
+            if not short.endswith("."):
+                short += "."
+            description = short
+
         year_high = info.get("fiftyTwoWeekHigh")
         year_low = info.get("fiftyTwoWeekLow")
+
         # ---------------------------------------------
 
 
@@ -294,8 +305,12 @@ def get_details(symbol):
                 "news": news_list,
                 "pros": pros,
                 "risks": risks,
+                "description": description,   # <- NEU
+                "year_high": year_high,
+                "year_low": year_low,
             }
         )
+
     except Exception as e:
         print(f"Fehler bei Details zu {symbol}: {e}")
         return jsonify({"error": str(e)})
