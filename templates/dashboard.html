@@ -517,62 +517,98 @@
 
 
 
-                    <!-- =============================== -->
-                    <!--       PROFIT MARGIN (FULL)     -->
-                    <!-- =============================== -->
-
+                    <!-- PROFIT MARGIN – MARKET CAP STYLE -->
                     <div class="group relative w-full mt-6">
                         <!-- Glow -->
                         <div
-                            class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-purple-400 to-indigo-500 opacity-0 group-hover:opacity-20 blur-xl transition">
+                            class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-purple-400 to-indigo-500 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700">
                         </div>
 
-                        <!-- Grid -->
-                        <div class="absolute inset-0 opacity-[0.04] bg-[url('/static/img/grid.svg')]"></div>
-
-                        <!-- Card -->
+                        <!-- Card Container -->
                         <div class="relative bg-[#0b0c10] border border-gray-800/80 rounded-2xl 
-                flex flex-col lg:flex-row overflow-hidden shadow-xl 
-                group-hover:border-gray-700/80 transition">
+               flex flex-col lg:flex-row overflow-hidden 
+               transition-all duration-300 group-hover:border-gray-700/80 
+               group-hover:-translate-y-1 shadow-xl shadow-black/40">
 
                             <!-- LEFT -->
-                            <div
-                                class="lg:w-[35%] p-6 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-gray-800/50">
-                                <div class="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 shadow-inner">
-                                    <i data-lucide="pie-chart" class="w-6 h-6 text-purple-400"></i>
+                            <div class="lg:w-[35%] p-6 lg:p-8 flex flex-col justify-between 
+                   border-b lg:border-b-0 lg:border-r border-gray-800/50 bg-[#0e1015]">
+
+                                <div class="flex justify-between items-start mb-6">
+                                    <div
+                                        class="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 shadow-inner">
+                                        <i data-lucide="pie-chart" class="w-6 h-6 text-purple-400"></i>
+                                    </div>
+                                    <i data-lucide="activity" class="w-5 h-5 text-gray-800 opacity-50"></i>
                                 </div>
 
-                                <div class="mt-4">
-                                    <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Profit
-                                        Margin</h3>
-                                    <div id="val-margin" class="text-3xl font-bold text-white">--%</div>
+                                <div>
+                                    <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2">
+                                        Profit Margin
+                                    </h3>
+
+                                    <span id="val-margin"
+                                        class="text-3xl lg:text-4xl font-bold text-white tracking-tight leading-none">--%</span>
+
+                                    <div class="h-2"></div>
                                 </div>
                             </div>
 
                             <!-- RIGHT -->
-                            <div class="flex-1 p-6 flex flex-col justify-between">
-                                <div>
-                                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Analysis
-                                    </h4>
-                                    <p class="text-sm text-gray-300 leading-relaxed">
-                                        Profit margin reflects operational efficiency. Higher margins show stronger cost
-                                        control and competitive advantage.
-                                    </p>
+                            <div class="flex-1 p-6 lg:p-8 relative">
+
+                                <!-- Grid Overlay -->
+                                <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),
+                       linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]
+                       bg-[size:30px_30px] opacity-40 pointer-events-none">
                                 </div>
 
-                                <!-- Bars -->
-                                <div class="mt-4">
-                                    <div class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Margin Level
-                                    </div>
-                                    <div class="h-2 bg-gray-800 rounded-full overflow-hidden mb-2">
-                                        <div id="prog-margin" class="h-full bg-purple-400 w-0 transition-all"></div>
+                                <div class="relative z-10 flex flex-col gap-4">
+                                    <div class="flex gap-4">
+                                        <div class="hidden sm:block mt-1">
+                                            <div
+                                                class="w-0.5 h-10 bg-gradient-to-b from-purple-400 to-indigo-500 opacity-40">
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <h4
+                                                class="text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide flex items-center gap-1">
+                                                Analysis
+                                            </h4>
+                                            <p id="analysis-margin" class="text-[13px] text-gray-300 leading-relaxed">
+                                                Profit margin reflects operational efficiency. Higher margins indicate
+                                                stronger pricing power
+                                                and healthier financials.
+                                            </p>
+                                        </div>
                                     </div>
 
-                                    <div class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Industry
-                                        Comparison</div>
-                                    <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
-                                        <div id="margin-industry-fill" class="h-full bg-purple-200 w-0 transition-all">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-800/30">
+
+                                        <div>
+                                            <div class="flex justify-between text-[10px] uppercase text-gray-400">
+                                                <span>Margin Level</span>
+                                                <span id="margin-level-label">--</span>
+                                            </div>
+                                            <div class="h-1.5 bg-gray-800 rounded-full overflow-hidden mt-1">
+                                                <div id="prog-margin"
+                                                    class="h-full bg-gradient-to-r from-purple-400 to-indigo-500 rounded-full"
+                                                    style="width:0%"></div>
+                                            </div>
                                         </div>
+
+                                        <div>
+                                            <div class="flex justify-between text-[10px] uppercase text-gray-400">
+                                                <span>VS Industry</span>
+                                                <span id="margin-industry-label">--</span>
+                                            </div>
+                                            <div class="h-1.5 bg-gray-800 rounded-full overflow-hidden mt-1">
+                                                <div id="margin-industry-fill" class="h-full bg-purple-300 rounded-full"
+                                                    style="width:0%"></div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -580,69 +616,105 @@
                     </div>
 
 
-                    <!-- =============================== -->
-                    <!--    REVENUE GROWTH (FULL)       -->
-                    <!-- =============================== -->
-
+                    <!-- REVENUE GROWTH – MARKET CAP STYLE -->
                     <div class="group relative w-full mt-6">
                         <!-- Glow -->
                         <div
-                            class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-hover:opacity-20 blur-xl transition">
+                            class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700">
                         </div>
 
-                        <!-- Grid -->
-                        <div class="absolute inset-0 opacity-[0.04] bg-[url('/static/img/grid.svg')]"></div>
-
-                        <!-- Card -->
+                        <!-- Card Container -->
                         <div class="relative bg-[#0b0c10] border border-gray-800/80 rounded-2xl 
-                flex flex-col lg:flex-row overflow-hidden shadow-xl 
-                group-hover:border-gray-700/80 transition">
+               flex flex-col lg:flex-row overflow-hidden 
+               transition-all duration-300 group-hover:border-gray-700/80 
+               group-hover:-translate-y-1 shadow-xl shadow-black/40">
 
                             <!-- LEFT -->
-                            <div
-                                class="lg:w-[35%] p-6 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-gray-800/50">
-                                <div class="p-3 rounded-xl bg-yellow-500/10 border border-yellow-500/20 shadow-inner">
-                                    <i data-lucide="trending-up" class="w-6 h-6 text-yellow-400"></i>
+                            <div class="lg:w-[35%] p-6 lg:p-8 flex flex-col justify-between 
+                   border-b lg:border-b-0 lg:border-r border-gray-800/50 bg-[#0e1015]">
+
+                                <div class="flex justify-between items-start mb-6">
+                                    <div
+                                        class="p-3 rounded-xl bg-yellow-500/10 border border-yellow-500/20 shadow-inner">
+                                        <i data-lucide="trending-up" class="w-6 h-6 text-yellow-400"></i>
+                                    </div>
+                                    <i data-lucide="activity" class="w-5 h-5 text-gray-800 opacity-50"></i>
                                 </div>
 
-                                <div class="mt-4">
-                                    <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Revenue
-                                        Growth</h3>
-                                    <div id="val-growth" class="text-3xl font-bold text-white">--</div>
-                                    <span id="val-growth-badge" class="text-[10px] text-green-400 font-bold">--</span>
+                                <div>
+                                    <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2">
+                                        Revenue Growth
+                                    </h3>
+
+                                    <span id="val-growth"
+                                        class="text-3xl lg:text-4xl font-bold text-white tracking-tight leading-none">--</span>
+
+                                    <span id="val-growth-badge"
+                                        class="text-[10px] text-yellow-400 font-semibold">--</span>
                                 </div>
                             </div>
 
                             <!-- RIGHT -->
-                            <div class="flex-1 p-6 flex flex-col justify-between">
-                                <div>
-                                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Analysis
-                                    </h4>
-                                    <p class="text-sm text-gray-300 leading-relaxed">
-                                        Revenue growth indicates how quickly a company is expanding. Strong expansion
-                                        suggests market demand and competitive strength.
-                                    </p>
+                            <div class="flex-1 p-6 lg:p-8 relative">
+
+                                <!-- Grid Overlay -->
+                                <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),
+                       linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]
+                       bg-[size:30px_30px] opacity-40 pointer-events-none">
                                 </div>
 
-                                <!-- Bars -->
-                                <div class="mt-4">
-                                    <div class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Growth
-                                        Intensity</div>
-                                    <div class="h-2 bg-gray-800 rounded-full overflow-hidden mb-2">
-                                        <div id="growth-bar"
-                                            class="h-full bg-gradient-to-r from-red-400 via-yellow-400 to-green-400 w-0">
+                                <div class="relative z-10 flex flex-col gap-4">
+                                    <div class="flex gap-4">
+                                        <div class="hidden sm:block mt-1">
+                                            <div
+                                                class="w-0.5 h-10 bg-gradient-to-b from-yellow-400 to-orange-400 opacity-40">
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <h4
+                                                class="text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide flex items-center gap-1">
+                                                Analysis
+                                            </h4>
+                                            <p id="analysis-growth" class="text-[13px] text-gray-300 leading-relaxed">
+                                                Revenue growth shows how fast a company expands its top-line
+                                                performance.
+                                                Strong YoY growth indicates robust business momentum.
+                                            </p>
                                         </div>
                                     </div>
 
-                                    <div class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Industry
-                                        Comparison</div>
-                                    <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
-                                        <div id="growth-industry-fill" class="h-full bg-yellow-300 w-0"></div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-800/30">
+
+                                        <div>
+                                            <div class="flex justify-between text-[10px] uppercase text-gray-400">
+                                                <span>Growth Intensity</span>
+                                                <span id="growth-intensity-label">--</span>
+                                            </div>
+                                            <div class="h-1.5 bg-gray-800 rounded-full overflow-hidden mt-1">
+                                                <div id="growth-bar"
+                                                    class="h-full bg-gradient-to-r from-red-400 via-yellow-400 to-green-400 rounded-full"
+                                                    style="width:0%"></div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div class="flex justify-between text-[10px] uppercase text-gray-400">
+                                                <span>VS Industry</span>
+                                                <span id="growth-industry-label">--</span>
+                                            </div>
+                                            <div class="h-1.5 bg-gray-800 rounded-full overflow-hidden mt-1">
+                                                <div id="growth-industry-fill" class="h-full bg-yellow-300 rounded-full"
+                                                    style="width:0%"></div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
                 </section>
 
