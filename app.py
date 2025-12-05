@@ -180,8 +180,22 @@ def get_details(symbol):
         profit_margin = info.get("profitMargins")
         revenue_growth = info.get("revenueGrowth")
 
-        # Dividende
+        # Bewertung / Risiko / Qualität
+        beta = info.get("beta")
+        roe = info.get("returnOnEquity")
+        roa = info.get("returnOnAssets")
+        roic = info.get("returnOnCapitalEmployed")
+        debt_to_equity = info.get("debtToEquity")
+        current_ratio = info.get("currentRatio")
+        quick_ratio = info.get("quickRatio")
+        ev_to_ebitda = info.get("enterpriseToEbitda")
+        ev_to_sales = info.get("enterpriseToRevenue")
+
+        # Cashflows & Dividende
+        free_cash_flow = info.get("freeCashflow")
+        payout_ratio = info.get("payoutRatio")
         div_yield = info.get("dividendYield")
+
 
                 # Preis und Performance
         price_now = info.get("currentPrice") or info.get("regularMarketPrice")
@@ -284,32 +298,50 @@ def get_details(symbol):
         if not risks:
             risks.append("-- Keine weiteren Warnungen")
 
-        return jsonify(
-            {
-                "symbol": symbol,
-                "name": name,
-                "country": country,
-                "sector": sector,
-                "industry": industry,
-                "pe": pe,
-                "peg": peg,
-                "pb": pb,
-                "ps": ps,
-                "market_cap": market_cap,
-                "profit_margin": profit_margin,
-                "revenue_growth": revenue_growth,
-                "div_yield": div_yield,
-                "price_now": price_now,
-                "perf_1y": perf_1y,
-                "perf_3m": perf_3m,
-                "news": news_list,
-                "pros": pros,
-                "risks": risks,
-                "description": description,   # <- NEU
-                "year_high": year_high,
-                "year_low": year_low,
-            }
-        )
+        return jsonify({
+    "symbol": symbol,
+    "name": name,
+    "sector": sector,
+    "industry": industry,
+    "price": price_now,
+    "currency": currency,
+
+    # KPIs
+    "market_cap": market_cap,
+    "pe": pe,
+    "peg": peg,
+    "pb": pb,
+    "ps": ps,
+    "profit_margin": profit_margin,
+    "revenue_growth": revenue_growth,
+    "div_yield": div_yield,
+    "payout_ratio": payout_ratio,
+
+    # Additional KPIs
+    "beta": beta,
+    "debt_to_equity": debt_to_equity,
+    "roe": roe,
+    "roa": roa,
+    "roic": roic,
+    "ev_to_ebitda": ev_to_ebitda,
+    "ev_to_sales": ev_to_sales,
+    "current_ratio": current_ratio,
+    "quick_ratio": quick_ratio,
+    "free_cash_flow": free_cash_flow,
+
+    # Company
+    "description": description,
+    "year_high": year_high,
+    "year_low": year_low,
+
+    # Lists
+    "pros": pros,
+    "risks": risks,
+    "news": news_list
+}
+)
+
+
 
     except Exception as e:
         print(f"Fehler bei Details zu {symbol}: {e}")
