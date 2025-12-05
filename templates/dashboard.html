@@ -317,54 +317,45 @@
                     <div class="h-[1px] bg-gray-700 flex-1"></div>
                 </div>
 
-                <!-- COMPANY DESCRIPTION – MARKET CAP STYLE -->
-                <div class="group relative w-full mt-10">
-                    <!-- Glow -->
+                <!-- COMPANY DESCRIPTION – FULL WIDTH (Aligned Left Like Market Cap) -->
+                <div class="group relative w-full mt-6">
                     <div class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-teal-400 to-blue-500 
         opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700"></div>
 
                     <div class="relative bg-[#0b0c10] border border-gray-800/80 rounded-2xl 
-        flex flex-col lg:flex-row overflow-hidden transition-all duration-300 
+        flex flex-col overflow-hidden transition-all duration-300 
         group-hover:border-gray-700/80 group-hover:-translate-y-1 
         shadow-xl shadow-black/40 p-8">
 
-                        <!-- GRID Overlay -->
-                        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),
+                        <!-- GRID BACKGROUND -->
+                        <div class="absolute inset-0 
+            bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),
             linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]
             bg-[size:30px_30px] opacity-40 pointer-events-none"></div>
 
-                        <!-- LEFT -->
-                        <div class="relative z-10 lg:w-[30%] flex flex-col justify-between 
-            border-b lg:border-b-0 lg:border-r border-gray-800/50 bg-[#0e1015] p-6 lg:p-8">
+                        <!-- CONTENT -->
+                        <div class="relative z-10 flex gap-6">
 
-                            <div class="flex justify-between items-start mb-6">
-                                <div class="p-3 rounded-xl bg-teal-500/10 border border-teal-500/20 shadow-inner">
-                                    <i data-lucide="info" class="w-6 h-6 text-teal-400"></i>
-                                </div>
-                                <i data-lucide="activity" class="w-5 h-5 text-gray-800 opacity-50"></i>
+                            <!-- ICON LEFT -->
+                            <div class="p-3 rounded-xl bg-teal-500/10 border border-teal-500/20 shadow-inner h-fit">
+                                <i data-lucide="info" class="w-6 h-6 text-teal-400"></i>
                             </div>
 
-                            <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">
-                                Company Description
-                            </h3>
-                        </div>
+                            <!-- TEXT RIGHT -->
+                            <div>
+                                <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-3">
+                                    Company Description
+                                </h3>
 
-                        <!-- RIGHT -->
-                        <div class="relative z-10 flex-1 p-6 lg:p-8">
-                            <div class="flex gap-4">
-                                <div class="hidden sm:block mt-1">
-                                    <div class="w-0.5 h-10 bg-gradient-to-b from-teal-400 to-blue-500 opacity-40"></div>
-                                </div>
-
-                                <p id="company-desc"
-                                    class="text-[13px] text-gray-300 leading-relaxed whitespace-pre-line">
+                                <p id="company-description" class="text-slate-300 text-sm leading-relaxed">
                                     Loading description...
                                 </p>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
+
 
 
                 <!-- ============================ -->
@@ -820,78 +811,95 @@
                 </div>
 
                 <!-- ================================ -->
-                <!-- VR SENTIMENT – COMPACT PREMIUM   -->
+                <!-- VR SENTIMENT – KORRIGIERTE VERSION -->
                 <!-- ================================ -->
                 <div class="group relative w-full mt-16 mb-10">
+                    <!-- Glow -->
                     <div class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-teal-400 to-cyan-500 
-                opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700"></div>
+        opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700"></div>
 
                     <div class="relative bg-[#0b0c10] border border-gray-800/80 rounded-2xl 
-                flex flex-col items-center justify-center overflow-hidden 
-                transition-all duration-300 group-hover:border-gray-700/80 
-                group-hover:-translate-y-1 shadow-xl shadow-black/40 p-10">
+        flex flex-col items-center justify-center overflow-hidden 
+        transition-all duration-300 group-hover:border-gray-700/80 
+        group-hover:-translate-y-1 shadow-xl shadow-black/40 px-8 py-8">
 
+                        <!-- Grid-Hintergrund -->
                         <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),
-                   linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]
-                   bg-[size:30px_30px] opacity-40 pointer-events-none"></div>
+               linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]
+               bg-[size:30px_30px] opacity-40 pointer-events-none"></div>
 
-                        <div class="relative z-10 flex flex-col items-center w-full -mt-4">
-
-                            <h3 class="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-3">
+                        <div class="relative z-10 flex flex-col items-center w-full">
+                            <h3 class="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-4">
                                 VR Sentiment
                             </h3>
 
-                            <!-- Slightly smaller + centered Gauge -->
-                            <div class="relative w-56 h-28">
-                                <canvas id="vr-gauge"></canvas>
-                                <div class="absolute inset-0 flex flex-col items-center justify-center mt-4">
-                                    <span id="vr-score" class="text-3xl font-black text-teal-400">--</span>
-                                    <span id="vr-label" class="text-xs font-semibold text-teal-400 mt-1">--</span>
+                            <!-- Größeres, zentriertes Gauge -->
+                            <div class="relative w-64 h-40">
+                                <canvas id="vr-gauge" class="w-full h-full"></canvas>
+
+                                <!-- Score & Label sauber im Zentrum des Bogens -->
+                                <div class="absolute inset-0 flex flex-col items-center justify-center mt-6">
+                                    <span id="vr-score" class="text-4xl font-black text-teal-400">--</span>
+                                    <span id="vr-label" class="text-sm font-semibold text-teal-400 mt-1">--</span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
 
-
                 <script>
-                    // SIMPLE HALF-GAUGE RENDER
+                    // Einfaches Half-Gauge (Fear & Greed Style)
                     function renderVRGauge(score) {
                         const canvas = document.getElementById("vr-gauge");
+                        if (!canvas) return;
                         const ctx = canvas.getContext("2d");
-                        canvas.width = 300;
-                        canvas.height = 150;
 
-                        ctx.clearRect(0, 0, 300, 150);
+                        // etwas kleinere Maße, damit alles gut in der Card sitzt
+                        canvas.width = 280;
+                        canvas.height = 140;
 
-                        // COLOR LOGIC
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                        const cx = canvas.width / 2;
+                        const cy = canvas.height * 1.05;      // Center etwas unterhalb der Card
+                        const radius = canvas.width * 0.35;
+
+                        // Farbe nach Score
                         let col = score < 30 ? "#ef4444" : score < 60 ? "#f59e0b" : "#10b981";
 
-                        // BACK ARC
+                        // Hintergrundbogen
                         ctx.lineWidth = 18;
                         ctx.strokeStyle = "#1f2937";
                         ctx.beginPath();
-                        ctx.arc(150, 150, 100, Math.PI, 2 * Math.PI);
+                        ctx.arc(cx, cy, radius, Math.PI, 2 * Math.PI);
                         ctx.stroke();
 
-                        // VALUE ARC
+                        // Wert-Bogen
                         ctx.strokeStyle = col;
                         ctx.beginPath();
-                        ctx.arc(150, 150, 100, Math.PI, Math.PI + (score / 100) * Math.PI);
+                        ctx.arc(cx, cy, radius, Math.PI, Math.PI + (score / 100) * Math.PI);
                         ctx.stroke();
 
-                        document.getElementById("vr-score").innerText = score;
-                        document.getElementById("vr-score").style.color = col;
-                        document.getElementById("vr-label").innerText =
-                            score < 30 ? "Extreme Fear" :
-                                score < 60 ? "Neutral" : "Greed";
-                        document.getElementById("vr-label").style.color = col;
+                        // Text setzen
+                        const scoreEl = document.getElementById("vr-score");
+                        const labelEl = document.getElementById("vr-label");
+                        if (!scoreEl || !labelEl) return;
+
+                        scoreEl.textContent = score;
+                        scoreEl.style.color = col;
+
+                        labelEl.textContent =
+                            score < 20 ? "Extreme Fear" :
+                                score < 40 ? "Fear" :
+                                    score < 60 ? "Neutral" :
+                                        score < 80 ? "Greed" : "Extreme Greed";
+                        labelEl.style.color = col;
                     }
 
-                    // CALL ON LOAD with placeholder
+                    // Platzhalter-Aufruf
                     renderVRGauge(80);
                 </script>
+
 
 
 
