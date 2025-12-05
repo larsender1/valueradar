@@ -750,6 +750,35 @@
                 selectStock(filteredList[0], 0);
             }
         }
+        // Beschreibung automatisch formatieren (global)
+        function formatCompanyDescription(text) {
+            if (!text) return "No description available.";
+
+            let formatted = text;
+
+            const subtitles = [
+                "The company operates",
+                "The company provides",
+                "The company offers",
+                "Its segments include",
+                "Segments:",
+                "Products:",
+                "Services:",
+                "Operations:"
+            ];
+
+            subtitles.forEach(keyword => {
+                const regex = new RegExp(keyword, "gi");
+                formatted = formatted.replace(
+                    regex,
+                    `<br><br><span class="font-bold text-slate-200">${keyword}</span>`
+                );
+            });
+
+            formatted = formatted.replace(/\. /g, ".<br>");
+
+            return formatted;
+        }
 
         /* ---------- SELECTION & DETAILS ---------- */
 
@@ -769,38 +798,6 @@
             document.getElementById('val-pe').innerText = "...";
             document.getElementById('val-margin').innerText = "...";
             document.getElementById('company-desc').innerText = "Loading description...";
-            // Beschreibung automatisch formatieren
-            function formatCompanyDescription(text) {
-                if (!text) return "No description available.";
-
-                let formatted = text;
-
-                // Subtitles erkennen
-                const subtitles = [
-                    "The company operates",
-                    "The company provides",
-                    "The company offers",
-                    "Its segments include",
-                    "Segments:",
-                    "Products:",
-                    "Services:",
-                    "Operations:"
-                ];
-
-                subtitles.forEach(keyword => {
-                    const regex = new RegExp(keyword, "gi");
-                    formatted = formatted.replace(
-                        regex,
-                        `<br><br><span class="font-bold text-slate-200">${keyword}</span>`
-                    );
-                });
-
-                // Absätze durch Punkte → neuen Absatz
-                formatted = formatted.replace(/\. /g, ".<br>");
-
-                return formatted;
-            }
-
             document.getElementById('strengths-list').innerHTML = '<li class="text-xs text-slate-500">Loading...</li>';
             document.getElementById('risks-list').innerHTML = '<li class="text-xs text-slate-500">Loading...</li>';
 
