@@ -494,490 +494,507 @@
                 <section class="grid grid-cols-1 gap-4 mt-4">
 
                     <!-- Beta -->
-                    <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 
+                                transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                         <div class="md:w-1/2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div
-                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                    <i data-lucide="activity" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-
                             <div
-                                class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
-                                Beta
+                                class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition mb-2">
+                                <i data-lucide="activity" class="w-5 h-5"></i>
                             </div>
-
-                            <div class="text-[10px] text-slate-500 mb-1">Volatilität vs. Markt</div>
-
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Beta</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Volatility vs Market</div>
                             <div id="kpi-beta" class="text-2xl font-bold text-white tracking-tight">--</div>
                         </div>
 
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Volatility comparison</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-beta" class="bg-teal-500 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                            <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                                <span>Low</span><span>High</span>
+                            </div>
+                        </div>
                     </div>
+
 
 
                     <!-- Debt / Equity -->
-                    <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 
+                                transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                         <div class="md:w-1/2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div
-                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-
                             <div
-                                class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
-                                Debt / Equity
+                                class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition mb-2">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
                             </div>
-
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Debt / Equity
+                            </div>
                             <div class="text-[10px] text-slate-500 mb-1">Verschuldungsgrad</div>
-
                             <div id="kpi-de" class="text-2xl font-bold text-white tracking-tight">--</div>
                         </div>
 
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Leverage comparison</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-de" class="bg-yellow-400 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                            <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                                <span>Low</span><span>High</span>
+                            </div>
+                        </div>
                     </div>
+
 
 
                     <!-- ROE -->
-                    <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 
+transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                         <div class="md:w-1/2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div
-                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                    <i data-lucide="pie-chart" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-
                             <div
-                                class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
-                                ROE
+                                class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition mb-2">
+                                <i data-lucide="pie-chart" class="w-5 h-5"></i>
                             </div>
-
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">ROE</div>
                             <div class="text-[10px] text-slate-500 mb-1">Eigenkapitalrendite</div>
-
                             <div id="kpi-roe" class="text-2xl font-bold text-white tracking-tight">--</div>
                         </div>
 
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Return vs Industry</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-roe" class="bg-green-500 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                            <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                                <span>Low</span><span>High</span>
+                            </div>
+                        </div>
                     </div>
+
 
 
                     <!-- ROIC -->
-                    <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 
+transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                         <div class="md:w-1/2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div
-                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                    <i data-lucide="trending-up" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-
                             <div
-                                class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
-                                ROIC
+                                class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition mb-2">
+                                <i data-lucide="trending-up" class="w-5 h-5"></i>
                             </div>
-
-                            <div class="text-[10px] text-slate-500 mb-1">Rendite auf eingesetztes Kapital</div>
-
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">ROIC</div>
+                            <div class="text-[10px] text-slate-500 mb-1">Rendite auf Kapital</div>
                             <div id="kpi-roic" class="text-2xl font-bold text-white tracking-tight">--</div>
                         </div>
 
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Capital return</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-roic" class="bg-green-400 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                            <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                                <span>Low</span><span>High</span>
+                            </div>
+                        </div>
                     </div>
+
 
 
                     <!-- EV / EBITDA -->
-                    <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 
+transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                         <div class="md:w-1/2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div
-                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-
                             <div
-                                class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
-                                EV / EBITDA
+                                class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition mb-2">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
                             </div>
-
-                            <div class="text-[10px] text-slate-500 mb-1">Bewertung im Branchenvergleich</div>
-
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">EV / EBITDA
+                            </div>
+                            <div class="text-[10px] text-slate-500 mb-1">Industry valuation</div>
                             <div id="kpi-ev-ebitda" class="text-2xl font-bold text-white tracking-tight">--</div>
                         </div>
 
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Cheap → Expensive</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-ev-ebitda" class="bg-red-400 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                            <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                                <span>Cheap</span><span>Expensive</span>
+                            </div>
+                        </div>
                     </div>
+
 
 
                     <!-- EV / Sales -->
-                    <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 
+transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                         <div class="md:w-1/2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div
-                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                    <i data-lucide="bar-chart" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-
                             <div
-                                class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
-                                EV / Sales
+                                class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition mb-2">
+                                <i data-lucide="bar-chart" class="w-5 h-5"></i>
                             </div>
-
-                            <div class="text-[10px] text-slate-500 mb-1">Bewertung nach Umsatz</div>
-
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">EV / Sales
+                            </div>
+                            <div class="text-[10px] text-slate-500 mb-1">Revenue valuation</div>
                             <div id="kpi-ev-sales" class="text-2xl font-bold text-white tracking-tight">--</div>
                         </div>
 
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Low → High</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-ev-sales" class="bg-purple-400 h-full w-0 transition-all duration-700">
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
 
 
                     <!-- Current Ratio -->
-                    <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 
+transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                         <div class="md:w-1/2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div
-                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                    <i data-lucide="shield" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-
                             <div
-                                class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
-                                Current Ratio
+                                class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition mb-2">
+                                <i data-lucide="shield" class="w-5 h-5"></i>
                             </div>
-
-                            <div class="text-[10px] text-slate-500 mb-1">Kurzfristige Liquidität</div>
-
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Current Ratio
+                            </div>
+                            <div class="text-[10px] text-slate-500 mb-1">Liquidität</div>
                             <div id="kpi-current" class="text-2xl font-bold text-white tracking-tight">--</div>
                         </div>
 
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Liquidity strength</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-current" class="bg-blue-400 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                        </div>
                     </div>
 
+
                     <!-- Quick Ratio -->
-                    <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 
+transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                         <div class="md:w-1/2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div
-                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                    <i data-lucide="zap" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-
                             <div
-                                class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
-                                Quick Ratio
+                                class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition mb-2">
+                                <i data-lucide="zap" class="w-5 h-5"></i>
                             </div>
-
-                            <div class="text-[10px] text-slate-500 mb-1">Strengere Liquidität</div>
-
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Quick Ratio
+                            </div>
+                            <div class="text-[10px] text-slate-500 mb-1">Strenge Liquidität</div>
                             <div id="kpi-quick" class="text-2xl font-bold text-white tracking-tight">--</div>
                         </div>
 
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Immediate liquidity</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-quick" class="bg-blue-300 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                        </div>
                     </div>
 
+
                     <!-- Free Cash Flow -->
-                    <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 
+transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                         <div class="md:w-1/2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div
-                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                    <i data-lucide="dollar-sign" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-
                             <div
-                                class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
-                                Free Cash Flow
+                                class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition mb-2">
+                                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
                             </div>
-
-                            <div class="text-[10px] text-slate-500 mb-1">Nach Investitionen verfügbar</div>
-
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Free Cash Flow
+                            </div>
+                            <div class="text-[10px] text-slate-500 mb-1">Nach Investitionen</div>
                             <div id="kpi-fcf" class="text-2xl font-bold text-white tracking-tight">--</div>
                         </div>
 
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Cash strength</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-fcf" class="bg-teal-300 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                        </div>
                     </div>
 
+
                     <!-- Payout Ratio -->
-                    <div
-                        class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="glass-card rounded-lg p-5 border-l-4 border-l-slate-700 hover:border-l-teal-500 
+transition group flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                         <div class="md:w-1/2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div
-                                    class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition">
-                                    <i data-lucide="percent" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-
                             <div
-                                class="text-xs font-bold text-slate-400 group-hover:text-white uppercase tracking-widest mb-1 transition">
-                                Payout Ratio
+                                class="p-2 bg-slate-800 rounded-lg text-slate-400 group-hover:text-white transition mb-2">
+                                <i data-lucide="percent" class="w-5 h-5"></i>
                             </div>
-
-                            <div class="text-[10px] text-slate-500 mb-1">Dividende vs. Gewinn</div>
-
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Payout Ratio
+                            </div>
+                            <div class="text-[10px] text-slate-500 mb-1">Dividendenausschüttung</div>
                             <div id="kpi-payout" class="text-2xl font-bold text-white tracking-tight">--</div>
                         </div>
 
+                        <div class="md:w-1/2">
+                            <div class="text-[10px] text-slate-500 mb-1">Distribution level</div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                <div id="bar-payout" class="bg-red-300 h-full w-0 transition-all duration-700"></div>
+                            </div>
+                        </div>
                     </div>
-            </div>
-            </section>
 
-            <div class="text-center text-[10px] text-slate-600 pb-4">
-                Data provided for informational purposes only. Not financial advice.
-            </div>
+                </section>
 
-        </div>
+                <div class="text-center text-[10px] text-slate-600 pb-4">
+                    Data provided for informational purposes only. Not financial advice.
+                </div>
+
+            </div>
         </div>
     </main>
 
     <script>
         lucide.createIcons();
 
-        /* ---------- LANGUAGE TOGGLE ---------- */
-        const translations = {
-            en: {
-                "label-vr-score": "VR Score",
-                "label-price-action": "Price Action",
-                "label-company-desc": "Company Description",
-                "label-kpi-size": "Size",
-                "label-market-cap": "Market Cap",
-                "hint-market-cap": "Indicative market size (visual only).",
-                "label-pe": "P/E Ratio",
-                "label-valuation-band": "Valuation band",
-                "label-cheap": "Cheap",
-                "label-fair": "Fair",
-                "label-expensive": "Expensive",
-                "label-profit-margin": "Profit Margin",
-                "label-margin-level": "Margin level",
-                "label-rev-growth": "Revenue Growth",
-                "label-yoy": "Year over year",
-                "label-growth-intensity": "Growth intensity",
-                "label-news": "Latest News",
-                "label-vr-sentiment": "VR Sentiment",
-                "label-strengths": "Strengths",
-                "label-risks": "Risks",
-                "label-disclaimer": "Data provided for informational purposes only. Not financial advice."
-            },
-            de: {
-                "label-vr-score": "VR Score",
-                "label-price-action": "Kursverlauf",
-                "label-company-desc": "UNTERNEHMENSPROFIL",
-                "label-kpi-size": "Größe",
-                "label-market-cap": "Marktkapitalisierung",
-                "hint-market-cap": "Indikative Unternehmensgröße (nur visuell).",
-                "label-pe": "KGV",
-                "label-valuation-band": "Bewertungsband",
-                "label-cheap": "Günstig",
-                "label-fair": "Fair",
-                "label-expensive": "Teuer",
-                "label-profit-margin": "Gewinnmarge",
-                "label-margin-level": "Margen-Niveau",
-                "label-rev-growth": "Umsatzwachstum",
-                "label-yoy": "Year over year",
-                "label-growth-intensity": "Wachstumsintensität",
-                "label-news": "Aktuelle News",
-                "label-vr-sentiment": "VR Sentiment",
-                "label-strengths": "Stärken",
-                "label-risks": "Risiken",
-                "label-disclaimer": "Alle Daten dienen nur Informationszwecken und sind keine Anlageberatung."
+        /* ---------- ADD BAR WIDTH HELPER ---------- */
+        function barWidth(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.style.width = Math.min(value, 100) + "%";
+
+            /* ---------- LANGUAGE TOGGLE ---------- */
+            const translations = {
+                en: {
+                    "label-vr-score": "VR Score",
+                    "label-price-action": "Price Action",
+                    "label-company-desc": "Company Description",
+                    "label-kpi-size": "Size",
+                    "label-market-cap": "Market Cap",
+                    "hint-market-cap": "Indicative market size (visual only).",
+                    "label-pe": "P/E Ratio",
+                    "label-valuation-band": "Valuation band",
+                    "label-cheap": "Cheap",
+                    "label-fair": "Fair",
+                    "label-expensive": "Expensive",
+                    "label-profit-margin": "Profit Margin",
+                    "label-margin-level": "Margin level",
+                    "label-rev-growth": "Revenue Growth",
+                    "label-yoy": "Year over year",
+                    "label-growth-intensity": "Growth intensity",
+                    "label-news": "Latest News",
+                    "label-vr-sentiment": "VR Sentiment",
+                    "label-strengths": "Strengths",
+                    "label-risks": "Risks",
+                    "label-disclaimer": "Data provided for informational purposes only. Not financial advice."
+                },
+                de: {
+                    "label-vr-score": "VR Score",
+                    "label-price-action": "Kursverlauf",
+                    "label-company-desc": "UNTERNEHMENSPROFIL",
+                    "label-kpi-size": "Größe",
+                    "label-market-cap": "Marktkapitalisierung",
+                    "hint-market-cap": "Indikative Unternehmensgröße (nur visuell).",
+                    "label-pe": "KGV",
+                    "label-valuation-band": "Bewertungsband",
+                    "label-cheap": "Günstig",
+                    "label-fair": "Fair",
+                    "label-expensive": "Teuer",
+                    "label-profit-margin": "Gewinnmarge",
+                    "label-margin-level": "Margen-Niveau",
+                    "label-rev-growth": "Umsatzwachstum",
+                    "label-yoy": "Year over year",
+                    "label-growth-intensity": "Wachstumsintensität",
+                    "label-news": "Aktuelle News",
+                    "label-vr-sentiment": "VR Sentiment",
+                    "label-strengths": "Stärken",
+                    "label-risks": "Risiken",
+                    "label-disclaimer": "Alle Daten dienen nur Informationszwecken und sind keine Anlageberatung."
+                }
+            };
+
+            function applyLanguage(lang) {
+                const dict = translations[lang] || translations.en;
+                document.documentElement.lang = lang === 'de' ? 'de' : 'en';
+                localStorage.setItem('vr_lang', lang);
+                const btn = document.getElementById('lang-toggle');
+                if (btn) btn.textContent = lang.toUpperCase();
+
+                Object.keys(dict).forEach(key => {
+                    const el = document.querySelector(`[data-i18n="${key}"]`);
+                    if (el) el.textContent = dict[key];
+                });
             }
-        };
 
-        function applyLanguage(lang) {
-            const dict = translations[lang] || translations.en;
-            document.documentElement.lang = lang === 'de' ? 'de' : 'en';
-            localStorage.setItem('vr_lang', lang);
-            const btn = document.getElementById('lang-toggle');
-            if (btn) btn.textContent = lang.toUpperCase();
-
-            Object.keys(dict).forEach(key => {
-                const el = document.querySelector(`[data-i18n="${key}"]`);
-                if (el) el.textContent = dict[key];
+            document.getElementById('lang-toggle').addEventListener('click', () => {
+                const current = localStorage.getItem('vr_lang') || 'en';
+                const next = current === 'en' ? 'de' : 'en';
+                applyLanguage(next);
             });
-        }
 
-        document.getElementById('lang-toggle').addEventListener('click', () => {
-            const current = localStorage.getItem('vr_lang') || 'en';
-            const next = current === 'en' ? 'de' : 'en';
-            applyLanguage(next);
-        });
+            // Default: English
+            applyLanguage(localStorage.getItem('vr_lang') || 'en');
 
-        // Default: English
-        applyLanguage(localStorage.getItem('vr_lang') || 'en');
+            /* ---------- GLOBAL STATE ---------- */
+            let fullList = [];
+            let filteredList = [];
+            let currentSymbol = "";
+            let currentPrice = 0;
+            let chart = null;
+            let gaugeChart = null;
+            let abortController = new AbortController();
+            let currentTimeframe = 'MAX';
+            let lastHistoryData = null;
+            let showMA20 = true;
+            let showMA50 = false;
+            let showMA200 = false;
+            let currentChartType = 'line';
 
-        /* ---------- GLOBAL STATE ---------- */
-        let fullList = [];
-        let filteredList = [];
-        let currentSymbol = "";
-        let currentPrice = 0;
-        let chart = null;
-        let gaugeChart = null;
-        let abortController = new AbortController();
-        let currentTimeframe = 'MAX';
-        let lastHistoryData = null;
-        let showMA20 = true;
-        let showMA50 = false;
-        let showMA200 = false;
-        let currentChartType = 'line';
+            /* ---------- WATCHLIST ---------- */
 
-        /* ---------- WATCHLIST ---------- */
+            fetch('/api/stocks')
+                .then(r => r.json())
+                .then(d => {
+                    fullList = d;
+                    filterStocks('ALL');
+                })
+                .catch(err => console.error("API Load Error:", err));
 
-        fetch('/api/stocks')
-            .then(r => r.json())
-            .then(d => {
-                fullList = d;
-                filterStocks('ALL');
-            })
-            .catch(err => console.error("API Load Error:", err));
-
-        function getFavorites() {
-            try { return JSON.parse(localStorage.getItem('vr_favorites') || '[]'); }
-            catch { return []; }
-        }
-
-        function saveFavorites(list) {
-            localStorage.setItem('vr_favorites', JSON.stringify(list));
-        }
-
-        function toggleFavorite(ev, symbol) {
-            ev.stopPropagation();
-            let favs = getFavorites();
-            if (favs.includes(symbol)) {
-                favs = favs.filter(s => s !== symbol);
-            } else {
-                favs.push(symbol);
-            }
-            saveFavorites(favs);
-            renderStockList();
-        }
-
-        async function addSymbolToWatchlist() {
-            let sym = prompt('Enter ticker symbol (e.g. GM, AAPL):');
-            if (!sym) return;
-            sym = sym.trim().toUpperCase();
-
-            if (fullList.some(s => (s.Symbol || s.symbol || '').toUpperCase() === sym)) {
-                alert('Symbol is already in the list.');
-                return;
+            function getFavorites() {
+                try { return JSON.parse(localStorage.getItem('vr_favorites') || '[]'); }
+                catch { return []; }
             }
 
-            try {
-                const r = await fetch(`/api/details/${sym}`);
-                const d = await r.json();
-                if (d.error) throw new Error(d.error);
+            function saveFavorites(list) {
+                localStorage.setItem('vr_favorites', JSON.stringify(list));
+            }
 
-                let region = 'US';
-                if ((d.country || '').includes('Germany')) region = 'DE';
-
-                const newItem = {
-                    Symbol: sym,
-                    Name: d.name || sym,
-                    Region: region,
-                    Price: d.price_now || 0,
-                    Reason: 'Manually added'
-                };
-                fullList.push(newItem);
-
+            function toggleFavorite(ev, symbol) {
+                ev.stopPropagation();
                 let favs = getFavorites();
-                if (!favs.includes(sym)) {
-                    favs.push(sym);
-                    saveFavorites(favs);
+                if (favs.includes(symbol)) {
+                    favs = favs.filter(s => s !== symbol);
+                } else {
+                    favs.push(symbol);
+                }
+                saveFavorites(favs);
+                renderStockList();
+            }
+
+            async function addSymbolToWatchlist() {
+                let sym = prompt('Enter ticker symbol (e.g. GM, AAPL):');
+                if (!sym) return;
+                sym = sym.trim().toUpperCase();
+
+                if (fullList.some(s => (s.Symbol || s.symbol || '').toUpperCase() === sym)) {
+                    alert('Symbol is already in the list.');
+                    return;
                 }
 
-                filterStocks('ALL');
+                try {
+                    const r = await fetch(`/api/details/${sym}`);
+                    const d = await r.json();
+                    if (d.error) throw new Error(d.error);
 
-                setTimeout(() => {
-                    const idx = filteredList.findIndex(s => (s.Symbol || s.symbol) === sym);
-                    if (idx >= 0) selectStock(filteredList[idx], idx);
-                }, 100);
+                    let region = 'US';
+                    if ((d.country || '').includes('Germany')) region = 'DE';
 
-            } catch (e) {
-                alert('Symbol not found.');
-            }
-        }
+                    const newItem = {
+                        Symbol: sym,
+                        Name: d.name || sym,
+                        Region: region,
+                        Price: d.price_now || 0,
+                        Reason: 'Manually added'
+                    };
+                    fullList.push(newItem);
 
-        function filterStocks(reg) {
-            document.querySelectorAll('.region-btn').forEach(b => {
-                b.classList.remove('bg-teal-600', 'text-white', 'shadow-sm');
-                b.classList.add('text-slate-400');
-                if (b.dataset.reg === reg) {
-                    b.classList.add('bg-teal-600', 'text-white', 'shadow-sm');
-                    b.classList.remove('text-slate-400');
+                    let favs = getFavorites();
+                    if (!favs.includes(sym)) {
+                        favs.push(sym);
+                        saveFavorites(favs);
+                    }
+
+                    filterStocks('ALL');
+
+                    setTimeout(() => {
+                        const idx = filteredList.findIndex(s => (s.Symbol || s.symbol) === sym);
+                        if (idx >= 0) selectStock(filteredList[idx], idx);
+                    }, 100);
+
+                } catch (e) {
+                    alert('Symbol not found.');
                 }
-            });
+            }
 
-            if (reg === 'FAV') {
+            function filterStocks(reg) {
+                document.querySelectorAll('.region-btn').forEach(b => {
+                    b.classList.remove('bg-teal-600', 'text-white', 'shadow-sm');
+                    b.classList.add('text-slate-400');
+                    if (b.dataset.reg === reg) {
+                        b.classList.add('bg-teal-600', 'text-white', 'shadow-sm');
+                        b.classList.remove('text-slate-400');
+                    }
+                });
+
+                if (reg === 'FAV') {
+                    const favs = getFavorites();
+                    filteredList = fullList.filter(s => favs.includes(s.Symbol || s.symbol));
+                } else if (reg === 'ALL') {
+                    filteredList = fullList;
+                } else {
+                    filteredList = fullList.filter(s => (s.Region || s.region || "US").toUpperCase() === reg);
+                }
+                renderStockList();
+            }
+
+            function filterStocksByName(query) {
+                query = query.toLowerCase();
+                const activeRegBtn = document.querySelector('.region-btn.bg-teal-600');
+                const activeReg = activeRegBtn ? activeRegBtn.dataset.reg : 'ALL';
+
+                let baseList = fullList;
+                if (activeReg === 'FAV') {
+                    const favs = getFavorites();
+                    baseList = fullList.filter(s => favs.includes(s.Symbol || s.symbol));
+                } else if (activeReg !== 'ALL') {
+                    baseList = fullList.filter(s => (s.Region || s.region || "US").toUpperCase() === activeReg);
+                }
+
+                filteredList = baseList.filter(s =>
+                    (s.Name && s.Name.toLowerCase().includes(query)) ||
+                    (s.Symbol && s.Symbol.toLowerCase().includes(query))
+                );
+                renderStockList();
+            }
+
+            function renderStockList() {
+                const container = document.getElementById('watchlist-container');
+                container.innerHTML = '';
                 const favs = getFavorites();
-                filteredList = fullList.filter(s => favs.includes(s.Symbol || s.symbol));
-            } else if (reg === 'ALL') {
-                filteredList = fullList;
-            } else {
-                filteredList = fullList.filter(s => (s.Region || s.region || "US").toUpperCase() === reg);
-            }
-            renderStockList();
-        }
 
-        function filterStocksByName(query) {
-            query = query.toLowerCase();
-            const activeRegBtn = document.querySelector('.region-btn.bg-teal-600');
-            const activeReg = activeRegBtn ? activeRegBtn.dataset.reg : 'ALL';
+                if (filteredList.length === 0) {
+                    container.innerHTML = '<div class="p-4 text-xs text-slate-500 text-center">No stocks found.</div>';
+                    return;
+                }
 
-            let baseList = fullList;
-            if (activeReg === 'FAV') {
-                const favs = getFavorites();
-                baseList = fullList.filter(s => favs.includes(s.Symbol || s.symbol));
-            } else if (activeReg !== 'ALL') {
-                baseList = fullList.filter(s => (s.Region || s.region || "US").toUpperCase() === activeReg);
-            }
+                filteredList.forEach((s, idx) => {
+                    const symbol = s.Symbol || s.symbol;
+                    const isFav = favs.includes(symbol);
+                    const price = parseFloat(s.Price || s.price || 0).toFixed(2);
 
-            filteredList = baseList.filter(s =>
-                (s.Name && s.Name.toLowerCase().includes(query)) ||
-                (s.Symbol && s.Symbol.toLowerCase().includes(query))
-            );
-            renderStockList();
-        }
+                    const div = document.createElement('div');
+                    div.className = `wl-item px-5 py-3 cursor-pointer group opacity-80 hover:opacity-100 flex flex-col gap-1`;
+                    if (symbol === currentSymbol) div.classList.add('active', 'opacity-100');
 
-        function renderStockList() {
-            const container = document.getElementById('watchlist-container');
-            container.innerHTML = '';
-            const favs = getFavorites();
+                    div.onclick = () => selectStock(s, idx);
 
-            if (filteredList.length === 0) {
-                container.innerHTML = '<div class="p-4 text-xs text-slate-500 text-center">No stocks found.</div>';
-                return;
-            }
-
-            filteredList.forEach((s, idx) => {
-                const symbol = s.Symbol || s.symbol;
-                const isFav = favs.includes(symbol);
-                const price = parseFloat(s.Price || s.price || 0).toFixed(2);
-
-                const div = document.createElement('div');
-                div.className = `wl-item px-5 py-3 cursor-pointer group opacity-80 hover:opacity-100 flex flex-col gap-1`;
-                if (symbol === currentSymbol) div.classList.add('active', 'opacity-100');
-
-                div.onclick = () => selectStock(s, idx);
-
-                div.innerHTML = `
+                    div.innerHTML = `
                     <div class="flex justify-between items-center">
                         <div class="flex items-center gap-2">
                             <button onclick="toggleFavorite(event, '${symbol}')" class="text-slate-600 hover:text-teal-400">
@@ -993,458 +1010,470 @@
                         ${(s.peg && s.peg < 1.5) ? '<span class="text-teal-400 flex items-center gap-1">Underpriced</span>' : ''}
                     </div>
                 `;
-                container.appendChild(div);
-            });
-            lucide.createIcons();
+                    container.appendChild(div);
+                });
+                lucide.createIcons();
 
-            if (!currentSymbol && filteredList.length > 0) {
-                selectStock(filteredList[0], 0);
+                if (!currentSymbol && filteredList.length > 0) {
+                    selectStock(filteredList[0], 0);
+                }
             }
-        }
-        // Beschreibung automatisch formatieren (global)
-        function formatCompanyDescription(text, name, symbol) {
-            if (!text) return "No description available.";
+            // Beschreibung automatisch formatieren (global)
+            function formatCompanyDescription(text, name, symbol) {
+                if (!text) return "No description available.";
 
-            let formatted = text;
+                let formatted = text;
 
-            // 1) Firmenname am Anfang fett + Ticker in Klammern
-            if (name) {
-                const safeName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Regex-escape
-                const nameRegex = new RegExp("^" + safeName);                // nur ganz am Anfang matchen
+                // 1) Firmenname am Anfang fett + Ticker in Klammern
+                if (name) {
+                    const safeName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Regex-escape
+                    const nameRegex = new RegExp("^" + safeName);                // nur ganz am Anfang matchen
 
-                if (nameRegex.test(formatted)) {
+                    if (nameRegex.test(formatted)) {
+                        formatted = formatted.replace(
+                            nameRegex,
+                            `<span class="font-semibold text-slate-100">${name}${symbol ? " (" + symbol + ")" : ""}</span>`
+                        );
+                    }
+                }
+
+                // 2) Sub-Überschriften hervorheben
+                const subtitles = [
+                    "The company operates",
+                    "The company provides",
+                    "The company offers",
+                    "Its segments include",
+                    "Segments:",
+                    "Products:",
+                    "Services:",
+                    "Operations:"
+                ];
+
+                subtitles.forEach(keyword => {
+                    const regex = new RegExp(keyword, "gi");
                     formatted = formatted.replace(
-                        nameRegex,
-                        `<span class="font-semibold text-slate-100">${name}${symbol ? " (" + symbol + ")" : ""}</span>`
+                        regex,
+                        `<br><br><span class="font-bold text-slate-200">${keyword}</span>`
                     );
-                }
+                });
+
+                // 3) Sätze umbrechen
+                formatted = formatted.replace(/\. /g, ".<br>");
+
+                return formatted;
             }
 
-            // 2) Sub-Überschriften hervorheben
-            const subtitles = [
-                "The company operates",
-                "The company provides",
-                "The company offers",
-                "Its segments include",
-                "Segments:",
-                "Products:",
-                "Services:",
-                "Operations:"
-            ];
 
-            subtitles.forEach(keyword => {
-                const regex = new RegExp(keyword, "gi");
-                formatted = formatted.replace(
-                    regex,
-                    `<br><br><span class="font-bold text-slate-200">${keyword}</span>`
-                );
-            });
+            /* ---------- SELECTION & DETAILS ---------- */
 
-            // 3) Sätze umbrechen
-            formatted = formatted.replace(/\. /g, ".<br>");
+            function selectStock(s, idx) {
+                currentSymbol = s.Symbol || s.symbol;
 
-            return formatted;
-        }
+                const items = document.querySelectorAll('.wl-item');
+                items.forEach(el => el.classList.remove('active', 'opacity-100'));
+                if (items[idx]) items[idx].classList.add('active', 'opacity-100');
 
+                document.getElementById('header-name').innerText = s.Name || s.name;
+                document.getElementById('header-ticker').innerText = currentSymbol;
+                document.getElementById('header-price').innerText = "$" + parseFloat(s.Price || 0).toFixed(2);
+                document.getElementById('yahoo-link').href = `https://finance.yahoo.com/quote/${currentSymbol}`;
 
-        /* ---------- SELECTION & DETAILS ---------- */
+                document.getElementById('val-mcap').innerText = "...";
+                document.getElementById('val-pe').innerText = "...";
+                document.getElementById('val-margin').innerText = "...";
+                document.getElementById('company-desc').innerText = "Loading description...";
+                document.getElementById('strengths-list').innerHTML = '<li class="text-xs text-slate-500">Loading...</li>';
+                document.getElementById('risks-list').innerHTML = '<li class="text-xs text-slate-500">Loading...</li>';
 
-        function selectStock(s, idx) {
-            currentSymbol = s.Symbol || s.symbol;
+                // Reset Extra-KPIs
+                const extraIds = [
+                    'kpi-beta', 'kpi-de', 'kpi-roe', 'kpi-roic',
+                    'kpi-ev-ebitda', 'kpi-ev-sales',
+                    'kpi-current', 'kpi-quick',
+                    'kpi-fcf', 'kpi-payout'
+                ];
+                extraIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerText = '...';
+                });
 
-            const items = document.querySelectorAll('.wl-item');
-            items.forEach(el => el.classList.remove('active', 'opacity-100'));
-            if (items[idx]) items[idx].classList.add('active', 'opacity-100');
+                updateChart(currentTimeframe);
+                loadDetails(currentSymbol);
+            }
 
-            document.getElementById('header-name').innerText = s.Name || s.name;
-            document.getElementById('header-ticker').innerText = currentSymbol;
-            document.getElementById('header-price').innerText = "$" + parseFloat(s.Price || 0).toFixed(2);
-            document.getElementById('yahoo-link').href = `https://finance.yahoo.com/quote/${currentSymbol}`;
+            async function loadDetails(sym) {
+                try {
+                    const r = await fetch(`/api/details/${sym}`);
+                    const d = await r.json();
+                    if (d.error) return;
 
-            document.getElementById('val-mcap').innerText = "...";
-            document.getElementById('val-pe').innerText = "...";
-            document.getElementById('val-margin').innerText = "...";
-            document.getElementById('company-desc').innerText = "Loading description...";
-            document.getElementById('strengths-list').innerHTML = '<li class="text-xs text-slate-500">Loading...</li>';
-            document.getElementById('risks-list').innerHTML = '<li class="text-xs text-slate-500">Loading...</li>';
+                    if (d.price_now) {
+                        currentPrice = d.price_now;
+                        document.getElementById('header-price').innerText = "$" + Number(d.price_now).toFixed(2);
+                    }
 
-            // Reset Extra-KPIs
-            const extraIds = [
-                'kpi-beta', 'kpi-de', 'kpi-roe', 'kpi-roic',
-                'kpi-ev-ebitda', 'kpi-ev-sales',
-                'kpi-current', 'kpi-quick',
-                'kpi-fcf', 'kpi-payout'
-            ];
-            extraIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.innerText = '...';
-            });
+                    document.getElementById('header-sector').innerText = d.sector || '-';
+                    document.getElementById('header-industry').innerText = d.industry || '-';
 
-            updateChart(currentTimeframe);
-            loadDetails(currentSymbol);
-        }
-
-        async function loadDetails(sym) {
-            try {
-                const r = await fetch(`/api/details/${sym}`);
-                const d = await r.json();
-                if (d.error) return;
-
-                if (d.price_now) {
-                    currentPrice = d.price_now;
-                    document.getElementById('header-price').innerText = "$" + Number(d.price_now).toFixed(2);
-                }
-
-                document.getElementById('header-sector').innerText = d.sector || '-';
-                document.getElementById('header-industry').innerText = d.industry || '-';
-
-                // Company description
-                document.getElementById('company-desc').innerHTML =
-                    formatCompanyDescription(d.description, d.name, d.symbol);
+                    // Company description
+                    document.getElementById('company-desc').innerHTML =
+                        formatCompanyDescription(d.description, d.name, d.symbol);
 
 
 
-                // Market Cap
-                document.getElementById('val-mcap').innerText = formatNumber(d.market_cap);
+                    // Market Cap
+                    document.getElementById('val-mcap').innerText = formatNumber(d.market_cap);
 
-                // PE / PEG
-                if (d.pe) {
-                    document.getElementById('val-pe').innerText = d.pe.toFixed(2);
-                    let pegText = d.peg ? `PEG: ${d.peg.toFixed(2)}` : 'PEG: N/A';
-                    document.getElementById('sub-pe').innerText = pegText;
+                    // PE / PEG
+                    if (d.pe) {
+                        document.getElementById('val-pe').innerText = d.pe.toFixed(2);
+                        let pegText = d.peg ? `PEG: ${d.peg.toFixed(2)}` : 'PEG: N/A';
+                        document.getElementById('sub-pe').innerText = pegText;
 
-                    const badge = document.getElementById('badge-pe-rating');
-                    let peValBandWidth = 0;
+                        const badge = document.getElementById('badge-pe-rating');
+                        let peValBandWidth = 0;
 
-                    if (d.pe < 15) {
-                        badge.innerText = "Cheap";
-                        badge.className = "text-[9px] text-teal-300 bg-teal-500/20 px-2 py-0.5 rounded";
-                        peValBandWidth = 30;
-                    } else if (d.pe > 25) {
-                        badge.innerText = "Exp.";
-                        badge.className = "text-[9px] text-red-300 bg-red-500/20 px-2 py-0.5 rounded";
-                        peValBandWidth = 90;
+                        if (d.pe < 15) {
+                            badge.innerText = "Cheap";
+                            badge.className = "text-[9px] text-teal-300 bg-teal-500/20 px-2 py-0.5 rounded";
+                            peValBandWidth = 30;
+                        } else if (d.pe > 25) {
+                            badge.innerText = "Exp.";
+                            badge.className = "text-[9px] text-red-300 bg-red-500/20 px-2 py-0.5 rounded";
+                            peValBandWidth = 90;
+                        } else {
+                            badge.innerText = "Fair";
+                            badge.className = "text-[9px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded";
+                            peValBandWidth = 60;
+                        }
+                        document.getElementById('pe-range-fill').style.width = peValBandWidth + "%";
                     } else {
-                        badge.innerText = "Fair";
-                        badge.className = "text-[9px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded";
-                        peValBandWidth = 60;
+                        document.getElementById('pe-range-fill').style.width = "0%";
                     }
-                    document.getElementById('pe-range-fill').style.width = peValBandWidth + "%";
-                } else {
-                    document.getElementById('pe-range-fill').style.width = "0%";
-                }
 
-                // Margin
-                if (d.profit_margin) {
-                    const margin = (d.profit_margin * 100).toFixed(1);
-                    document.getElementById('val-margin').innerText = margin + "%";
-                    let barW = Math.min((d.profit_margin * 100) * 3, 100);
-                    document.getElementById('prog-margin').style.width = barW + "%";
-                } else {
-                    document.getElementById('prog-margin').style.width = "0%";
-                }
+                    // Margin
+                    if (d.profit_margin) {
+                        const margin = (d.profit_margin * 100).toFixed(1);
+                        document.getElementById('val-margin').innerText = margin + "%";
+                        let barW = Math.min((d.profit_margin * 100) * 3, 100);
+                        document.getElementById('prog-margin').style.width = barW + "%";
+                    } else {
+                        document.getElementById('prog-margin').style.width = "0%";
+                    }
 
-                // Growth
-                if (d.revenue_growth != null) {
-                    const growth = (d.revenue_growth * 100).toFixed(1);
-                    const el = document.getElementById('val-growth');
-                    el.innerText = (growth > 0 ? "+" : "") + growth + "%";
-                    el.className = growth > 0 ? "text-2xl font-bold text-white tracking-tight" : "text-2xl font-bold text-red-400 tracking-tight";
+                    // Growth
+                    if (d.revenue_growth != null) {
+                        const growth = (d.revenue_growth * 100).toFixed(1);
+                        const el = document.getElementById('val-growth');
+                        el.innerText = (growth > 0 ? "+" : "") + growth + "%";
+                        el.className = growth > 0 ? "text-2xl font-bold text-white tracking-tight" : "text-2xl font-bold text-red-400 tracking-tight";
 
-                    const badge = document.getElementById('val-growth-badge');
-                    badge.innerText = growth > 0 ? "Growing" : "Declining";
-                    badge.className = growth > 0 ? "text-[9px] text-green-400 font-bold" : "text-[9px] text-red-400 font-bold";
+                        const badge = document.getElementById('val-growth-badge');
+                        badge.innerText = growth > 0 ? "Growing" : "Declining";
+                        badge.className = growth > 0 ? "text-[9px] text-green-400 font-bold" : "text-[9px] text-red-400 font-bold";
 
-                    const growthBar = document.getElementById('growth-bar');
-                    let gw = Math.min(Math.abs(d.revenue_growth * 100) * 2, 100);
-                    growthBar.style.width = gw + "%";
-                } else {
-                    document.getElementById('val-growth').innerText = "--";
-                    document.getElementById('growth-bar').style.width = "0%";
-                }
+                        const growthBar = document.getElementById('growth-bar');
+                        let gw = Math.min(Math.abs(d.revenue_growth * 100) * 2, 100);
+                        growthBar.style.width = gw + "%";
+                    } else {
+                        document.getElementById('val-growth').innerText = "--";
+                        document.getElementById('growth-bar').style.width = "0%";
+                    }
 
-                // --- Extra KPIs unten ---
-                const fmt = (v, ddec = 2) => (v != null ? v.toFixed(ddec) : "N/A");
+                    // --- Extra KPIs unten ---
+                    const fmt = (v, ddec = 2) => (v != null ? v.toFixed(ddec) : "N/A");
 
-                document.getElementById('kpi-beta').innerText =
-                    d.beta != null ? d.beta.toFixed(2) : "N/A";
+                    document.getElementById('kpi-beta').innerText =
+                        d.beta != null ? d.beta.toFixed(2) : "N/A";
 
-                document.getElementById('kpi-de').innerText =
-                    d.debt_to_equity != null ? d.debt_to_equity.toFixed(1) : "N/A";
+                    document.getElementById('kpi-de').innerText =
+                        d.debt_to_equity != null ? d.debt_to_equity.toFixed(1) : "N/A";
 
-                document.getElementById('kpi-roe').innerText =
-                    d.roe != null ? (d.roe * 100).toFixed(1) + "%" : "N/A";
+                    document.getElementById('kpi-roe').innerText =
+                        d.roe != null ? (d.roe * 100).toFixed(1) + "%" : "N/A";
 
-                document.getElementById('kpi-roic').innerText =
-                    d.roic != null ? (d.roic * 100).toFixed(1) + "%" : "N/A";
+                    document.getElementById('kpi-roic').innerText =
+                        d.roic != null ? (d.roic * 100).toFixed(1) + "%" : "N/A";
 
-                document.getElementById('kpi-ev-ebitda').innerText =
-                    d.ev_to_ebitda != null ? d.ev_to_ebitda.toFixed(1) : "N/A";
+                    document.getElementById('kpi-ev-ebitda').innerText =
+                        d.ev_to_ebitda != null ? d.ev_to_ebitda.toFixed(1) : "N/A";
 
-                document.getElementById('kpi-ev-sales').innerText =
-                    d.ev_to_sales != null ? d.ev_to_sales.toFixed(1) : "N/A";
+                    document.getElementById('kpi-ev-sales').innerText =
+                        d.ev_to_sales != null ? d.ev_to_sales.toFixed(1) : "N/A";
 
-                document.getElementById('kpi-current').innerText =
-                    d.current_ratio != null ? d.current_ratio.toFixed(2) : "N/A";
+                    document.getElementById('kpi-current').innerText =
+                        d.current_ratio != null ? d.current_ratio.toFixed(2) : "N/A";
 
-                document.getElementById('kpi-quick').innerText =
-                    d.quick_ratio != null ? d.quick_ratio.toFixed(2) : "N/A";
+                    document.getElementById('kpi-quick').innerText =
+                        d.quick_ratio != null ? d.quick_ratio.toFixed(2) : "N/A";
 
-                document.getElementById('kpi-fcf').innerText =
-                    d.free_cash_flow != null ? "$" + formatNumber(d.free_cash_flow) : "N/A";
+                    document.getElementById('kpi-fcf').innerText =
+                        d.free_cash_flow != null ? "$" + formatNumber(d.free_cash_flow) : "N/A";
 
-                document.getElementById('kpi-payout').innerText =
-                    d.payout_ratio != null ? (d.payout_ratio * 100).toFixed(1) + "%" : "N/A";
+                    document.getElementById('kpi-payout').innerText =
+                        d.payout_ratio != null ? (d.payout_ratio * 100).toFixed(1) + "%" : "N/A";
+
+                    // ------ RIGHT-SIDE INDUSTRY BAR VALUES ------
+                    if (d.beta != null) barWidth("bar-beta", d.beta * 100);
+                    if (d.debt_to_equity != null) barWidth("bar-de", Math.min(d.debt_to_equity, 200) / 2);
+                    if (d.roe != null) barWidth("bar-roe", Math.min(d.roe * 100, 40) * 2.5);
+                    if (d.roic != null) barWidth("bar-roic", Math.min(d.roic * 100, 30) * 3.3);
+                    if (d.ev_to_ebitda != null) barWidth("bar-ev-ebitda", Math.min(d.ev_to_ebitda * 5, 100));
+                    if (d.ev_to_sales != null) barWidth("bar-ev-sales", Math.min(d.ev_to_sales * 10, 100));
+                    if (d.current_ratio != null) barWidth("bar-current", Math.min(d.current_ratio * 33.3, 100));
+                    if (d.quick_ratio != null) barWidth("bar-quick", Math.min(d.quick_ratio * 33.3, 100));
+                    if (d.free_cash_flow != null) barWidth("bar-fcf", 100);
+                    if (d.payout_ratio != null) barWidth("bar-payout", Math.min(d.payout_ratio * 100, 100));
 
 
-                // Lists & News
-                updateList('strengths-list', d.pros);
-                updateList('risks-list', d.risks);
-                renderNews(d.news);
+                    // Lists & News
+                    updateList('strengths-list', d.pros);
+                    updateList('risks-list', d.risks);
+                    renderNews(d.news);
 
 
-                // VR Score (simple heuristic)
-                let score = 50;
-                if (d.pe && d.pe < 20) score += 10;
-                if (d.peg && d.peg < 1.5) score += 10;
-                if (d.revenue_growth > 0) score += 10;
-                if (d.profit_margin > 0.1) score += 10;
-                if (d.perf_1y > 0) score += 10;
+                    // VR Score (simple heuristic)
+                    let score = 50;
+                    if (d.pe && d.pe < 20) score += 10;
+                    if (d.peg && d.peg < 1.5) score += 10;
+                    if (d.revenue_growth > 0) score += 10;
+                    if (d.profit_margin > 0.1) score += 10;
+                    if (d.perf_1y > 0) score += 10;
 
-                document.getElementById('header-score').innerText = score;
-                renderGauge(score);
-                const scoreText = document.getElementById('header-score-text');
-                const sentimentText = document.getElementById('sentiment-text');
+                    document.getElementById('header-score').innerText = score;
+                    renderGauge(score);
+                    const scoreText = document.getElementById('header-score-text');
+                    const sentimentText = document.getElementById('sentiment-text');
 
-                let rating = "Hold";
-                if (score > 75) rating = "Strong Buy";
-                else if (score > 60) rating = "Buy";
-                else if (score < 40) rating = "Sell";
+                    let rating = "Hold";
+                    if (score > 75) rating = "Strong Buy";
+                    else if (score > 60) rating = "Buy";
+                    else if (score < 40) rating = "Sell";
 
-                scoreText.innerText = rating;
-                sentimentText.innerText = rating;
+                    scoreText.innerText = rating;
+                    sentimentText.innerText = rating;
 
-            } catch (e) { console.error(e); }
-        }
-
-        /* ---------- CHART ---------- */
-        /* ---------- CHARTING ---------- */
-
-        function updateTimeframe(tf) {
-            // Wrapper für die Buttons – ruft einfach die eigentliche Chart-Logik auf
-            updateChart(tf);
-        }
-
-        async function updateChart(tf) {
-            currentTimeframe = tf;
-            document.querySelectorAll('.tf-btn').forEach(b => {
-                if (b.dataset.tf === tf) b.classList.add('active');
-                else b.classList.remove('active');
-            });
-
-            if (abortController) abortController.abort();
-            abortController = new AbortController();
-
-            try {
-                const r = await fetch(`/api/history/${currentSymbol}/${tf}`, { signal: abortController.signal });
-                const json = await r.json();
-
-                if (!json.error && json.candle && json.candle.length > 0) {
-                    lastHistoryData = json;
-                    renderApexChart(json);
-                    updatePerfLabel(tf, json.candle);
-                }
-            } catch (e) {
-                if (e.name !== 'AbortError') console.warn(e);
-            }
-        }
-
-        function renderApexChart(d) {
-            if (!d || !d.candle) return;
-
-            let series = [];
-
-            if (currentChartType === 'candles') {
-                const candleData = d.candle.map(x => ({ x: x[0], y: [x[1], x[2], x[3], x[4]] }));
-                series.push({
-                    name: 'Price',
-                    type: 'candlestick',
-                    data: candleData,
-                    color: '#22c55e'
-                });
-            } else {
-                const lineData = d.candle.map(x => ({ x: x[0], y: x[4] }));
-                series.push({
-                    name: 'Price',
-                    type: 'area',
-                    data: lineData,
-                    color: '#22d3ee'
-                });
+                } catch (e) { console.error(e); }
             }
 
-            if (showMA20 && d.ma20) series.push({
-                name: 'MA 20',
-                type: 'line',
-                data: d.ma20,
-                color: '#facc15'
-            });
-            if (showMA50 && d.ma50) series.push({
-                name: 'MA 50',
-                type: 'line',
-                data: d.ma50,
-                color: '#fb7185'
-            });
-            if (showMA200 && d.ma200) series.push({
-                name: 'MA 200',
-                type: 'line',
-                data: d.ma200,
-                color: '#60a5fa'
-            });
+            /* ---------- CHART ---------- */
+            /* ---------- CHARTING ---------- */
 
-            const isLine = currentChartType === 'line';
+            function updateTimeframe(tf) {
+                // Wrapper für die Buttons – ruft einfach die eigentliche Chart-Logik auf
+                updateChart(tf);
+            }
 
-            const options = {
-                chart: {
-                    height: '100%',
-                    type: isLine ? 'area' : 'candlestick',
-                    fontFamily: 'Inter, sans-serif',
-                    toolbar: { show: false },
-                    animations: { enabled: false },
-                    background: 'transparent'
-                },
-                theme: { mode: 'dark' },
-                stroke: {
-                    curve: 'straight',
-                    width: isLine ? 2 : 1,
-                },
-                fill: {
-                    type: isLine ? 'gradient' : 'solid',
-                    gradient: {
-                        shadeIntensity: 1,
-                        opacityFrom: 0.4,
-                        opacityTo: 0.05,
-                        stops: [0, 100]
+            async function updateChart(tf) {
+                currentTimeframe = tf;
+                document.querySelectorAll('.tf-btn').forEach(b => {
+                    if (b.dataset.tf === tf) b.classList.add('active');
+                    else b.classList.remove('active');
+                });
+
+                if (abortController) abortController.abort();
+                abortController = new AbortController();
+
+                try {
+                    const r = await fetch(`/api/history/${currentSymbol}/${tf}`, { signal: abortController.signal });
+                    const json = await r.json();
+
+                    if (!json.error && json.candle && json.candle.length > 0) {
+                        lastHistoryData = json;
+                        renderApexChart(json);
+                        updatePerfLabel(tf, json.candle);
                     }
-                },
-                series: series,
-                xaxis: {
-                    type: 'datetime',
-                    tooltip: { enabled: false },
-                    axisBorder: { show: false },
-                    axisTicks: { show: false },
-                    labels: {
-                        style: { colors: '#64748b', fontSize: '10px' },
-                        offsetY: 10
-                    }
-                },
-                yaxis: {
-                    opposite: false,
-                    labels: {
-                        formatter: (v) => v.toFixed(1),
-                        style: { colors: '#64748b', fontSize: '10px' }
-                    }
-                },
-                grid: {
-                    borderColor: 'rgba(255,255,255,0.05)',
-                    strokeDashArray: 4,
-                    padding: {
-                        top: 10,
-                        bottom: 60,
-                        left: 8,
-                        right: 4
-                    }
-                },
+                } catch (e) {
+                    if (e.name !== 'AbortError') console.warn(e);
+                }
+            }
+
+            function renderApexChart(d) {
+                if (!d || !d.candle) return;
+
+                let series = [];
+
+                if (currentChartType === 'candles') {
+                    const candleData = d.candle.map(x => ({ x: x[0], y: [x[1], x[2], x[3], x[4]] }));
+                    series.push({
+                        name: 'Price',
+                        type: 'candlestick',
+                        data: candleData,
+                        color: '#22c55e'
+                    });
+                } else {
+                    const lineData = d.candle.map(x => ({ x: x[0], y: x[4] }));
+                    series.push({
+                        name: 'Price',
+                        type: 'area',
+                        data: lineData,
+                        color: '#22d3ee'
+                    });
+                }
+
+                if (showMA20 && d.ma20) series.push({
+                    name: 'MA 20',
+                    type: 'line',
+                    data: d.ma20,
+                    color: '#facc15'
+                });
+                if (showMA50 && d.ma50) series.push({
+                    name: 'MA 50',
+                    type: 'line',
+                    data: d.ma50,
+                    color: '#fb7185'
+                });
+                if (showMA200 && d.ma200) series.push({
+                    name: 'MA 200',
+                    type: 'line',
+                    data: d.ma200,
+                    color: '#60a5fa'
+                });
+
+                const isLine = currentChartType === 'line';
+
+                const options = {
+                    chart: {
+                        height: '100%',
+                        type: isLine ? 'area' : 'candlestick',
+                        fontFamily: 'Inter, sans-serif',
+                        toolbar: { show: false },
+                        animations: { enabled: false },
+                        background: 'transparent'
+                    },
+                    theme: { mode: 'dark' },
+                    stroke: {
+                        curve: 'straight',
+                        width: isLine ? 2 : 1,
+                    },
+                    fill: {
+                        type: isLine ? 'gradient' : 'solid',
+                        gradient: {
+                            shadeIntensity: 1,
+                            opacityFrom: 0.4,
+                            opacityTo: 0.05,
+                            stops: [0, 100]
+                        }
+                    },
+                    series: series,
+                    xaxis: {
+                        type: 'datetime',
+                        tooltip: { enabled: false },
+                        axisBorder: { show: false },
+                        axisTicks: { show: false },
+                        labels: {
+                            style: { colors: '#64748b', fontSize: '10px' },
+                            offsetY: 10
+                        }
+                    },
+                    yaxis: {
+                        opposite: false,
+                        labels: {
+                            formatter: (v) => v.toFixed(1),
+                            style: { colors: '#64748b', fontSize: '10px' }
+                        }
+                    },
+                    grid: {
+                        borderColor: 'rgba(255,255,255,0.05)',
+                        strokeDashArray: 4,
+                        padding: {
+                            top: 10,
+                            bottom: 60,
+                            left: 8,
+                            right: 4
+                        }
+                    },
 
 
-                plotOptions: {
-                    candlestick: {
-                        colors: { upward: '#22c55e', downward: '#ef4444' }
-                    }
-                },
-                dataLabels: { enabled: false },
-                legend: { show: false }
-            };
+                    plotOptions: {
+                        candlestick: {
+                            colors: { upward: '#22c55e', downward: '#ef4444' }
+                        }
+                    },
+                    dataLabels: { enabled: false },
+                    legend: { show: false }
+                };
 
-            if (chart) chart.destroy();
-            chart = new ApexCharts(document.querySelector("#chart"), options);
-            chart.render();
-        }
+                if (chart) chart.destroy();
+                chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+            }
 
-        function renderGauge(score) {
-            const options = {
-                series: [score],
-                chart: { height: 180, type: 'radialBar', fontFamily: 'Inter' },
-                plotOptions: {
-                    radialBar: {
-                        startAngle: -135, endAngle: 135,
-                        hollow: { size: '60%', background: 'transparent' },
-                        track: { background: 'rgba(255,255,255,0.05)', strokeWidth: '100%' },
-                        dataLabels: {
-                            show: true,
-                            name: { show: false },
-                            value: {
-                                offsetY: 10,
-                                fontSize: '24px',
-                                fontWeight: '700',
-                                color: '#fff',
-                                formatter: (v) => v
+            function renderGauge(score) {
+                const options = {
+                    series: [score],
+                    chart: { height: 180, type: 'radialBar', fontFamily: 'Inter' },
+                    plotOptions: {
+                        radialBar: {
+                            startAngle: -135, endAngle: 135,
+                            hollow: { size: '60%', background: 'transparent' },
+                            track: { background: 'rgba(255,255,255,0.05)', strokeWidth: '100%' },
+                            dataLabels: {
+                                show: true,
+                                name: { show: false },
+                                value: {
+                                    offsetY: 10,
+                                    fontSize: '24px',
+                                    fontWeight: '700',
+                                    color: '#fff',
+                                    formatter: (v) => v
+                                }
                             }
                         }
-                    }
-                },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        shade: 'dark',
-                        type: 'horizontal',
-                        gradientToColors: ['#2dd4bf'],
-                        stops: [0, 100]
-                    }
-                },
-                stroke: { lineCap: 'round' },
-                colors: ['#14b8a6']
-            };
+                    },
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            shade: 'dark',
+                            type: 'horizontal',
+                            gradientToColors: ['#2dd4bf'],
+                            stops: [0, 100]
+                        }
+                    },
+                    stroke: { lineCap: 'round' },
+                    colors: ['#14b8a6']
+                };
 
-            if (gaugeChart) gaugeChart.destroy();
-            gaugeChart = new ApexCharts(document.querySelector("#gauge-chart"), options);
-            gaugeChart.render();
-        }
-
-        /* ---------- HELPERS ---------- */
-
-        function updatePerfLabel(tf, candles) {
-            if (!candles || candles.length < 2) return;
-            const start = candles[0][4];
-            const end = candles[candles.length - 1][4];
-            const perf = ((end / start) - 1) * 100;
-            const el = document.getElementById('tf-perf');
-
-            el.innerText = (perf > 0 ? "+" : "") + perf.toFixed(2) + "% (" + tf + ")";
-            if (perf >= 0) el.className = "text-xs text-teal-400 font-bold bg-teal-500/10 px-2 py-0.5 rounded";
-            else el.className = "text-xs text-red-400 font-bold bg-red-500/10 px-2 py-0.5 rounded";
-        }
-
-        function updateList(id, items) {
-            const list = document.getElementById(id);
-            if (!items || items.length === 0) {
-                list.innerHTML = '<li class="text-xs text-slate-500">No data available.</li>';
-                return;
+                if (gaugeChart) gaugeChart.destroy();
+                gaugeChart = new ApexCharts(document.querySelector("#gauge-chart"), options);
+                gaugeChart.render();
             }
-            list.innerHTML = items.map(item => `
+
+            /* ---------- HELPERS ---------- */
+
+            function updatePerfLabel(tf, candles) {
+                if (!candles || candles.length < 2) return;
+                const start = candles[0][4];
+                const end = candles[candles.length - 1][4];
+                const perf = ((end / start) - 1) * 100;
+                const el = document.getElementById('tf-perf');
+
+                el.innerText = (perf > 0 ? "+" : "") + perf.toFixed(2) + "% (" + tf + ")";
+                if (perf >= 0) el.className = "text-xs text-teal-400 font-bold bg-teal-500/10 px-2 py-0.5 rounded";
+                else el.className = "text-xs text-red-400 font-bold bg-red-500/10 px-2 py-0.5 rounded";
+            }
+
+            function updateList(id, items) {
+                const list = document.getElementById(id);
+                if (!items || items.length === 0) {
+                    list.innerHTML = '<li class="text-xs text-slate-500">No data available.</li>';
+                    return;
+                }
+                list.innerHTML = items.map(item => `
                 <li class="flex items-start gap-2 text-xs text-slate-300">
                     <span class="text-teal-400 font-bold mt-0.5">•</span>
                     ${item}
                 </li>
             `).join('');
-        }
-
-        function renderNews(news) {
-            const container = document.getElementById('news-container');
-            if (!news || news.length === 0) {
-                container.innerHTML = '<div class="text-slate-500 text-xs">No recent news.</div>';
-                return;
             }
-            container.innerHTML = news.map(n => `
+
+            function renderNews(news) {
+                const container = document.getElementById('news-container');
+                if (!news || news.length === 0) {
+                    container.innerHTML = '<div class="text-slate-500 text-xs">No recent news.</div>';
+                    return;
+                }
+                container.innerHTML = news.map(n => `
                 <a href="${n.link}" target="_blank" class="block bg-slate-800/30 p-3 rounded border border-white/5 hover:border-teal-500/30 hover:bg-slate-800/50 transition group">
                     <div class="flex justify-between items-center mb-1">
                         <span class="text-[10px] text-teal-500 font-bold bg-teal-500/10 px-1.5 py-0.5 rounded">${n.publisher}</span>
@@ -1453,39 +1482,39 @@
                     <h4 class="text-xs font-medium text-slate-300 group-hover:text-white leading-relaxed line-clamp-2">${n.title}</h4>
                 </a>
             `).join('');
-        }
+            }
 
-        function formatNumber(num) {
-            if (num == null) return 'N/A';
-            if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
-            if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
-            if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
-            return num.toLocaleString();
-        }
+            function formatNumber(num) {
+                if (num == null) return 'N/A';
+                if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
+                if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+                if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+                return num.toLocaleString();
+            }
 
-        function toggleMA(val) {
-            if (val === '20') showMA20 = !showMA20;
-            if (val === '50') showMA50 = !showMA50;
-            if (val === '200') showMA200 = !showMA200;
+            function toggleMA(val) {
+                if (val === '20') showMA20 = !showMA20;
+                if (val === '50') showMA50 = !showMA50;
+                if (val === '200') showMA200 = !showMA200;
 
-            const btn = document.querySelector(`.ma-btn[data-ma="${val}"]`);
-            if (btn) btn.classList.toggle('active');
+                const btn = document.querySelector(`.ma-btn[data-ma="${val}"]`);
+                if (btn) btn.classList.toggle('active');
 
-            if (lastHistoryData) renderApexChart(lastHistoryData);
-        }
+                if (lastHistoryData) renderApexChart(lastHistoryData);
+            }
 
-        function setChartType(type) {
-            currentChartType = type;
-            document.querySelectorAll('.charttype-btn').forEach(b => {
-                if (b.dataset.ctype === type) b.classList.add('active');
-                else b.classList.remove('active');
-            });
-            if (lastHistoryData) renderApexChart(lastHistoryData);
-        }
+            function setChartType(type) {
+                currentChartType = type;
+                document.querySelectorAll('.charttype-btn').forEach(b => {
+                    if (b.dataset.ctype === type) b.classList.add('active');
+                    else b.classList.remove('active');
+                });
+                if (lastHistoryData) renderApexChart(lastHistoryData);
+            }
 
-        function toggleTheme() {
-            document.documentElement.classList.toggle('dark');
-        }
+            function toggleTheme() {
+                document.documentElement.classList.toggle('dark');
+            }
     </script>
 </body>
 
