@@ -368,12 +368,13 @@
         bg-[size:30px_30px] opacity-40 pointer-events-none"></div>
 
                             <!-- TITLE ROW -->
-                            <div class="relative z-10 flex items-center gap-3 mb-6">
-                                <div class="p-3 rounded-xl bg-teal-500/10 border border-teal-500/20 shadow-inner">
+                            <div class="relative z-10 flex items-center gap-3 mb-4">
+                                <div class="p-2.5 rounded-xl bg-teal-500/10 border border-teal-500/20 shadow-inner">
                                     <i data-lucide="info" class="w-6 h-6 text-teal-400"></i>
                                 </div>
-                                <h3 id="desc-box-title"
-                                    class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+
+                                <h3 id="desc-header"
+                                    class="text-xl md:text-2xl font-bold text-white tracking-wide shadow-black drop-shadow-sm">
                                     Loading...
                                 </h3>
                             </div>
@@ -394,7 +395,7 @@
                     <!-- ============================ -->
 
                     <div class="w-full mt-16 mb-6 flex items-center gap-4">
-                        <div class="h-[1px] bg-gray-700 flex-1"></div>
+                        <div class="h-[1px] bg-gray-700 w-10"></div>
                         <h2 class="text-gray-300 tracking-widest uppercase text-sm font-semibold">
                             Key Performance Indicators
                         </h2>
@@ -2256,34 +2257,31 @@
             }
         }
         // Beschreibung automatisch formatieren (global)
-        function formatCompanyDescription(text, name, symbol) {
+        function formatCompanyDescription(text, name) {
             if (!text) return "No description available.";
 
             let formatted = text;
 
-            // 1) Firmenname am Anfang fett + Ticker in Klammern
+            // 1. Versuche, den Firmennamen am Anfang zu entfernen (damit er nicht doppelt steht)
             if (name) {
-                const safeName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Regex-escape
-                const nameRegex = new RegExp("^" + safeName);                // nur ganz am Anfang matchen
+                // Erstelle Regex für "Name" am Satzanfang (case insensitive)
+                const safeName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                // Matches: Name am Anfang + optionales Komma/Punkt + Leerzeichen
+                const nameRegex = new RegExp("^" + safeName + "[,.]?\\s*", "i");
 
-                if (nameRegex.test(formatted)) {
-                    formatted = formatted.replace(
-                        nameRegex,
-                        `<span class="font-semibold text-slate-100">${name}${symbol ? " (" + symbol + ")" : ""}</span>`
-                    );
+                // Entfernen
+                formatted = formatted.replace(nameRegex, "");
+
+                // Falls der Satz jetzt klein beginnt (z.B. "provides..."), mache den ersten Buchstaben groß
+                if (formatted.length > 0) {
+                    formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
                 }
             }
 
-            // 2) Sub-Überschriften hervorheben
+            // 2. Sub-Überschriften hervorheben (wie vorher)
             const subtitles = [
-                "The company operates",
-                "The company provides",
-                "The company offers",
-                "Its segments include",
-                "Segments:",
-                "Products:",
-                "Services:",
-                "Operations:"
+                "The company operates", "The company provides", "The company offers",
+                "Its segments include", "Segments:", "Products:", "Services:", "Operations:"
             ];
 
             subtitles.forEach(keyword => {
@@ -2294,7 +2292,7 @@
                 );
             });
 
-            // 3) Sätze umbrechen
+            // 3. Sätze umbrechen
             formatted = formatted.replace(/\. /g, ".<br>");
 
             return formatted;
@@ -2356,9 +2354,23 @@
                 document.getElementById('header-sector').innerText = d.sector || '-';
                 document.getElementById('header-industry').innerText = d.industry || '-';
 
-                // Company description
-                document.getElementById('company-desc').innerHTML =
-                    formatCompanyDescription(d.description, d.name, d.symbol);
+                // Company description & Titel Update
+
+                // 1. Titel oben in der Box setzen (Suche nach der neuen ID 'desc-header')
+                if (d.name) {
+                    const headerEl = document.getElementById('desc-header');
+                    // Fallback: Falls du die HTML-ID noch 'desc-box-title' genannt hast
+                    const oldEl = document.getElementById('desc-box-title');
+
+                    if (headerEl) headerEl.innerText = d.name;
+                    else if (oldEl) oldEl.innerText = d.name;
+                }
+
+                // 2. Beschreibung setzen (Name wird durch die Funktion formatCompanyDescription entfernt)
+                const descEl = document.getElementById('company-desc');
+                if (descEl) {
+                    descEl.innerHTML = formatCompanyDescription(d.description, d.name);
+                }
 
 
 
