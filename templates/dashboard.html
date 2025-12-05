@@ -276,7 +276,6 @@
         <div class="flex-1 overflow-y-auto p-4 lg:p-10 scroll-smooth pb-32">
             <div class="max-w-7xl mx-auto space-y-6">
 
-                <!-- CHART -->
                 <!-- CHART – jetzt mit gleicher Animation / Optik wie die unteren KPIs -->
                 <section class="group relative w-full">
                     <!-- Glow wie bei den KPI-Cards -->
@@ -304,6 +303,8 @@
 
                             <div class="flex items-center gap-2 flex-wrap">
                                 <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5">
+                                    <button onclick="updateTimeframe('1D')" data-tf="1D"
+                                        class="tf-btn chart-btn">1D</button>
                                     <button onclick="updateTimeframe('1W')" data-tf="1W"
                                         class="tf-btn chart-btn">1W</button>
                                     <button onclick="updateTimeframe('1M')" data-tf="1M"
@@ -985,6 +986,13 @@
                 <!-- Extra Fundamentalkennzahlen – Layout wie Market Cap / Profit Margin (Wert links, Balken rechts) -->
                 <section class="grid grid-cols-1 gap-4 mt-4">
 
+                    <div class="w-full mt-16 mb-6 flex items-center gap-4">
+                        <div class="h-[1px] bg-gray-700 w-10"></div>
+                        <h2 class="text-gray-300 tracking-widest uppercase text-sm font-semibold">
+                            Extra Fundamentals
+                        </h2>
+                        <div class="h-[1px] bg-gray-700 flex-1"></div>
+                    </div>
                     <!-- =============================================================== -->
                     <!-- =======================  BETA  =============================== -->
                     <!-- =============================================================== -->
