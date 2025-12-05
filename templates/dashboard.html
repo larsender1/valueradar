@@ -277,50 +277,68 @@
             <div class="max-w-7xl mx-auto space-y-6">
 
                 <!-- CHART -->
-                <section class="glass-card rounded-xl p-4 md:p-6">
-                    <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
-                        <div class="flex items-center gap-2">
-                            <h2 class="text-lg font-bold text-white flex items-center gap-2"
-                                data-i18n="label-price-action">
-                                <i data-lucide="activity" class="w-5 h-5 text-teal-500"></i>
-                                Price Action
-                            </h2>
-                            <span id="tf-perf"
-                                class="text-xs text-teal-400 font-bold bg-teal-500/10 px-2 py-0.5 rounded">---</span>
-                        </div>
-
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5">
-                                <button onclick="updateTimeframe('1W')" data-tf="1W"
-                                    class="tf-btn chart-btn">1W</button>
-                                <button onclick="updateTimeframe('1M')" data-tf="1M"
-                                    class="tf-btn chart-btn">1M</button>
-                                <button onclick="updateTimeframe('1Y')" data-tf="1Y"
-                                    class="tf-btn chart-btn">1J</button>
-                                <button onclick="updateTimeframe('5Y')" data-tf="5Y"
-                                    class="tf-btn chart-btn">5Y</button>
-                                <button onclick="updateTimeframe('MAX')" data-tf="MAX"
-                                    class="tf-btn chart-btn active">MAX</button>
-                            </div>
-
-                            <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5 hidden sm:flex">
-                                <button onclick="toggleMA('20')" data-ma="20" class="ma-btn chart-btn active">MA
-                                    20</button>
-                                <button onclick="toggleMA('50')" data-ma="50" class="ma-btn chart-btn">MA 50</button>
-                                <button onclick="toggleMA('200')" data-ma="200" class="ma-btn chart-btn">MA 200</button>
-                            </div>
-
-                            <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5 hidden sm:flex">
-                                <button onclick="setChartType('line')" data-ctype="line"
-                                    class="charttype-btn chart-btn active">Line</button>
-                                <button onclick="setChartType('candles')" data-ctype="candles"
-                                    class="charttype-btn chart-btn">Candles</button>
-                            </div>
-                        </div>
+                <!-- CHART – jetzt mit gleicher Animation / Optik wie die unteren KPIs -->
+                <section class="group relative w-full">
+                    <!-- Glow wie bei den KPI-Cards -->
+                    <div class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-teal-400 to-cyan-500 
+               opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700">
                     </div>
 
-                    <div id="chart" class="h-[430px] w-full pb-2"></div>
+                    <!-- Card-Container: gleiche Klassen wie bei Market Cap / Beta usw. -->
+                    <div class="relative bg-[#0b0c10] border border-gray-800/80 rounded-2xl 
+               overflow-hidden transition-all duration-300 
+               group-hover:border-gray-700/80 group-hover:-translate-y-1 
+               shadow-xl shadow-black/40 p-4 md:p-6">
+
+                        <!-- Kopfzeile mit Buttons (unverändert aus deinem bisherigen Code) -->
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
+                            <div class="flex items-center gap-2">
+                                <h2 class="text-lg font-bold text-white flex items-center gap-2"
+                                    data-i18n="label-price-action">
+                                    <i data-lucide="activity" class="w-5 h-5 text-teal-500"></i>
+                                    Price Action
+                                </h2>
+                                <span id="tf-perf"
+                                    class="text-xs text-teal-400 font-bold bg-teal-500/10 px-2 py-0.5 rounded">---</span>
+                            </div>
+
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5">
+                                    <button onclick="updateTimeframe('1W')" data-tf="1W"
+                                        class="tf-btn chart-btn">1W</button>
+                                    <button onclick="updateTimeframe('1M')" data-tf="1M"
+                                        class="tf-btn chart-btn">1M</button>
+                                    <button onclick="updateTimeframe('1Y')" data-tf="1Y"
+                                        class="tf-btn chart-btn">1J</button>
+                                    <button onclick="updateTimeframe('5Y')" data-tf="5Y"
+                                        class="tf-btn chart-btn">5Y</button>
+                                    <button onclick="updateTimeframe('MAX')" data-tf="MAX"
+                                        class="tf-btn chart-btn active">MAX</button>
+                                </div>
+
+                                <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5 hidden sm:flex">
+                                    <button onclick="toggleMA('20')" data-ma="20" class="ma-btn chart-btn active">MA
+                                        20</button>
+                                    <button onclick="toggleMA('50')" data-ma="50" class="ma-btn chart-btn">MA
+                                        50</button>
+                                    <button onclick="toggleMA('200')" data-ma="200" class="ma-btn chart-btn">MA
+                                        200</button>
+                                </div>
+
+                                <div class="flex bg-slate-800/50 rounded-md p-1 border border-white/5 hidden sm:flex">
+                                    <button onclick="setChartType('line')" data-ctype="line"
+                                        class="charttype-btn chart-btn active">Line</button>
+                                    <button onclick="setChartType('candles')" data-ctype="candles"
+                                        class="charttype-btn chart-btn">Candles</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart selbst -->
+                        <div id="chart" class="h-[430px] w-full pb-2"></div>
+                    </div>
                 </section>
+
 
                 <div class="w-full mt-16 mb-6 flex items-center gap-4">
                     <div class="h-[1px] bg-gray-700 w-10"></div>
