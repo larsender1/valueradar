@@ -527,8 +527,7 @@
 
                                     <div class="h-2"></div>
 
-                                    <span id="sub-pe" class="text-[11px] text-gray-500">PEG: --</span>
-                                    <div></div>
+
 
                                     <span id="badge-pe-rating"
                                         class="inline-block mt-2 text-[10px] bg-gray-800 px-2 py-1 rounded text-gray-400">--</span>
@@ -2271,8 +2270,7 @@
                 // PE / PEG
                 if (d.pe) {
                     document.getElementById('val-pe').innerText = d.pe.toFixed(2);
-                    let pegText = d.peg ? `PEG: ${d.peg.toFixed(2)}` : 'PEG: N/A';
-                    document.getElementById('sub-pe').innerText = pegText;
+
 
                     const badge = document.getElementById('badge-pe-rating');
                     let peValBandWidth = 0;
