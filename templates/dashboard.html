@@ -33,10 +33,10 @@
 
     <style>
         body {
-            background-color: #0b0f19;
             color: #e2e8f0;
             font-family: 'Inter', sans-serif;
         }
+
 
         ::-webkit-scrollbar {
             width: 6px;
@@ -139,7 +139,21 @@
 </head>
 
 <body class="h-screen flex overflow-hidden selection:bg-teal-500/30 selection:text-white">
+
+    <!-- START: Clean Slate Hintergrund Code -->
+    <div class="absolute inset-0 bg-slate-900 -z-10">
+        <!-- Hauptverlauf -->
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-800 to-slate-950"></div>
+
+        <!-- Glanzlinie oben -->
+        <div class="absolute top-0 inset-x-0 h-px 
+                    bg-gradient-to-r from-transparent via-slate-500 to-transparent 
+                    opacity-20"></div>
+    </div>
+    <!-- ENDE Hintergrund -->
+
     <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+
 
     <!-- SIDEBAR -->
     <aside class="w-80 border-r border-slate-800/50 bg-[#080b14] flex flex-col z-20 relative h-full">
