@@ -112,6 +112,10 @@ def login():
         return redirect(url_for('dashboard'))
     return render_template("index.html")   
 
+@app.route("/about-lars-ender")
+def about_lars_ender():
+    return render_template("about-lars-ender.html")
+
 @app.route("/dashboard")
 @login_required # Schützt das Dashboard
 def dashboard():
