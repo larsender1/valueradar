@@ -1,27 +1,64 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark">
+<html lang="de" class="scroll-smooth dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ValueRadar – Finde Substanz in Aktien</title>
+    <title>ValueRadar – Aktienanalyse von Lars Ender</title>
 
     <meta name="description"
-        content="ValueRadar analysiert Unternehmenskennzahlen und filtert Qualitätsaktien nach Substanz, Wachstum und Sicherheit – transparent, datenbasiert und verständlich.">
+        content="ValueRadar von Lars Ender analysiert Unternehmenskennzahlen und filtert Qualitätsaktien nach Substanz, Wachstum und Sicherheit – transparent, datenbasiert und verständlich.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://valueradar.net/">
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://valueradar.net/">
-    <meta property="og:title" content="ValueRadar – Automatisierte Fundamentalanalyse">
+    <meta property="og:title" content="ValueRadar – Automatisierte Fundamentalanalyse von Lars Ender">
     <meta property="og:description"
-        content="Finde Substanz in Aktien: ValueRadar filtert den Markt nach Qualität, Wachstum und Risiko.">
+        content="ValueRadar von Lars Ender filtert den Aktienmarkt nach Qualität, Wachstum und Risiko – datenbasiert und verständlich.">
     <meta property="og:site_name" content="ValueRadar">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ValueRadar – Automatisierte Fundamentalanalyse">
-    <meta name="twitter:description" content="Datenbasierte Aktienanalyse für langfristige Investoren.">
+    <meta name="twitter:title" content="ValueRadar – Automatisierte Fundamentalanalyse von Lars Ender">
+    <meta name="twitter:description" content="ValueRadar von Lars Ender: datenbasierte Aktienanalyse für langfristige Investoren.">
+
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "ValueRadar",
+      "url": "https://valueradar.net/",
+      "description": "ValueRadar ist eine Plattform für datenbasierte Fundamentalanalyse von Aktien.",
+      "creator": {
+        "@type": "Person",
+        "name": "Lars Ender",
+        "url": "https://valueradar.net/#founder"
+      }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Lars Ender",
+      "url": "https://valueradar.net/#founder",
+      "founder": {
+        "@type": "Organization",
+        "name": "ValueRadar",
+        "url": "https://valueradar.net/"
+      },
+      "knowsAbout": [
+        "Fundamentalanalyse",
+        "Aktienanalyse",
+        "Unternehmenskennzahlen",
+        "Value Investing",
+        "Finanzdatenanalyse"
+      ]
+    }
+    </script>
 
     <link rel="icon" href="/favicon.ico">
 
@@ -185,6 +222,8 @@
         <div class="flex gap-4 items-center">
             <a href="#about" class="text-sm font-bold hover:text-emerald-500 transition cursor-pointer hidden md:block"
                 data-lang="nav_about">Über uns</a>
+            <a href="#founder" class="text-sm font-bold hover:text-emerald-500 transition cursor-pointer hidden md:block"
+                data-lang="nav_founder">Lars Ender</a>
 
             <button onclick="toggleLang()" id="lang-btn"
                 class="flex items-center gap-2 text-sm font-bold border border-slate-300 dark:border-slate-700 px-3 py-1 rounded-full bg-white dark:bg-slate-800 transition hover:border-emerald-500 shadow-sm">
@@ -322,6 +361,61 @@
                         Automatische Risiko-Checks erkennen hohe Verschuldung, schwache Cashflows und instabile
                         Ertragslagen frühzeitig und filtern solche Unternehmen aus.
                     </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FOUNDER SECTION: Wichtig für Google-Suche nach "Lars Ender" -->
+    <section id="founder"
+        class="py-28 px-4 relative z-20 bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-900 dark:via-[#0f172a] dark:to-slate-900 overflow-hidden">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-[1fr_1.4fr] gap-12 items-center relative z-10">
+            <div
+                class="bg-white/60 dark:bg-slate-800/50 backdrop-blur-xl rounded-3xl border border-slate-200/60 dark:border-slate-700/60 p-8 shadow-xl">
+                <div
+                    class="w-24 h-24 rounded-3xl bg-gradient-to-br from-emerald-500 to-blue-600 flex items-center justify-center text-white text-3xl font-extrabold mb-6 shadow-lg shadow-emerald-500/20">
+                    LE
+                </div>
+                <p class="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-2" data-lang="founder_label">
+                    Gründer von ValueRadar</p>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4">
+                    Lars Ender
+                </h2>
+                <p class="text-slate-500 dark:text-slate-400 leading-relaxed" data-lang="founder_card_text">
+                    Industrial-Engineering-Student in Wien mit Fokus auf datenbasierte Analyse, Unternehmenskennzahlen
+                    und digitale Entscheidungstools.
+                </p>
+            </div>
+
+            <div>
+                <span class="text-emerald-500 font-bold tracking-wider uppercase text-xs mb-2 block"
+                    data-lang="founder_intro_label">Über den Gründer</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold mb-6 text-slate-900 dark:text-white"
+                    data-lang="founder_title">ValueRadar wurde von Lars Ender entwickelt.</h2>
+                <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6" data-lang="founder_text_1">
+                    Lars Ender entwickelte ValueRadar, um fundamentale Aktienanalyse verständlicher, transparenter und
+                    systematischer zu machen. Die Plattform verbindet Unternehmenskennzahlen, Qualitätskriterien und
+                    Risikoindikatoren zu einem klaren Analysebild für langfristig orientierte Investoren.
+                </p>
+                <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-8" data-lang="founder_text_2">
+                    Der Fokus liegt nicht auf kurzfristigen Trends, sondern auf Substanz: Profitabilität, finanzielle
+                    Stabilität, Wachstum und nachvollziehbare Bewertung. ValueRadar soll Anlegern helfen, Unternehmen
+                    strukturiert zu vergleichen und bessere datenbasierte Entscheidungen vorzubereiten.
+                </p>
+
+                <div class="flex flex-wrap gap-3">
+                    <span
+                        class="px-4 py-2 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 text-sm font-bold">Lars
+                        Ender</span>
+                    <span
+                        class="px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-bold">ValueRadar</span>
+                    <span
+                        class="px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-bold"
+                        data-lang="founder_tag_1">Fundamentalanalyse</span>
+                    <span
+                        class="px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-bold"
+                        data-lang="founder_tag_2">Aktienanalyse</span>
                 </div>
             </div>
         </div>
@@ -514,9 +608,9 @@
                 <h4 class="font-bold text-slate-900 dark:text-white mb-4 uppercase text-xs tracking-wider"
                     data-lang="footer_legal">Rechtliches</h4>
                 <ul class="space-y-3 text-sm text-slate-500 dark:text-slate-400">
-                    <li><a href="#" class="hover:text-emerald-500 transition">Impressum</a></li>
-                    <li><a href="#" class="hover:text-emerald-500 transition">Datenschutz</a></li>
-                    <li><a href="#" class="hover:text-emerald-500 transition">Disclaimer</a></li>
+                    <li><a href="/impressum" class="hover:text-emerald-500 transition">Impressum</a></li>
+                    <li><a href="/datenschutz" class="hover:text-emerald-500 transition">Datenschutz</a></li>
+                    <li><a href="/disclaimer" class="hover:text-emerald-500 transition">Disclaimer</a></li>
                 </ul>
             </div>
 
@@ -710,13 +804,14 @@
         }
 
         // ---------- I18N ----------
-        let lang = 'DE'; // Startzustand intern: DE
-        document.addEventListener("DOMContentLoaded", () => toggleLang()); // erster Toggle -> EN
+        let lang = 'EN'; // erster Toggle setzt die Seite sauber auf DE
+        document.addEventListener("DOMContentLoaded", () => toggleLang()); // Startsprache: DE
 
 
         const translations = {
             DE: {
                 nav_about: "Über uns",
+                nav_founder: "Lars Ender",
                 sys_online: "SYSTEM ONLINE",
                 hero_prefix: "Finde",
                 hero_highlight: "Substanz.",
@@ -725,6 +820,16 @@
                 about_label: "Unsere Vision",
                 about_title: "Über ValueRadar",
                 about_text: "ValueRadar wurde entwickelt, um Anlegern klare und fundierte Unternehmensanalysen zu bieten. Statt sich auf Trends oder Stimmungen zu verlassen, untersucht unser System Geschäftsmodelle, Profitabilität, finanzielle Stabilität und langfristige Entwicklungspotenziale. Das Ziel: Transparente, verständliche und datenbasierte Einblicke in die Substanz eines Unternehmens.",
+
+                // Founder Section
+                founder_label: "Gründer von ValueRadar",
+                founder_card_text: "Industrial-Engineering-Student in Wien mit Fokus auf datenbasierte Analyse, Unternehmenskennzahlen und digitale Entscheidungstools.",
+                founder_intro_label: "Über den Gründer",
+                founder_title: "ValueRadar wurde von Lars Ender entwickelt.",
+                founder_text_1: "Lars Ender entwickelte ValueRadar, um fundamentale Aktienanalyse verständlicher, transparenter und systematischer zu machen. Die Plattform verbindet Unternehmenskennzahlen, Qualitätskriterien und Risikoindikatoren zu einem klaren Analysebild für langfristig orientierte Investoren.",
+                founder_text_2: "Der Fokus liegt nicht auf kurzfristigen Trends, sondern auf Substanz: Profitabilität, finanzielle Stabilität, Wachstum und nachvollziehbare Bewertung. ValueRadar soll Anlegern helfen, Unternehmen strukturiert zu vergleichen und bessere datenbasierte Entscheidungen vorzubereiten.",
+                founder_tag_1: "Fundamentalanalyse",
+                founder_tag_2: "Aktienanalyse",
 
                 // Boxen
                 box_qual_title: "Qualität",
@@ -780,6 +885,7 @@
             },
             EN: {
                 nav_about: "About us",
+                nav_founder: "Lars Ender",
                 sys_online: "SYSTEM ONLINE",
                 hero_prefix: "Find",
                 hero_highlight: "Substance.",
@@ -788,6 +894,16 @@
                 about_label: "Our Vision",
                 about_title: "About ValueRadar",
                 about_text: "ValueRadar was created to provide investors with clear and well-founded company insights. Instead of relying on trends or market sentiment, our system evaluates business models, profitability, financial stability, and long-term growth potential. The goal: transparent, understandable, and data-driven insights into the true substance of a business.",
+
+                // Founder Section
+                founder_label: "Founder of ValueRadar",
+                founder_card_text: "Industrial engineering student in Vienna focused on data-driven analysis, company fundamentals, and digital decision tools.",
+                founder_intro_label: "About the Founder",
+                founder_title: "ValueRadar was developed by Lars Ender.",
+                founder_text_1: "Lars Ender developed ValueRadar to make fundamental stock analysis more understandable, transparent, and systematic. The platform combines company metrics, quality criteria, and risk indicators into a clear analytical view for long-term investors.",
+                founder_text_2: "The focus is not on short-term trends, but on substance: profitability, financial stability, growth, and transparent valuation. ValueRadar helps investors compare companies in a structured way and prepare better data-based decisions.",
+                founder_tag_1: "Fundamental analysis",
+                founder_tag_2: "Stock analysis",
 
                 // Boxen
                 box_qual_title: "Quality",
