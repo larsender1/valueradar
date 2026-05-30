@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lars Ender – Founder of ValueRadar</title>
+    <meta name="description" content="Lars Ender is the founder of ValueRadar, a platform for transparent, understandable, and data-driven fundamental stock analysis.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://valueradar.net/about-lars-ender">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Lars Ender",
+      "url": "https://valueradar.net/about-lars-ender",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "ValueRadar",
+        "url": "https://valueradar.net/"
+      },
+      "knowsAbout": [
+        "Fundamental stock analysis",
+        "Company metrics",
+        "Financial data analysis",
+        "Value investing",
+        "Risk indicators"
+      ]
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-[#0b1120] text-white min-h-screen font-sans">
+    <main class="max-w-4xl mx-auto px-6 py-24">
+        <a href="/" class="text-emerald-400 hover:text-emerald-300 font-bold text-sm">
+            ← Back to ValueRadar
+        </a>
+
+        <section class="mt-16">
+            <p class="text-emerald-400 uppercase tracking-widest text-sm font-bold mb-4">
+                About the Founder
+            </p>
+
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-8">
+                Lars Ender – Founder of ValueRadar
+            </h1>
+
+            <p class="text-slate-300 text-xl leading-relaxed mb-8">
+                Lars Ender is the founder of ValueRadar, a platform designed to make fundamental stock analysis more transparent, understandable, and data-driven.
+            </p>
+
+            <p class="text-slate-400 text-lg leading-relaxed mb-8">
+                ValueRadar combines company metrics, quality criteria, and risk indicators to help long-term investors compare companies in a structured way. The platform focuses on substance: profitability, financial stability, growth, and transparent valuation.
+            </p>
+
+            <p class="text-slate-400 text-lg leading-relaxed">
+                The goal of ValueRadar is to turn complex financial information into a clearer analytical view for investors who want to understand the business behind the stock.
+            </p>
+        </section>
+    </main>
+</body>
+</html>
